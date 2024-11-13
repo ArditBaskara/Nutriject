@@ -1,0 +1,114 @@
+/* src/pages/Onboarding.css */
+
+.onboarding-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #ff7e5f, #feb47b);
+    color: #fff;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    padding: 0 20px; /* Tambahkan padding untuk layar kecil */
+  }
+  
+  .logo-container {
+    margin-bottom: 20px;
+    animation: logoBounce 2s infinite;
+  }
+  
+  .logo {
+    width: 100px;
+    height: auto;
+  }
+  
+  .onboarding-title {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    animation: fadeIn 1.5s ease;
+  }
+  
+  .onboarding-description {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    max-width: 400px;
+    animation: fadeIn 1.8s ease;
+  }
+  
+  .get-started-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #ff7e5f;
+    background-color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .get-started-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Animations */
+  @keyframes logoBounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Responsiveness */
+  @media (max-width: 768px) {
+    .logo {
+      width: 80px;
+    }
+  
+    .onboarding-title {
+      font-size: 2rem; /* Sesuaikan ukuran font untuk layar tablet */
+    }
+  
+    .onboarding-description {
+      font-size: 1rem;
+    }
+  
+    .get-started-button {
+      padding: 8px 16px;
+      font-size: 0.9rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .logo {
+      width: 60px;
+    }
+  
+    .onboarding-title {
+      font-size: 1.8rem; /* Sesuaikan ukuran font untuk layar ponsel */
+    }
+  
+    .onboarding-description {
+      font-size: 0.9rem;
+    }
+  
+    .get-started-button {
+      padding: 6px 12px;
+      font-size: 0.85rem;
+    }
+  }
+  

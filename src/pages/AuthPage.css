@@ -1,0 +1,138 @@
+/* src/pages/AuthPage.css */
+
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('../assets/bg.jpg'); /* Background image */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    padding: 70px 20px 20px;
+  }
+  
+  .auth-card {
+    background: linear-gradient(135deg, #333, #111); /* Matching the Box background gradient */
+    border-radius: 15px;
+    color: #fff;
+    padding: 20px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.3); /* Matching Box shadow */
+    font-family: Arial, sans-serif;
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
+  }
+  
+  h2 {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #fff;
+  }
+  
+  input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+  
+  input:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+  .navbar {
+    position: fixed; /* Navbar tetap di atas */
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #fff;
+    z-index: 1000;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .auth-button {
+    width: 100%;
+    padding: 0.8rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  
+  .auth-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .toggle-text {
+    margin-top: 1rem;
+    text-align: center;
+    color: #bbb;
+    font-size: 0.9rem;
+  }
+  
+  .toggle-text span {
+    color: #007bff;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .toggle-text span:hover {
+    text-decoration: underline;
+  }
+  .form-group input {
+    width: 90%;
+    padding: 0.6rem;  /* Menurunkan padding agar lebih kecil */
+    font-size: 0.9rem; /* Menurunkan ukuran font */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  input:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+  
+  @media (max-width: 600px) {
+    .auth-container {
+      background-attachment: scroll; /* Fix for mobile browsers */
+    }
+  
+    .auth-card {
+      width: 100%;
+      padding: 1rem; /* Adjust padding for mobile */
+    }
+  
+    .form-group input {
+      padding: 0.8rem;
+      font-size: 0.8rem;  /* Larger input on mobile */
+    }
+  
+    .auth-button {
+      padding: 0.8rem; /* Larger button on mobile */
+    }
+  
+    .toggle-text {
+      font-size: 0.85rem;
+    }
+  }
+  

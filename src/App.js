@@ -1,13 +1,30 @@
-// src/App.js
-import React from 'react';
-import Onboarding from './pages/onboarding';
+import React, { Suspense } from 'react';
+import { BrowserRouter as Router, useRoutes } from 'react-router-dom';
 
-function App() {
+// Lazy load pages
+const Onboarding = React.lazy(() => import('./pages/onboarding'));
+const AuthPage = React.lazy(() => import('./pages/AuthPage'));
+
+const AppRoutes = () => {
+  // Define routes for the app
+  const routes = [
+    { path: '/', element: <Onboarding /> },
+    { path: '/auth', element: <AuthPage /> },
+  ];
+
+  // useRoutes to handle routing
+  return useRoutes(routes);
+};
+
+const App = () => {
   return (
-    <div className="App">
-      <Onboarding />
-    </div>
+    <Router>
+      {/* Suspense for lazy loading with fallback UI */}
+      <Suspense fallback={<div>Loading...</div>}>
+        <AppRoutes />
+      </Suspense>
+    </Router>
   );
-}
+};
 
 export default App;

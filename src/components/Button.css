@@ -1,33 +1,42 @@
 /* src/components/Button.css */
 
 .custom-button {
-    padding: 10px 20px;
-    font-size: 1rem;
-    color: #ff7e5f;
-    background-color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  padding: 12px 24px; /* Lebih besar untuk memberi ruang lebih pada tombol */
+  font-size: 1.1rem; /* Ukuran font sedikit lebih besar */
+  color: #ffffff; /* Mengubah teks menjadi putih untuk kontras yang lebih baik */
+  background-color: #ff7e5f; /* Warna latar belakang yang lebih mencolok */
+  border: none;
+  border-radius: 8px; /* Membuat tombol lebih bulat */
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  font-weight: bold; /* Membuat teks tombol lebih tebal */
+}
+
+.custom-button:hover {
+  transform: scale(1.05); /* Efek zoom saat hover */
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3); /* Menambah shadow yang lebih kuat */
+  background-color: #e56a50; /* Mengubah warna background saat hover */
+}
+
+.custom-button:active {
+  transform: scale(1.02); /* Menurunkan skala saat tombol ditekan */
+  background-color: #d94d39; /* Warna latar belakang lebih gelap saat aktif */
+}
+
+/* Responsiveness untuk layar lebih kecil */
+
+/* Untuk tablet dan layar dengan lebar 768px atau kurang */
+@media (max-width: 768px) {
+  .custom-button {
+    padding: 10px 18px; /* Mengurangi padding untuk tampilan lebih ramping */
+    font-size: 1rem; /* Ukuran font sedikit lebih kecil */
   }
-  
-  .custom-button:hover {
-    transform: scale(1.05);
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Untuk perangkat dengan lebar 480px atau kurang (ponsel) */
+@media (max-width: 480px) {
+  .custom-button {
+    padding: 8px 16px; /* Lebih kecil lagi agar tombol tidak terlalu besar */
+    font-size: 0.9rem; /* Ukuran font sedikit lebih kecil */
   }
-  
-  /* Responsiveness */
-  @media (max-width: 768px) {
-    .custom-button {
-      padding: 8px 16px;
-      font-size: 0.9rem;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .custom-button {
-      padding: 6px 12px;
-      font-size: 0.85rem;
-    }
-  }
-  
+}

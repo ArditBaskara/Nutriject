@@ -1,0 +1,77 @@
+/* FormPhoto.css */
+
+/* Atur background dengan transparansi untuk memastikan form tetap terlihat jelas */
+.form-photo-page {
+    background-image: url('../assets/bg.jpg'); /* Ganti path gambar sesuai lokasi Anda */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    /* Menambahkan filter untuk meningkatkan kontras */
+    position: relative;
+}
+
+.form-photo-page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* Filter hitam transparan */
+    z-index: -1; /* Menempatkan filter di bawah elemen konten */
+}
+
+/* Kontainer form */
+.form-container {
+    background-color: white; /* Menambahkan latar belakang putih untuk form agar kontras dengan latar belakang */
+    padding: 30px; /* Padding lebih besar agar lebih nyaman dilihat */
+    border-radius: 15px; /* Membuat sudut lebih membulat */
+    width: 100%;
+    max-width: 500px; /* Lebar maksimum kontainer */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Menambahkan bayangan lembut di sekitar kontainer */
+}
+
+/* Styling untuk input form dan textarea */
+.form-container input, .form-container textarea {
+    width: 100%; /* Memastikan input dan textarea mengisi lebar kontainer */
+    padding: 12px;
+    margin-bottom: 15px; /* Jarak antar input */
+    border: 1px solid #ddd; /* Border halus untuk input */
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box; /* Menghitung padding dan border dalam ukuran total */
+}
+
+/* Tombol khusus untuk halaman FormPhoto */
+.form-container button {
+    margin-top: 20px; /* Jarak atas antara form dan tombol */
+    padding: 12px 20px;
+    background-color: #4caf50; /* Warna latar tombol */
+    color: white; /* Warna teks tombol */
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    width: 100%; /* Tombol memenuhi lebar kontainer */
+    text-align: center; /* Memastikan teks berada di tengah */
+}
+
+/* Efek hover untuk tombol khusus FormPhoto */
+.form-container button:hover {
+    background-color: #0044cc; /* Warna latar saat hover */
+    transform: scale(1.05); /* Efek zoom saat hover */
+}
+
+/* Responsif: Menyesuaikan layout untuk layar kecil */
+@media (max-width: 600px) {
+    .form-container {
+        padding: 20px; /* Mengurangi padding untuk layar kecil */
+        max-width: 90%; /* Mengurangi lebar maksimum kontainer */
+    }
+}

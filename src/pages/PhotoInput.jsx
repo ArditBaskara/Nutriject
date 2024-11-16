@@ -5,6 +5,8 @@ import UserForm from "./UseForm"
 import { doc, setDoc } from "firebase/firestore";
 import { db, getDoc  } from "../firebase-config"
 import { renderDiagram } from "./UseForm";
+import Button from '../components/Button';
+
 
 const PhotoInput = () => {
   const [image, setImage] = useState(null);
@@ -141,7 +143,10 @@ const PhotoInput = () => {
     <div>
       <h2>Input Foto</h2>
       <div style={{marginBottom : "60px"}}>
-        <button onClick={() => document.getElementById('fileInput').click()}>Unggah dari File</button>
+      <Button onClick={() => document.getElementById('fileInput').click()}>
+  Unggah dari File
+</Button>
+
         <input
           id="fileInput"
           type="file"
@@ -149,7 +154,8 @@ const PhotoInput = () => {
           style={{ display: 'none' }}
           onChange={handleFileUpload}
         />
-        <button onClick={startCamera}>Ambil dengan Kamera</button>
+        <Button onClick={startCamera}>Ambil dengan Kamera</Button>
+
       </div>
       {image && (
         <div>
@@ -171,9 +177,10 @@ const PhotoInput = () => {
             <li><strong>Garam:</strong> {ocrText.garam || "Tidak terdeteksi"} mg</li>
             <li><strong>Air:</strong> {ocrText.air || "Tidak terdeteksi"} ml</li>
           </ul>
-          <button onClick={handleSendToFirebase} style={{ marginTop: "5px", padding: "8px 16px", marginBottom:"20px" }}>
-            Makan
-          </button>
+          <Button onClick={handleSendToFirebase} style={{ marginTop: "5px", marginBottom: "20px" }}>
+          Makan
+          </Button>
+
         </div>
         ) : (
           <p>{ocrText}</p>

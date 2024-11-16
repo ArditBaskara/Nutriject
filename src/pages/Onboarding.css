@@ -1,46 +1,55 @@
 /* Onboarding.css */
 
+/* Atur latar belakang dengan gradient perpaduan warna */
 .onboarding-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   height: 100vh;
-  background: linear-gradient(135deg, #ff7e5f, #feb47b);
-  color: #fff;
+  background: linear-gradient(135deg, #77CDFF, #B9E5E8, #FF6600, #F5F5F7); /* Gradient perpaduan warna */
+  color: #333; /* Warna teks lebih gelap untuk kontras yang lebih baik */
   text-align: center;
   font-family: Arial, sans-serif;
   padding: 20px;
   overflow-y: auto; /* Enable scrolling */
 }
 
+/* Animasi dan efek untuk logo */
 .logo-container {
   margin-bottom: 20px;
   animation: logoBounce 2s infinite;
 }
 
 .logo {
-  width: 100px;
+  width: 150px; /* Perbesar ukuran logo */
   height: auto;
 }
 
+/* Animasi judul onboarding */
 .onboarding-title {
-  font-size: 2.5rem;
+  font-size: 3rem; /* Perbesar ukuran font judul */
   margin-bottom: 10px;
+  color: #2C3E50; /* Warna teks judul lebih gelap (misalnya biru gelap) */
+  text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.6); /* Efek bayangan futuristik yang halus */
   animation: fadeIn 1.5s ease;
 }
 
+/* Deskripsi onboarding */
 .onboarding-description {
-  font-size: 1.2rem;
+  font-size: 1.5rem; /* Perbesar ukuran font deskripsi */
   margin-bottom: 20px;
-  max-width: 400px;
+  max-width: 500px; /* Lebar maksimum deskripsi */
+  color: #2C3E50; /* Warna teks deskripsi lebih gelap (biru gelap) */
+  text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.6); /* Efek bayangan yang halus */
   animation: fadeIn 1.8s ease;
 }
 
+/* Tombol get started dengan efek interaktif */
 .get-started-button {
-  padding: 10px 20px;
-  font-size: 1rem;
-  color: #ff7e5f;
+  padding: 12px 24px; /* Perbesar padding tombol */
+  font-size: 1.2rem; /* Perbesar ukuran font tombol */
+  color: #FF6600; /* Warna tombol sesuai dengan gradient */
   background-color: #fff;
   border: none;
   border-radius: 5px;
@@ -53,7 +62,7 @@
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Scroll section for Box components */
+/* Scroll section untuk komponen Box */
 .scroll-section {
   display: flex;
   gap: 20px;
@@ -65,71 +74,72 @@
   flex: 1;
 }
 
-/* Animations */
+/* Animasi logo */
 @keyframes logoBounce {
   0%, 100% {
-      transform: translateY(0);
+    transform: translateY(0);
   }
   50% {
-      transform: translateY(-10px);
+    transform: translateY(-10px);
   }
 }
 
+/* Animasi fadeIn */
 @keyframes fadeIn {
   from {
-      opacity: 0;
-      transform: translateY(10px);
+    opacity: 0;
+    transform: translateY(10px);
   }
   to {
-      opacity: 1;
-      transform: translateY(0);
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
 /* Responsiveness */
 @media (max-width: 768px) {
   .logo {
-      width: 80px;
+    width: 120px; /* Sesuaikan ukuran logo untuk perangkat lebih kecil */
   }
 
   .onboarding-title {
-      font-size: 2rem;
+    font-size: 2.5rem; /* Sesuaikan ukuran font judul */
   }
 
   .onboarding-description {
-      font-size: 1rem;
+    font-size: 1.2rem; /* Sesuaikan ukuran font deskripsi */
   }
 
   .get-started-button {
-      padding: 8px 16px;
-      font-size: 0.9rem;
+    padding: 10px 20px;
+    font-size: 1rem;
   }
 
   .scroll-section {
-      flex-direction: column;
-      align-items: center;
+    flex-direction: column;
+    align-items: center;
   }
 
   .scroll-section > .Box {
-      width: 100%;
+    width: 100%;
   }
 }
 
 @media (max-width: 480px) {
   .logo {
-      width: 60px;
+    width: 100px; /* Sesuaikan ukuran logo untuk perangkat lebih kecil */
   }
 
   .onboarding-title {
-      font-size: 1.8rem;
+    font-size: 2rem; /* Sesuaikan ukuran font judul */
   }
 
   .onboarding-description {
-      font-size: 0.9rem;
+    font-size: 1rem; /* Sesuaikan ukuran font deskripsi */
   }
 
   .get-started-button {
-      padding: 6px 12px;
-      font-size: 0.85rem;
+    padding: 8px 16px;
+    font-size: 0.9rem;
   }
 }

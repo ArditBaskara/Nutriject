@@ -185,7 +185,7 @@ const UserForm = ( {ocrText} ) => {
                 left: `${(min / maxToDisplay) * 100}%`,
                 width: '2px',
                 height: '100%',
-                backgroundColor: 'red',
+                backgroundColor: 'blue',
                 zIndex: 1,
               }}></div>
 
@@ -195,7 +195,7 @@ const UserForm = ( {ocrText} ) => {
                 left: `${(min / maxToDisplay) * 100}%`,
                 transform: 'translateX(-50%)',
                 fontSize: '12px',
-                color: '#fff',
+                color: '#000',
               }}>
                 {min.toFixed(2)}
               </div>
@@ -210,7 +210,7 @@ const UserForm = ( {ocrText} ) => {
             width: '100%',
             height: '20px',
             position: 'relative',
-            marginTop: '10px'
+            marginTop: '8px'
           }}>
             {/* Bagian sebelum nilai slider */}
             <div
@@ -237,8 +237,9 @@ const UserForm = ( {ocrText} ) => {
             left: `${(valueToDisplay / maxToDisplay) * 100}%`,
             transform: 'translateX(-50%)',
             fontSize: '12px',
+            margin: '10px',
             fontWeight: 'bold',
-            color: '#fff',
+            color: '#000',
             zIndex: 2,
           }}>
             {valueToDisplay.toFixed(2)}

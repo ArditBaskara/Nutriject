@@ -1,7 +1,13 @@
-/* FormPhoto.css */
-
-/* Atur background dengan transparansi untuk memastikan form tetap terlihat jelas */
-.form-photo-page {
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* FormPhoto Page Styles */
+  .form-photo-page {
     background-image: url('../assets/bg.jpg'); /* Ganti path gambar sesuai lokasi Anda */
     background-size: cover;
     background-repeat: no-repeat;
@@ -11,11 +17,10 @@
     justify-content: center;
     align-items: center;
     padding: 20px;
-    /* Menambahkan filter untuk meningkatkan kontras */
     position: relative;
-}
-
-.form-photo-page::before {
+  }
+  
+  .form-photo-page::before {
     content: '';
     position: absolute;
     top: 0;
@@ -24,54 +29,218 @@
     bottom: 0;
     background: rgba(0, 0, 0, 0.5); /* Filter hitam transparan */
     z-index: -1; /* Menempatkan filter di bawah elemen konten */
-}
-
-/* Kontainer form */
-.form-container {
-    background-color: white; /* Menambahkan latar belakang putih untuk form agar kontras dengan latar belakang */
-    padding: 30px; /* Padding lebih besar agar lebih nyaman dilihat */
-    border-radius: 15px; /* Membuat sudut lebih membulat */
+  }
+  
+  /* Form Container */
+  .form-container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 15px;
     width: 100%;
-    max-width: 500px; /* Lebar maksimum kontainer */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Menambahkan bayangan lembut di sekitar kontainer */
-}
-
-/* Styling untuk input form dan textarea */
-.form-container input, .form-container textarea {
-    width: 100%; /* Memastikan input dan textarea mengisi lebar kontainer */
+    max-width: 500px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .form-container:hover {
+    transform: scale(1.02);
+  }
+  
+  /* Form Elements */
+  .form-container input,
+  .form-container textarea,
+  .form-container select {
+    width: 100%;
     padding: 12px;
-    margin-bottom: 15px; /* Jarak antar input */
-    border: 1px solid #ddd; /* Border halus untuk input */
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 16px;
-    box-sizing: border-box; /* Menghitung padding dan border dalam ukuran total */
-}
-
-/* Tombol khusus untuk halaman FormPhoto */
-.form-container button {
-    margin-top: 20px; /* Jarak atas antara form dan tombol */
+    box-sizing: border-box;
+    transition: border-color 0.3s ease-in-out;
+  }
+  
+  .form-container input:focus,
+  .form-container textarea:focus,
+  .form-container select:focus {
+    border-color: #4caf50;
+    outline: none;
+  }
+  
+  /* Button Styles */
+  .form-container button {
+    margin-top: 20px;
     padding: 12px 20px;
-    background-color: #4caf50; /* Warna latar tombol */
-    color: white; /* Warna teks tombol */
+    background-color: #4caf50;
+    color: white;
     font-size: 16px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
-    width: 100%; /* Tombol memenuhi lebar kontainer */
-    text-align: center; /* Memastikan teks berada di tengah */
-}
-
-/* Efek hover untuk tombol khusus FormPhoto */
-.form-container button:hover {
-    background-color: #0044cc; /* Warna latar saat hover */
-    transform: scale(1.05); /* Efek zoom saat hover */
-}
-
-/* Responsif: Menyesuaikan layout untuk layar kecil */
-@media (max-width: 600px) {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .form-container button:hover {
+    background-color: #0044cc;
+    transform: scale(1.05);
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 600px) {
     .form-container {
-        padding: 20px; /* Mengurangi padding untuk layar kecil */
-        max-width: 90%; /* Mengurangi lebar maksimum kontainer */
+      padding: 20px;
+      max-width: 90%;
     }
-}
+  }
+  
+  /* UserForm Page Styles */
+  .user-form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .user-form-container:hover {
+    transform: scale(1.02);
+  }
+  
+  h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+    font-weight: bold;
+  }
+  
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.3s ease-in-out;
+  }
+  
+  .form-group input:focus,
+  .form-group select:focus {
+    border-color: #4caf50;
+    outline: none;
+  }
+  
+  .submit-button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .submit-button:hover {
+    background-color: #45a049;
+  }
+  
+  .results-container {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .diagram-container {
+    margin-bottom: 25px;
+  }
+  
+  .diagram {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 15px;
+    width: 100%;
+  }
+  
+  .diagram-bar {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 25px;
+    position: relative;
+    margin-top: 15px;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  
+  .diagram-bar-filled {
+    height: 100%;
+    background-color: #4caf50;
+    transition: width 0.5s ease-in-out;
+  }
+  
+  .diagram-bar-empty {
+    height: 100%;
+    background-color: #ddd;
+  }
+  
+  .diagram-value-label {
+    position: absolute;
+    top: -30px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .diagram-label-left,
+  .diagram-label-right {
+    position: absolute;
+    bottom: -25px;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .diagram-label-left {
+    left: 0;
+  }
+  
+  .diagram-label-right {
+    right: 0;
+  }
+  
+  .diagram-min-line {
+    position: absolute;
+    top: 10%;
+    width: 2px;
+    height: 100%;
+    background-color: red;
+    z-index: 1;
+  }
+  
+  .diagram-min-label {
+    position: absolute;
+    top: -15px;
+    transform: translateX(-50%);
+    font-size: 14px;
+    color: #333;
+  }
+  

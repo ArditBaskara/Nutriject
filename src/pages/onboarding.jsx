@@ -6,9 +6,11 @@ import Box from '../components/Box'; // Import the Box component
 import kemasan2 from '../assets/kemasan2.png';
 import kemasan3 from '../assets/kemasan3.png';
 import kemasan4 from '../assets/kemasan4.png';
-
+import kemasan1 from '../assets/kemasan1.jpg';
+import kemasan5 from '../assets/kemasan5.jpg';
+import kemasan6 from '../assets/kemasan6.jpg';
 // Images for Box components
-const imageList1 = [kemasan2, kemasan3, kemasan4];
+const imageList1 = [kemasan1, kemasan5, kemasan6];
 const imageList2 = [kemasan2, kemasan3, kemasan4];
 
 const Onboarding = () => {
@@ -43,7 +45,7 @@ const Onboarding = () => {
           images={imageList2}
           title="Optimasi Gizi"
           claimText="Dapatkan Saran Gizi!"
-          registerText="Lihat Rekomendasi!"
+          registerText="Lihat Rekomendasi Makananmu!"
         />
       </div>
     </div>

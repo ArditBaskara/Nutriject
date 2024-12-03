@@ -139,6 +139,10 @@ const PhotoInput = () => {
     }
   };
 
+  const cancelMakan = () => {
+    alert("Gajadi");
+  }
+
   return (
     <div>
       <h2>Input Foto</h2>
@@ -181,6 +185,9 @@ const PhotoInput = () => {
           Makan
           </Button>
 
+          <Button onClick={cancelMakan} bgCol={'red'} style={{marginTop: "5px", marginBottom: "20px" }}>
+          Cancel
+          </Button>
         </div>
         ) : (
           <p>{ocrText}</p>

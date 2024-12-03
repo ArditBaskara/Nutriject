@@ -4,26 +4,47 @@ import React, { useState } from 'react';
 import './AuthPage.css';
 import Button from '../components/Button'; // Impor komponen Button
 import Navbar from '../components/Navbar'; // Impor komponen Navbar
+import {db, doc, setDoc, getDoc, addDoc, collection} from "../firebase-config"
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import CryptoJS from 'crypto-js';
+import { useNavigate } from 'react-router-dom';
+import {encrypt, decrypt} from "../crypt"
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true); // Toggle between Login and Signup
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+  
+    // Validasi password
     if (!isLogin && password !== confirmPassword) {
       alert('Passwords do not match!');
       return;
     }
+  
     if (isLogin) {
-      console.log('Login:', { email, password });
+      const data = {email, password};
+      const response = await axios.post("http://localhost:3001/user/login", data);
+      const res = response.data;
+      if(res.status !== 200){
+        console.log(res.message);
+        return;
+      }
+      Cookies.set("enc", encrypt(res), {expires:7})
+      navigate("/");
+      
     } else {
-      console.log('Signup:', { email, password });
+      const data = {email, password};
+      const response = await axios.post("http://localhost:3001/user/signup", data);
+      console.log(response);
     }
-    alert(`${isLogin ? 'Login' : 'Signup'} Successful!`);
   };
+  
 
   return (
     <div className="auth-container">
@@ -63,7 +84,7 @@ const AuthPage = () => {
               />
             </div>
           )}
-          <Button type="submit">
+          <Button type="submit" bgCol={'blue'}>
             {isLogin ? 'Login' : 'Signup'}
           </Button>
         </form>

@@ -113,6 +113,24 @@ const UserForm = ( {ocrText} ) => {
     const saltMax = 2000;
     const waterRequirement = weightNum * 35;
 
+    const resu = {
+      BMR,
+      TDEE,
+      carbsMin,
+      carbsMax,
+      proteinMin,
+      proteinMax,
+      fatMin,
+      fatMax,
+      sugarMin,
+      sugarMax,
+      saltMin,
+      saltMax,
+      waterRequirement,
+    }
+
+    console.log(resu);
+
     setResults({
       BMR,
       TDEE,

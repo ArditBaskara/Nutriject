@@ -1,5 +1,6 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter as Router, useRoutes } from 'react-router-dom';
+import ProtectedRoute from './components/ProtectedRoute';
 
 // Lazy load pages
 const Onboarding = React.lazy(() => import('./pages/onboarding'));
@@ -10,8 +11,8 @@ const AppRoutes = () => {
   // Define routes for the app
   const routes = [
     { path: '/', element: <Onboarding /> },
-    { path: '/auth', element: <AuthPage /> },
-    { path:'/photo', element:<PhotoInput/>}
+    { path: '/auth', element: <AuthPage/> },
+    { path:'/photo', element:<ProtectedRoute element={<PhotoInput/>} />}
   ];
 
   // useRoutes to handle routing

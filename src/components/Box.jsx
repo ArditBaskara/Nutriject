@@ -1,10 +1,11 @@
 // src/components/Box.jsx
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Box.css';
 
-function Box({ images, title, coinAmount, claimText, registerText }) {
+function Box({ images, title, coinAmount, claimText, registerText, navto}) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
+  const navigate = useNavigate();
   // Ganti gambar secara otomatis setiap 3 detik
   useEffect(() => {
     const interval = setInterval(() => {
@@ -12,6 +13,10 @@ function Box({ images, title, coinAmount, claimText, registerText }) {
     }, 3000);
     return () => clearInterval(interval);
   }, [images.length]);
+
+  const onCobaClicked = () => {
+    navigate(navto);
+  }
 
   return (
     <div className="Box">
@@ -28,7 +33,7 @@ function Box({ images, title, coinAmount, claimText, registerText }) {
       <div className="footer">
         <p className="claim-text">{claimText}</p>
         <p className="register-text">{registerText}</p>
-        <button className="register-button">Coba</button>
+        <button className="register-button" onClick={onCobaClicked}>Coba</button>
       </div>
     </div>
   );

@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ProgressBar from "../components/ProgressBar";
 import "./Personalize.css";
+import { decrypt } from "../crypt";
+import Cookies from "js-cookie";
 
 export default function Personalize() {
     const navigate = useNavigate();
@@ -29,8 +31,9 @@ export default function Personalize() {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                const user = decrypt(Cookies.get("enc"))
                 const response = await axios.get("https://nutriject-server.vercel.app/user/report", {
-                    params: { userId: "674f7661a0de397e039f5ae3" },
+                    params: { userId: user.user._id },
                 });
                 const res = response.data.combined;
 

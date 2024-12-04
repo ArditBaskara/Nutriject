@@ -29,7 +29,7 @@ const AuthPage = () => {
   
     if (isLogin) {
       const data = {email, password};
-      const response = await axios.post("http://localhost:3001/user/login", data);
+      const response = await axios.post("https://nutriject-server.vercel.app/user/login", data);
       const res = response.data;
       if(res.status !== 200){
         console.log(res.message);
@@ -40,7 +40,7 @@ const AuthPage = () => {
       
     } else {
       const data = {email, password};
-      const response = await axios.post("http://localhost:3001/user/signup", data);
+      const response = await axios.post("https://nutriject-server.vercel.app/user/signup", data);
       console.log(response);
     }
   };

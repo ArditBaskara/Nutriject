@@ -29,7 +29,7 @@ export default function Personalize() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get("http://localhost:3001/user/report", {
+                const response = await axios.get("https://nutriject-server.vercel.app/user/report", {
                     params: { userId: "674f7661a0de397e039f5ae3" },
                 });
                 const res = response.data.combined;

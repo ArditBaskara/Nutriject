@@ -139,7 +139,7 @@ const PhotoInput = () => {
           userId:account.user._id
         }
         
-        const response = await axios.post("http://localhost:3001/user/makan", data);
+        const response = await axios.post("https://nutriject-server.vercel.app/user/makan", data);
         console.log("Makanan Dimakan : " + response.data);
         
         // Perbarui data di Firestore

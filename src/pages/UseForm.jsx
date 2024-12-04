@@ -136,7 +136,7 @@ const UserForm = ({ ocrText }) => {
       userId:user.user._id
     }
 
-    const response = await axios.post("http://localhost:3001/user/update", resu);
+    const response = await axios.post("https://nutriject-server.vercel.app/user/update", resu);
     console.log(response);
 
     setResults({

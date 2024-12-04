@@ -4,14 +4,15 @@ import UserForm from "./UseForm";
 import ObjectDetect from "./ImageUpload";
 import Navbar from "../components/Navbar"; // Pastikan path ini sesuai
 import "./FormPhoto.css";
+import ImageUpload from "./ImageUpload";
 
-export default function FormPhoto() {
+export default function Optimize() {
   return (
     <>
       <Navbar />
       <div className="form-photo-page">
         <div className="form-container">
-          <PhotoInput />
+          <ImageUpload />
           
         </div>
       </div>

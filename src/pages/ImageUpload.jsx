@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { uploadImage } from "../services/api";
+import "./FormPhoto.css";
 
 const ImageUpload = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -35,6 +36,7 @@ const ImageUpload = () => {
 
     try {
       const result = await uploadImage(formData);
+      console.log(result.nutrients[0]);
       setNutrientData(result.nutrients);
       setError("");
     } catch (err) {
@@ -44,6 +46,8 @@ const ImageUpload = () => {
       setLoading(false);
     }
   };
+
+  
 
   return (
     <div>
@@ -68,7 +72,7 @@ const ImageUpload = () => {
         {nutrientData.length > 0 ? (
           <ul>
             {nutrientData.map((item, index) => (
-              <li key={index}>
+              <li key={index} style={{color:"black"}}>
                 <strong>{item.nama}</strong>: Karbohidrat: {item.karbohidrat}g, Protein:{" "}
                 {item.protein}g, Lemak: {item.lemak}g, Kalori: {item.kalori}kcal, Gula:{" "}
                 {item.gula}g, Garam: {item.garam}mg, Air: {item.air}%
@@ -76,7 +80,7 @@ const ImageUpload = () => {
             ))}
           </ul>
         ) : (
-          <p>No data extracted yet.</p>
+          <p style={{color:"black"}}>No data extracted yet.</p>
         )}
       </div>
     </div>

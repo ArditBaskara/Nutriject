@@ -21,22 +21,25 @@ export default function Personalize() {
     const [error, setError] = useState(null); // State untuk menyimpan pesan error
 
     const onDetect = () => {
-        navigate("/photo");
+        navigate("/ocr");
     };
 
     const onBack = () => {
         navigate("/");
     };
 
+    const user = decrypt(Cookies.get("enc"))
+    console.log("Decrypted user")
+    console.log(user.user._id)
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const user = decrypt(Cookies.get("enc"))
                 const response = await axios.get("https://nutriject-server.vercel.app/user/report", {
-                    params: { userId: user.user._id },
+                    params: { userId: '67505a5ee5eaf23d12160512' },
                 });
                 const res = response.data.combined;
-
+                console.log("RES");
+                console.log(response)
                 // Simpan data ke dalam state
                 setUserData(res.user);
                 setFat(res.fat);

@@ -63,7 +63,7 @@ const PhotoInput = () => {
     })
       .then(async ({ data: { text } }) => {
         try {
-          const response = await axios.post("http://127.0.0.1:5000/extract-nutrients", {
+          const response = await axios.post("https://4161-34-42-95-139.ngrok-free.app/extract-nutrients", {
             ocr_text: text,
           });
           console.log("Nutrisi yang diekstraksi:", response.data);

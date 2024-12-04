@@ -9,7 +9,7 @@ export default function ProtectedRoute({element}){
         auth.status = 400;
     }
     if(auth.status !== 200){
-        return <Navigate to="/"/>
+        return <Navigate to="/auth"/>
     }
     return element;
 }

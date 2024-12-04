@@ -32,6 +32,10 @@ const Onboarding = () => {
     navigate("/personalize");
   }
 
+  const goToData = () => {
+    navigate("/data")
+  }
+
   return (
     <div className="onboarding-container">
       <div className="logo-container">
@@ -44,9 +48,14 @@ const Onboarding = () => {
           <p className="onboarding-description">
             Selamat datang, <strong>{user.user.email || 'Pengguna'}</strong>! Gunakan aplikasi ini untuk mendeteksi nutrisi pada makanan olahan dan kemasan secara mudah dan akurat.
           </p>
-          <button className="get-started-button" onClick={goToPersonalize}>
-            Lihat Profil
-          </button>
+          <div className='double-button'>
+            <button className="get-started-button" onClick={goToPersonalize}>
+              Lihat Profil
+            </button>
+            <button className="get-started-button" onClick={goToData}>
+              Ubah Data
+            </button>
+          </div>
         </>
       ) : (
         <>
@@ -69,14 +78,21 @@ const Onboarding = () => {
           title="Deteksi Nutrisi"
           claimText="Mudah dan Akurat!"
           registerText="Mulai Deteksi Sekarang!"
-          navto={"/photo"}
+          navto={"/ocr"}
         />
         <Box
           images={imageList2}
           title="Optimasi Gizi"
           claimText="Dapatkan Saran Gizi!"
           registerText="Lihat Rekomendasi!"
-          navto={"/"}
+          navto={"/photo"}
+        />
+        <Box
+          images={imageList1}
+          title="Input Gizi Manual"
+          claimText="Masukan Gizi secara Manual"
+          registerText="Input Gizi Manual"
+          navto={"/manual"}
         />
       </div>
     </div>

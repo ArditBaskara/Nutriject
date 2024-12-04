@@ -134,6 +134,7 @@ const PhotoInput = () => {
 
         const account = decrypt(Cookies.get("enc"));
         const data = {
+          BMR:ocrText.kalori,
           carbs:ocrText.karbohidrat_total || 0,
           protein:ocrText.protein || 0,
           salt:ocrText.garam || 0,
@@ -159,7 +160,7 @@ const PhotoInput = () => {
   };
 
   const cancelMakan = () => {
-    alert("Gajadi");
+    window.location.reload()
   }
 
   return (
@@ -187,7 +188,7 @@ const PhotoInput = () => {
         <div>
         {ocrText && typeof ocrText === "object" ? (
           <div>
-          <ul style={{textAlign:'left'}}>
+          <ul style={{textAlign:'left', color:"black"}}>
             <li><strong>Kalori:</strong> {ocrText.kalori || "Tidak terdeteksi"} kkal</li>
             <li><strong>Lemak Total:</strong> {ocrText.lemak || "Tidak terdeteksi"} g</li>
             <li><strong>Karbohidrat Total:</strong> {ocrText.karbohidrat || "Tidak terdeteksi"} g</li>
@@ -202,7 +203,7 @@ const PhotoInput = () => {
           </Button>
 
           <Button onClick={cancelMakan} bgCol={'red'} style={{marginTop: "5px", marginBottom: "20px" }}>
-          Cancel
+            Cancel
           </Button>
 
         </div>

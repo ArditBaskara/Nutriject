@@ -5,14 +5,20 @@ import "./FormPhoto.css"; // Import CSS file for styling
 import axios from "axios";
 import { decrypt } from "../crypt";
 import Cookies from "js-cookie";
+import Navbar from "../components/Navbar";
+import "./UserForm.css"
 
 const UserForm = ({ ocrText }) => {
+  const user = decrypt(Cookies.get("enc"))
+  console.log("DECR")
+  const datUser = user.user;
+  console.log(user.user)
   const [formData, setFormData] = useState({
-    age: "",
-    gender: "",
-    height: "",
-    weight: "",
-    activity: "",
+    age: datUser.age,
+    gender: datUser.gender,
+    height: datUser.height,
+    weight: datUser.weight,
+    activity: datUser.activity,
   });
 
   const [kalori, setKalori] = useState(0);
@@ -246,86 +252,89 @@ const UserForm = ({ ocrText }) => {
   };
 
   return (
-    <div className="user-form-container">
-      <h2>Form Data Pengguna</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Umur (tahun):</label>
-          <input
-            type="number"
-            name="age"
-            value={formData.age}
-            onChange={handleChange}
-            required
-            min="0"
-          />
-        </div>
-        <div className="form-group">
-          <label>Gender:</label>
-          <select
-            name="gender"
-            value={formData.gender}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Pilih Gender</option>
-            <option value="male">Laki-laki</option>
-            <option value="female">Perempuan</option>
-          </select>
-        </div>
-        <div className="form-group">
-          <label>Tinggi Badan (cm):</label>
-          <input
-            type="number"
-            name="height"
-            value={formData.height}
-            onChange={handleChange}
-            required
-            min="0"
-          />
-        </div>
-        <div className="form-group">
-          <label>Berat Badan (kg):</label>
-          <input
-            type="number"
-            name="weight"
-            value={formData.weight}
-            onChange={handleChange}
-            required
-            min="0"
-          />
-        </div>
-        <div className="form-group">
-          <label>Aktivitas Harian:</label>
-          <select
-            name="activity"
-            value={formData.activity}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Pilih Aktivitas</option>
-            <option value="very_light">Sangat Ringan</option>
-            <option value="light">Ringan</option>
-            <option value="moderate">Sedang</option>
-            <option value="heavy">Berat</option>
-            <option value="very_heavy">Sangat Berat</option>
+    <div>
+      <Navbar/>
+      <div className="user-form-container">
+        <h2>Form Data Pengguna</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label>Umur (tahun):</label>
+            <input
+              type="number"
+              name="age"
+              value={formData.age}
+              onChange={handleChange}
+              required
+              min="0"
+            />
+          </div>
+          <div className="form-group">
+            <label>Gender:</label>
+            <select
+              name="gender"
+              value={formData.gender}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Pilih Gender</option>
+              <option value="male">Laki-laki</option>
+              <option value="female">Perempuan</option>
             </select>
-        </div>
-        <button type="submit" className="submit-button">Hitung</button>
-      </form>
+          </div>
+          <div className="form-group">
+            <label>Tinggi Badan (cm):</label>
+            <input
+              type="number"
+              name="height"
+              value={formData.height}
+              onChange={handleChange}
+              required
+              min="0"
+            />
+          </div>
+          <div className="form-group">
+            <label>Berat Badan (kg):</label>
+            <input
+              type="number"
+              name="weight"
+              value={formData.weight}
+              onChange={handleChange}
+              required
+              min="0"
+            />
+          </div>
+          <div className="form-group">
+            <label>Aktivitas Harian:</label>
+            <select
+              name="activity"
+              value={formData.activity}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Pilih Aktivitas</option>
+              <option value="very_light">Sangat Ringan</option>
+              <option value="light">Ringan</option>
+              <option value="moderate">Sedang</option>
+              <option value="heavy">Berat</option>
+              <option value="very_heavy">Sangat Berat</option>
+              </select>
+          </div>
+          <button type="submit" className="submit-button">Hitung</button>
+        </form>
 
-      {results && (
-        <div className="results-container">
-          <h3>Hasil Perhitungan</h3>
-          {renderDiagram("Kalori", 0, results.TDEE, kalori, setKalori)}
-          {renderDiagram("Karbohidrat", results.carbsMin, results.carbsMax, karbohidrat, setKarbohidrat)}
-          {renderDiagram("Protein", results.proteinMin, results.proteinMax, protein, setProtein)}
-          {renderDiagram("Lemak", results.fatMin, results.fatMax, lemak, setLemak)}
-          {renderDiagram("Gula", results.sugarMin, results.sugarMax, gula, setGula)}
-          {renderDiagram("Garam", results.saltMin, results.saltMax, garam, setGaram)}
-          {renderDiagram("Air", 0, results.waterRequirement, air, setAir)}
-        </div>
-      )}
+        {results && (
+          <div className="results-container">
+            <h3>Hasil Perhitungan</h3>
+            {renderDiagram("Kalori", 0, results.TDEE, kalori, setKalori)}
+            {renderDiagram("Karbohidrat", results.carbsMin, results.carbsMax, karbohidrat, setKarbohidrat)}
+            {renderDiagram("Protein", results.proteinMin, results.proteinMax, protein, setProtein)}
+            {renderDiagram("Lemak", results.fatMin, results.fatMax, lemak, setLemak)}
+            {renderDiagram("Gula", results.sugarMin, results.sugarMax, gula, setGula)}
+            {renderDiagram("Garam", results.saltMin, results.saltMax, garam, setGaram)}
+            {renderDiagram("Air", 0, results.waterRequirement, air, setAir)}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

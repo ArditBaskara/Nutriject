@@ -5,6 +5,10 @@ import UserForm from './UseForm';
 import { doc, setDoc } from "firebase/firestore";
 import { db, getDoc  } from "../firebase-config";
 import { renderDiagram } from "./UseForm";
+import Button from "../components/Button"
+import { decrypt } from '../crypt';
+import Cookies from 'js-cookie';
+
 
 const PhotoInput = () => {
   const [image, setImage] = useState(null);
@@ -79,6 +83,7 @@ const PhotoInput = () => {
               gula: currentData.gula || 0,
               garam: currentData.garam || 0,
             };
+
             setCurrentData(initialData);
           } catch (error) {
             console.error("Error memperbarui data di Firebase:", error);
@@ -123,7 +128,20 @@ const PhotoInput = () => {
           gula: initialData.gula + (ocrText.gula || 0),
           garam: initialData.garam + (ocrText.garam || 0),
         };
-  
+
+        const account = decrypt(Cookies.get("enc"));
+        const data = {
+          carbs:ocrText.karbohidrat_total || 0,
+          protein:ocrText.protein || 0,
+          salt:ocrText.garam || 0,
+          sugar:ocrText.gula || 0,
+          fat:ocrText.lemak_total || 0,
+          userId:account.user._id
+        }
+        
+        const response = await axios.post("http://localhost:3001/user/makan", data);
+        console.log("Makanan Dimakan : " + response.data);
+        
         // Perbarui data di Firestore
         await setDoc(docRef, updatedData);
   
@@ -136,6 +154,10 @@ const PhotoInput = () => {
       alert("Data pembacaan tidak valid.");
     }
   };
+
+  const cancelMakan = () => {
+    alert("Gajadi");
+  }
 
   return (
     <div>
@@ -171,9 +193,15 @@ const PhotoInput = () => {
             <li><strong>Garam:</strong> {ocrText.garam || "Tidak terdeteksi"} mg</li>
             <li><strong>Air:</strong> {ocrText.air || "Tidak terdeteksi"} ml</li>
           </ul>
-          <button onClick={handleSendToFirebase} style={{ marginTop: "5px", padding: "8px 16px", marginBottom:"20px" }}>
-            Makan
-          </button>
+
+          <Button onClick={handleSendToFirebase} style={{ marginTop: "5px", marginBottom: "20px" }}>
+          Makan
+          </Button>
+
+          <Button onClick={cancelMakan} bgCol={'red'} style={{marginTop: "5px", marginBottom: "20px" }}>
+          Cancel
+          </Button>
+
         </div>
         ) : (
           <p>{ocrText}</p>

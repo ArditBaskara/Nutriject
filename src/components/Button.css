@@ -4,7 +4,6 @@
   padding: 12px 24px; /* Lebih besar untuk memberi ruang lebih pada tombol */
   font-size: 1.1rem; /* Ukuran font sedikit lebih besar */
   color: #ffffff; /* Mengubah teks menjadi putih untuk kontras yang lebih baik */
-  background-color: #ff7e5f; /* Warna latar belakang yang lebih mencolok */
   border: none;
   border-radius: 8px; /* Membuat tombol lebih bulat */
   cursor: pointer;

@@ -2,7 +2,7 @@
 
 // Import Firebase SDK yang diperlukan
 import { initializeApp } from "firebase/app";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, setDoc, collection, addDoc } from "firebase/firestore";
 
 // Firebase config yang Anda dapatkan dari Firebase Console
 const firebaseConfig = {
@@ -18,4 +18,4 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-export { db, doc, getDoc };
+export { db, doc, getDoc, setDoc, collection, addDoc};

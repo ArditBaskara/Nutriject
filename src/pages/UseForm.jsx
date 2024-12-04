@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { db, getDoc } from "../firebase-config";
 import { doc, onSnapshot, setDoc } from "firebase/firestore";
 import "./FormPhoto.css"; // Import CSS file for styling
+import axios from "axios";
+import { decrypt } from "../crypt";
+import Cookies from "js-cookie";
 
 const UserForm = ({ ocrText }) => {
   const [formData, setFormData] = useState({
@@ -72,6 +75,8 @@ const UserForm = ({ ocrText }) => {
     const heightNum = parseFloat(height);
     const weightNum = parseFloat(weight);
 
+
+
     if (isNaN(ageNum) || isNaN(heightNum) || isNaN(weightNum)) {
       alert("Input harus berupa angka!");
       return;
@@ -106,6 +111,33 @@ const UserForm = ({ ocrText }) => {
     const saltMin = 500;
     const saltMax = 2000;
     const waterRequirement = weightNum * 35;
+
+    const user = decrypt(Cookies.get("enc"));
+
+    const resu = {
+      BMR,
+      TDEE,
+      carbsMin,
+      carbsMax,
+      proteinMin,
+      proteinMax,
+      fatMin,
+      fatMax,
+      sugarMin,
+      sugarMax,
+      saltMin,
+      saltMax,
+      waterRequirement,
+      age:ageNum,
+      height:heightNum,
+      weight:weightNum,
+      gender,
+      activity,
+      userId:user.user._id
+    }
+
+    const response = await axios.post("http://localhost:3001/user/update", resu);
+    console.log(response);
 
     setResults({
       BMR,

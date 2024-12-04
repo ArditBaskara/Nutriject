@@ -9,14 +9,14 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
-  background-color: rgba(120, 179, 206, 0);  /* Navbar awal transparan */
+  background-color: white;  /* Navbar awal transparan */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   transition: background-color 0.3s ease, height 0.3s ease; /* Transisi warna latar belakang dan ukuran navbar */
 }
 
 .navbar.shrink {
-  background-color: rgba(120, 179, 206, 0.9);  /* Navbar berubah warna saat scroll */
+  background-color: white;  /* Navbar berubah warna saat scroll */
   height: 60px; /* Navbar menyusut saat scroll */
 }
 

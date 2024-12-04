@@ -6,15 +6,13 @@ import Box from '../components/Box'; // Import the Box component
 import kemasan2 from '../assets/kemasan2.png';
 import kemasan3 from '../assets/kemasan3.png';
 import kemasan4 from '../assets/kemasan4.png';
-<<<<<<< HEAD
 import Cookies from 'js-cookie';
 import { decrypt } from '../crypt';
-
-=======
 import kemasan1 from '../assets/kemasan1.jpg';
 import kemasan5 from '../assets/kemasan5.jpg';
 import kemasan6 from '../assets/kemasan6.jpg';
->>>>>>> upstream/main
+import ProgressBar from '../components/ProgressBar';
+
 // Images for Box components
 const imageList1 = [kemasan1, kemasan5, kemasan6];
 const imageList2 = [kemasan2, kemasan3, kemasan4];
@@ -30,6 +28,10 @@ const Onboarding = () => {
     navigate('/auth'); // Redirect to AuthPage
   };
 
+  const goToPersonalize = () => {
+    navigate("/personalize");
+  }
+
   return (
     <div className="onboarding-container">
       <div className="logo-container">
@@ -38,9 +40,14 @@ const Onboarding = () => {
       <h1 className="onboarding-title">NUTRIJECT!</h1>
 
       {user ? (
-        <p className="onboarding-description">
-          Selamat datang, <strong>{user.user.email || 'Pengguna'}</strong>! Gunakan aplikasi ini untuk mendeteksi nutrisi pada makanan olahan dan kemasan secara mudah dan akurat.
-        </p>
+        <>
+          <p className="onboarding-description">
+            Selamat datang, <strong>{user.user.email || 'Pengguna'}</strong>! Gunakan aplikasi ini untuk mendeteksi nutrisi pada makanan olahan dan kemasan secara mudah dan akurat.
+          </p>
+          <button className="get-started-button" onClick={goToPersonalize}>
+            Lihat Profil
+          </button>
+        </>
       ) : (
         <>
 
@@ -52,6 +59,7 @@ const Onboarding = () => {
         </button>
         </>
       )}
+
 
 
       {/* Scroll section for Box components */}

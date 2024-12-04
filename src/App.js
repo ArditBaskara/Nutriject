@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter as Router, useRoutes } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
+import Personalize from './pages/Personalize';
 
 // Lazy load pages
 const Onboarding = React.lazy(() => import('./pages/onboarding'));
@@ -12,7 +13,8 @@ const AppRoutes = () => {
   const routes = [
     { path: '/', element: <Onboarding /> },
     { path: '/auth', element: <AuthPage/> },
-    { path:'/photo', element:<ProtectedRoute element={<PhotoInput/>} />}
+    { path:'/photo', element:<ProtectedRoute element={<PhotoInput/>} />},
+    { path:'/personalize', element:<ProtectedRoute element={<Personalize/>}/>}
   ];
 
   // useRoutes to handle routing

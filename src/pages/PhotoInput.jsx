@@ -63,7 +63,7 @@ const PhotoInput = () => {
     })
       .then(async ({ data: { text } }) => {
         try {
-          const response = await axios.post("https://78c2-34-139-32-151.ngrok-free.app/extract-nutrients", {
+          const response = await axios.post("https://79a0-34-106-254-60.ngrok-free.app/extract-nutrients", {
             ocr_text: text,
             headers: {
               "ngrok-skip-browser-warning": "any-value"

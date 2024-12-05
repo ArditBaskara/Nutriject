@@ -175,7 +175,7 @@ const PhotoInput = () => {
           style={{ display: 'none' }}
           onChange={handleFileUpload}
         />
-        <button onClick={startCamera}>Ambil dengan Kamera</button>
+        {/*<button onClick={startCamera}>Ambil dengan Kamera</button>*/}
       </div>
       {image && (
         <div>

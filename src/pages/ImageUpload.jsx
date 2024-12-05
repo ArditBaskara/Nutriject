@@ -94,13 +94,13 @@ const ImageUpload = () => {
       <input type="file" accept="image/*" onChange={handleFileChange} />
       <button onClick={handleUpload}>Upload Image</button>
       <br />
-      <input
+      {/*<input
         type="file"
         accept="image/*"
         capture="camera"
         onChange={handleCapture}
       />
-      <button onClick={handleUpload}>Capture Image</button>
+      <button onClick={handleUpload}>Capture Image</button>*/}
 
       {loading && <p>Loading...</p>} {/* Tampilkan loading saat state loading true */}
 

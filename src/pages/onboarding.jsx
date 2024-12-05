@@ -31,17 +31,27 @@ const Onboarding = () => {
   };
 
   const goToPersonalize = () => {
-    navigate("/personalize");
-  }
+    navigate('/personalize');
+  };
 
   const goToData = () => {
-    navigate("/data")
-  }
+    navigate('/data');
+  };
+
+  const handleLogoClick = () => {
+    Cookies.remove('enc'); // Remove the cookie
+    navigate('/'); // Redirect to home or reload the page
+  };
 
   return (
     <div className="onboarding-container">
       <div className="logo-container">
-        <img src={logo} alt="Nutriject Logo" className="logo" />
+        <img
+          src={logo}
+          alt="Nutriject Logo"
+          className="logo"
+          onClick={handleLogoClick} // Add click handler
+        />
       </div>
       <h1 className="onboarding-title">NUTRIJECT!</h1>
 
@@ -50,7 +60,7 @@ const Onboarding = () => {
           <p className="onboarding-description">
             Selamat datang, <strong>{user.user.name || 'Pengguna'}</strong>! Gunakan aplikasi ini untuk mendeteksi nutrisi pada makanan olahan dan kemasan secara mudah dan akurat.
           </p>
-          <div className='double-button'>
+          <div className="double-button">
             <button className="get-started-button" onClick={goToPersonalize}>
               Lihat Profil
             </button>
@@ -61,17 +71,14 @@ const Onboarding = () => {
         </>
       ) : (
         <>
-
           <p className="onboarding-description">
             Aplikasi AI Berbasis Web untuk Deteksi Nutrisi Pada Makanan Olahan dan Kemasan Sebagai Solusi Optimasi Gizi Masyarakat.
           </p>
-        <button className="get-started-button" onClick={handleGetStarted}>
-          Mulai Sekarang
-        </button>
+          <button className="get-started-button" onClick={handleGetStarted}>
+            Mulai Sekarang
+          </button>
         </>
       )}
-
-
 
       {/* Scroll section for Box components */}
       <div className="scroll-section">
@@ -80,21 +87,21 @@ const Onboarding = () => {
           title="Deteksi Nutrisi"
           claimText="Mudah dan Akurat!"
           registerText="Mulai Deteksi Sekarang!"
-          navto={"/ocr"}
+          navto="/ocr"
         />
         <Box
           images={imageList2}
           title="Optimasi Gizi"
           claimText="Dapatkan Saran Gizi!"
           registerText="Lihat Rekomendasi!"
-          navto={"/photo"}
+          navto="/photo"
         />
         <Box
           images={imageList3}
           title="Input Gizi Manual"
           claimText="Masukan Gizi secara Manual"
           registerText="Input Gizi Manual"
-          navto={"/manual"}
+          navto="/manual"
         />
       </div>
     </div>

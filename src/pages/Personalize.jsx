@@ -38,10 +38,10 @@ export default function Personalize() {
                 const response = await axios.get("https://nutriject-server.vercel.app/user/report", {
                     params: { userId: user.user._id },
                 });
-                const res = response.data.combined;
                 console.log("RES");
-                console.log(response)
+                console.log(response.data.combined)
                 // Simpan data ke dalam state
+                const res = response.data.combined;
                 setUserData(res.user);
                 setFat(res.fat);
                 setCarbs(res.carbs);
@@ -79,7 +79,7 @@ export default function Personalize() {
                 <h3>Tanggal : {tanggal}</h3>
 
                 {/* Pastikan userData sudah ada sebelum mengakses properti */}
-                {userData && <p>BMR : {userData.BMR.toFixed(2)}</p>}
+                {userData && <p>BMR : {userData.BMR || 0}</p>}
             
                 <div className="p-bar">
                     {/* Gunakan conditional rendering untuk ProgressBar */}
@@ -87,37 +87,37 @@ export default function Personalize() {
                         <>
                             <ProgressBar
                                 label={"Karbohidrat"}
-                                min={userData.carbsMin}
-                                max={userData.carbsMax}
-                                val={carbs}
+                                min={userData.carbsMin || 0}
+                                max={userData.carbsMax || 0}
+                                val={carbs || 0}
                                 color="#FF6600"
                             />
                             <ProgressBar
                                 label={"Garam"}
-                                min={userData.saltMin}
-                                max={userData.saltMax}
-                                val={salts}
+                                min={userData.saltMin || 0}
+                                max={userData.saltMax || 0}
+                                val={salts || 0}
                                 color="#FF6600"
                             />
                             <ProgressBar
                                 label={"Protein"}
-                                min={userData.proteinMin}
-                                max={userData.proteinMax}
-                                val={protein}
+                                min={userData.proteinMin || 0}
+                                max={userData.proteinMax || 0}
+                                val={protein || 0}
                                 color="#FF6600"
                             />
                             <ProgressBar
                                 label={"Gula"}
-                                min={userData.sugarMin}
-                                max={userData.sugarMax}
-                                val={sugar}
+                                min={userData.sugarMin || 0}
+                                max={userData.sugarMax || 0}
+                                val={sugar || 0}
                                 color="#FF6600"
                             />
                             <ProgressBar
                                 label={"Lemak"}
-                                min={userData.fatMin}
-                                max={userData.fatMax}
-                                val={fat}
+                                min={userData.fatMin || 0}
+                                max={userData.fatMax || 0}
+                                val={fat || 0}
                                 color="#FF6600"
                             />
                         </>

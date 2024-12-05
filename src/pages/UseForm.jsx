@@ -178,7 +178,6 @@ const UserForm = ({ ocrText }) => {
 
       await setDoc(docRef, updatedData);
 
-      alert("Proses Berhasil !!!");
     } catch (error) {
       console.error("Error memperbarui data di Firebase:", error);
       alert("Ada kesalah dalam proses :(");

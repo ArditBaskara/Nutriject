@@ -11,11 +11,13 @@ import { decrypt } from '../crypt';
 import kemasan1 from '../assets/kemasan1.jpg';
 import kemasan5 from '../assets/kemasan5.jpg';
 import kemasan6 from '../assets/kemasan6.jpg';
+import kemasan7 from '../assets/kemasan7.png';
 import ProgressBar from '../components/ProgressBar';
 
 // Images for Box components
 const imageList1 = [kemasan1, kemasan5, kemasan6];
 const imageList2 = [kemasan2, kemasan3, kemasan4];
+const imageList3 = [kemasan7];
 
 const Onboarding = () => {
   const navigate = useNavigate(); // Hook to navigate between pages
@@ -46,7 +48,7 @@ const Onboarding = () => {
       {user ? (
         <>
           <p className="onboarding-description">
-            Selamat datang, <strong>{user.user.email || 'Pengguna'}</strong>! Gunakan aplikasi ini untuk mendeteksi nutrisi pada makanan olahan dan kemasan secara mudah dan akurat.
+            Selamat datang, <strong>{user.user.name || 'Pengguna'}</strong>! Gunakan aplikasi ini untuk mendeteksi nutrisi pada makanan olahan dan kemasan secara mudah dan akurat.
           </p>
           <div className='double-button'>
             <button className="get-started-button" onClick={goToPersonalize}>
@@ -88,7 +90,7 @@ const Onboarding = () => {
           navto={"/photo"}
         />
         <Box
-          images={imageList1}
+          images={imageList3}
           title="Input Gizi Manual"
           claimText="Masukan Gizi secara Manual"
           registerText="Input Gizi Manual"

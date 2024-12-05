@@ -5,6 +5,7 @@ import ProgressBar from "../components/ProgressBar";
 import "./Personalize.css";
 import { decrypt } from "../crypt";
 import Cookies from "js-cookie";
+import Navbar from "../components/Navbar";
 
 export default function Personalize() {
     const navigate = useNavigate();
@@ -35,7 +36,7 @@ export default function Personalize() {
         const fetchData = async () => {
             try {
                 const response = await axios.get("https://nutriject-server.vercel.app/user/report", {
-                    params: { userId: '67505a5ee5eaf23d12160512' },
+                    params: { userId: user.user._id },
                 });
                 const res = response.data.combined;
                 console.log("RES");
@@ -52,7 +53,7 @@ export default function Personalize() {
                 setLoading(false); // Loading selesai
             } catch (err) {
                 console.error("Error fetching data:", err);
-                setError("Failed to load data. Please try again."); // Simpan pesan error
+                setError("Failed to load data. Please try again."); 
                 setLoading(false);
             }
         };
@@ -72,12 +73,13 @@ export default function Personalize() {
     // Render halaman jika data sudah tersedia
     return (
         <div className="pages">
+             <Navbar />
             <div className="contents">
-                <h1>Hello Keyzar!</h1>
+                <h1>Hello {userData.name}!</h1>
                 <h3>Tanggal : {tanggal}</h3>
 
                 {/* Pastikan userData sudah ada sebelum mengakses properti */}
-                {userData && <p>BMR : {userData.BMR}</p>}
+                {userData && <p>BMR : {userData.BMR.toFixed(2)}</p>}
             
                 <div className="p-bar">
                     {/* Gunakan conditional rendering untuk ProgressBar */}

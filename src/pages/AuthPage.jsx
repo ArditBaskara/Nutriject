@@ -15,7 +15,9 @@ const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true); // Toggle between Login and Signup
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [isSuccess, setIsSuccess] = useState(false)
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -39,9 +41,14 @@ const AuthPage = () => {
       navigate("/");
       
     } else {
-      const data = {email, password};
-      const response = await axios.post("https://nutriject-server.vercel.app/user/signup", data);
-      console.log(response);
+      try{
+        const data = {email, password, name};
+        const response = await axios.post("https://nutriject-server.vercel.app/user/signup", data);
+        setIsSuccess(true);
+      }catch(err){
+        console.log(err)
+      }
+      
     }
   };
   
@@ -52,6 +59,18 @@ const AuthPage = () => {
       <div className="auth-card">
         <h2>{isLogin ? 'Login' : 'Signup'}</h2>
         <form onSubmit={handleSubmit}>
+          {!isLogin && (
+            <div className="form-group">
+            <label htmlFor="email">Name</label>
+            <input
+              type="text"
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
+          )}
           <div className="form-group">
             <label htmlFor="email">Email</label>
             <input
@@ -73,6 +92,7 @@ const AuthPage = () => {
             />
           </div>
           {!isLogin && (
+            
             <div className="form-group">
               <label htmlFor="confirm-password">Confirm Password</label>
               <input
@@ -83,7 +103,9 @@ const AuthPage = () => {
                 required
               />
             </div>
+            
           )}
+          {isSuccess & !isLogin && (<p style={{color:'green'}}>Sukses membuat akun</p>)}
           <Button type="submit" bgCol={'blue'}>
             {isLogin ? 'Login' : 'Signup'}
           </Button>

@@ -5,10 +5,18 @@ body {
     margin: 0;
     padding: 0;
   }
-  
+  h1 {
+    text-align: center;
+    color: #444; /* Warna heading lebih gelap untuk kontras */
+    margin-bottom: 20px;
+  }
+  h3{
+    color: #444; /* Warna heading lebih gelap untuk kontras */
+    margin-bottom: 20px;
+  }
   /* FormPhoto Page Styles */
   .form-photo-page {
-    background-image: url('../assets/bg.jpg'); /* Ganti path gambar sesuai lokasi Anda */
+    background: linear-gradient(135deg, #77CDFF, #B9E5E8, #FF6600, #F5F5F7); /* Ganti path gambar sesuai lokasi Anda */
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -33,7 +41,10 @@ body {
   
   /* Form Container */
   .form-container {
-    background-color: white;
+    background-image: url('../assets/bg.jpg'); /* Ganti path gambar sesuai lokasi Anda */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
     padding: 30px;
     border-radius: 15px;
     width: 100%;
@@ -50,13 +61,14 @@ body {
   .form-container input,
   .form-container textarea,
   .form-container select {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
     font-size: 16px;
     box-sizing: border-box;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc; /* Border abu-abu muda */
+    border-radius: 5px;
+    background: #f9f9f9; /* Latar belakang input abu-abu terang */
+    color: #333; /* Warna teks input */
     transition: border-color 0.3s ease-in-out;
   }
   

@@ -56,8 +56,8 @@
 .get-started-button {
   padding: 12px 24px; /* Perbesar padding tombol */
   font-size: 1.2rem; /* Perbesar ukuran font tombol */
-  color: #FF6600; /* Warna tombol sesuai dengan gradient */
-  background-color: #fff;
+  color: #ffffff; /* Warna tombol sesuai dengan gradient */
+  background-color: #ffffff;
   border: none;
   border-radius: 5px;
   cursor: pointer;

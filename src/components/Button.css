@@ -14,12 +14,12 @@
 .custom-button:hover {
   transform: scale(1.05); /* Efek zoom saat hover */
   box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3); /* Menambah shadow yang lebih kuat */
-  background-color: #e56a50; /* Mengubah warna background saat hover */
+  background-color: #f6f0ef; /* Mengubah warna background saat hover */
 }
 
 .custom-button:active {
   transform: scale(1.02); /* Menurunkan skala saat tombol ditekan */
-  background-color: #d94d39; /* Warna latar belakang lebih gelap saat aktif */
+  background-color: #e6e4e4; /* Warna latar belakang lebih gelap saat aktif */
 }
 
 /* Responsiveness untuk layar lebih kecil */

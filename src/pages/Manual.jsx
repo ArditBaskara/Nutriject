@@ -6,7 +6,7 @@ import axios from "axios";
 import { decrypt } from "../crypt";
 import Cookies from "js-cookie";
 import Navbar from "../components/Navbar";
-import "./UserForm.css"
+import "./Manual.css"
 
 const Manual = ({ ocrText }) => {
   const [formData, setFormData] = useState({

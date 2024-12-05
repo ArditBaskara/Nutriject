@@ -1,53 +1,159 @@
-
-body{color: white;
-}
-
-.pages{
+body {
+    color: white;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+  }
+  
+  p {
+    text-align: center;
+    color: #444; /* Warna heading lebih gelap untuk kontras */
+    margin-bottom: 20px;
+  }
+  
+  .pages {
     width: 100%;
     height: 100vh;
     display: flex;
     justify-content: center;
-    background: linear-gradient(135deg, #77CDFF, #B9E5E8, #FF6600, #F5F5F7);
-    
-}
-
-.contents {
+    align-items: center;
+    background: linear-gradient(135deg, #77CDFF, #FF6600, #B9E5E8, #F5F5F7);
+  }
+  
+  .contents {
     padding: 40px;
+    margin-top: 100px;
     position: relative;
-    background: linear-gradient(135deg, #333, #111);
+    background-image: url('../assets/bg.jpg'); /* Ganti path gambar sesuai lokasi Anda */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
     width: 80%;
-    height: auto;
+    max-width: 900px;
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-.p-bar{
-    width: 90%;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  }
+  
+  .contents:hover {
+    transform: scale(1.03);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+  }
+  
+  .p-bar-container {
+    width: 100%;
+    max-width: 800px;
+    background: #222;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+  }
+  
+  .p-bar-container:hover {
+    transform: scale(1.02);
+  }
+  
+  .p-bar {
+    width: 100%;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    justify-items: center;
-    align-items: flex-start;
-}
-
-.p-bar:last-child{
-    grid-column:span 2;
-}
-
-.all-button{
-    width: 50%;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin: 0 auto; /* Untuk memastikan elemen berada di tengah */
+  }
+  
+  .all-button {
+    width: 100%;
     display: flex;
-    justify-content: space-around;
-    margin-top: 100px;
-}
-
-.get-started-button {
-    padding: 12px 24px; /* Perbesar padding tombol */
-    font-size: 1.2rem; /* Perbesar ukuran font tombol */
-    color: #FF6600; /* Warna tombol sesuai dengan gradient */
-    background-color: #fff;
+    justify-content: space-evenly;
+    margin-top: 30px;
+  }
+  
+  .get-started-button {
+    padding: 12px 24px;
+    font-size: 1.2rem;
+    color: #fff;
+    background: linear-gradient(135deg, #FF6600, #FF4500);
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .get-started-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 16px rgba(255, 102, 0, 0.4);
+  }
+  
+  .profile-section, .photo-section {
+    background: #222;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 500px;
+    transition: transform 0.3s ease;
+  }
+  
+  .profile-section:hover, .photo-section:hover {
+    transform: scale(1.02);
+  }
+  
+  .profile-section h2, .photo-section h2 {
+    color: #FF6600;
+    margin-bottom: 15px;
+  }
+  
+  .profile-section p, .photo-section p {
+    color: #ddd;
+    margin-bottom: 10px;
+  }
+  
+  .profile-section input, .photo-section input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #444;
+    border-radius: 5px;
+    background: #333;
+    color: #fff;
+  }
+  
+  .profile-section button, .photo-section button {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #FF6600, #FF4500);
+    color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease;
   }
+  
+  .profile-section button:hover, .photo-section button:hover {
+    background: linear-gradient(135deg, #0044cc, #002a80);
+    transform: scale(1.05);
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .contents {
+      width: 90%;
+      padding: 20px;
+    }
+  
+    .p-bar {
+      grid-template-columns: 1fr;
+    }
+  
+    .get-started-button {
+      font-size: 1rem;
+      padding: 10px 20px;
+    }
+  }
+  

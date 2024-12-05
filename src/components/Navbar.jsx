@@ -38,7 +38,7 @@ const Navbar = () => {
         />
       </div>
       <button className="back-button" onClick={goBack}>
-        Back to Onboarding
+        Beranda
       </button>
     </div>
   );

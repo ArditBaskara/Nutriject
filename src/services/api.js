@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://16fb-104-196-149-71.ngrok-free.app/detect-nutrients"; // Flask server endpoint
+const API_URL = "https://78c2-34-139-32-151.ngrok-free.app/detect-nutrients"; // Flask server endpoint
 
 export const uploadImage = async (formData) => {
   try {

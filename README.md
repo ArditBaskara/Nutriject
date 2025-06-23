@@ -73,7 +73,9 @@ To use the Nutriject Web App:
    ```
 
 4. **Start the UI Website**:
+   ```bash
    npm start
+   ```
 
 Now, you're ready to test the app. Upload a food image and watch Nutriject break down the nutrition info automatically! 🍱
 

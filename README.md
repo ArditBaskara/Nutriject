@@ -1,9 +1,10 @@
-<img src="public/img_1.png" alt="Nutriject Homepage" width="100%"/>
 # 🍽️ Nutriject — AI-Powered Nutrition Tracker
 
 **Nutriject** is an AI-based web platform designed to help users automatically monitor their nutritional intake using cutting-edge **Computer Vision**. With a simple food image, Nutriject detects the type of food and instantly calculates its nutritional value — no manual input needed.
 
 > ⚡ Just take a photo. Let Nutriject do the rest.
+
+<img src="public/img_1.png" alt="Nutriject Homepage" width="100%"/>
 
 ---
 

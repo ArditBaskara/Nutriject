@@ -1,3 +1,4 @@
+<img src="public/img_1.png" alt="Nutriject Homepage" width="100%"/>
 # 🍽️ Nutriject — AI-Powered Nutrition Tracker
 
 **Nutriject** is an AI-based web platform designed to help users automatically monitor their nutritional intake using cutting-edge **Computer Vision**. With a simple food image, Nutriject detects the type of food and instantly calculates its nutritional value — no manual input needed.
@@ -75,13 +76,17 @@ To use the Nutriject Web App:
 
 Now, you're ready to test the app. Upload a food image and watch Nutriject break down the nutrition info automatically! 🍱
 
+## Example Output
+
+<img src="public/img_2.png" alt="Nutriject Output Example" width="100%"/>
+
 ## 🧰 Tech Stack
 
 - **Frontend**: React.js
 - **Backend**: FastAPI (served via Colab + Ngrok)
 - **Model**: YOLOv8 (Ultralytics)
 - **Deployment**: Google Colab for backend API
-- **Data**: Custom + Public Food Datasets
+- **Data**: Custom + Public Food Datasets on Roboflow
 
 ---
 

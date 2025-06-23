@@ -98,15 +98,6 @@ Feel free to open issues or submit pull requests.
 
 ---
 
-## 📬 Contact
-
-**Author**: Hauzan Tsaaqif  
-🌐 [Portfolio](https://your-portfolio.com)  
-📧 hauzan@email.com  
-🔗 [LinkedIn](https://linkedin.com/in/hauzan-tsaaqif)
-
----
-
 ## 📄 License
 
 This project is licensed under the **MIT License** — use freely with attribution.

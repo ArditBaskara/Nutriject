@@ -1,9 +1,7 @@
-// src/pages/AuthPage.js
-
 import React, { useState } from 'react';
 import './AuthPage.css';
-import Button from '../components/Button'; // Impor komponen Button
-import Navbar from '../components/Navbar'; // Impor komponen Navbar
+import Button from '../components/Button';
+import Navbar from '../components/Navbar';
 import {db, doc, setDoc, getDoc, addDoc, collection} from "../firebase-config"
 import axios from 'axios';
 import Cookies from 'js-cookie';

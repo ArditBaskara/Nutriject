@@ -1,60 +1,144 @@
-/* Style dasar untuk navbar */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+:root {
+  --orange: #ff7f3f;
+  --green: #45c18a;
+  --dark: #1c1c1c;
+  --white: #ffffff;
+  --glass-bg: rgba(255, 255, 255, 0.75);
+  --shadow: rgba(0, 0, 0, 0.1);
+  --footer-bg: rgba(255, 255, 255, 0.7);
+}
+
 .navbar {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 70px;
+  height: 72px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 16px var(--shadow);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 20px;
-  background-color: white;  /* Navbar awal transparan */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 0 14%;
   z-index: 1000;
-  transition: background-color 0.3s ease, height 0.3s ease; /* Transisi warna latar belakang dan ukuran navbar */
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.3s ease;
 }
 
 .navbar.shrink {
-  background-color: white;  /* Navbar berubah warna saat scroll */
-  height: 60px; /* Navbar menyusut saat scroll */
+  height: 60px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(14px);
 }
 
+/* === LOGO === */
 .logo {
   display: flex;
   align-items: center;
-}
-
-.logo-img {
-  height: 50px;
-  width: auto;
-}
-
-.back-button {
-  padding: 10px 20px;
-  font-size: 1rem;
-  color: #fff;
-  background-color: #003366;
-  border: none;
-  border-radius: 5px;
   cursor: pointer;
-  margin-right: 50px; /* Tambahkan margin kanan */
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-
-.back-button:hover {
+.logo-img {
+  height: 48px;
+  width: auto;
+  transition: transform 0.3s ease;
+}
+.logo:hover .logo-img {
   transform: scale(1.05);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Responsif untuk layar kecil */
-@media (max-width: 600px) {
+/* === NAVIGATION LINKS === */
+.nav-links {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+}
+
+.logo-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--orange);
+  margin-left: 10px;
+  letter-spacing: -0.5px;
+  transition: color 0.3s ease;
+  margin-bottom: 0px;
+}
+
+.logo:hover .logo-title {
+  color: var(--green);
+}
+
+.nav-link {
+  text-decoration: none;
+  font-weight: 500;
+  color: var(--dark);
+  position: relative;
+  padding: 8px 4px;
+  transition: all 0.2s ease;
+}
+.nav-link:hover {
+  color: var(--orange);
+}
+
+.nav-link::after {
+  content: '';
+  display: block;
+  height: 2px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--orange), var(--green));
+  transition: width 0.3s ease;
+  margin-top: 4px;
+}
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 100%;
+}
+
+.login-link {
+  background: linear-gradient(135deg, var(--orange), var(--green));
+  padding: 8px 16px;
+  border-radius: 8px;
+  color: white !important;
+  font-weight: 600;
+}
+.login-link:hover {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.footer {
+  font-family: 'Poppins', sans-serif;
+  background: var(--footer-bg);
+  backdrop-filter: blur(8px);
+  color: var(--dark);
+  text-align: center;
+  padding: 16px 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  box-shadow: 0 -2px 12px var(--shadow);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  margin-top: auto;
+  z-index: 500;
+  position: relative;
+}
+
+.footer p{
+  margin-bottom: 0px;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
   .navbar {
-    padding: 0 10px;
-    height: 70px;
+    flex-direction: column;
+    height: auto;
+    padding: 12px 16px;
   }
 
-  .navbar.shrink {
-    height: 50px;
+  .nav-links {
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 8px;
   }
 }

@@ -1,45 +1,41 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import './Navbar.css';
-import logo from '../assets/Nutrijectlogo.png';  // Ganti dengan path logo Anda
+import logo from '../assets/Nutrijectlogo.png';
 
 const Navbar = () => {
-  const navigate = useNavigate();
   const [isShrunk, setIsShrunk] = useState(false);
-
-  // Fungsi untuk menangani scroll
-  const handleScroll = () => {
-    if (window.scrollY > 50) {
-      setIsShrunk(true);  // Mengubah state untuk menyusutkan navbar saat scroll
-    } else {
-      setIsShrunk(false); // Kembali ke keadaan semula
-    }
-  };
+  const navigate = useNavigate();
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
+    const handleScroll = () => {
+      setIsShrunk(window.scrollY > 50);
     };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const goBack = () => {
-    navigate('/');
-  };
 
   return (
     <div className={`navbar ${isShrunk ? 'shrink' : ''}`}>
-      <div className="logo">
-        <img
-          src={logo}
-          alt="Nutriject Logo"
-          className="logo-img"
-          onError={(e) => (e.target.style.display = 'none')}  // Menyembunyikan gambar jika error
-        />
+      <div className="logo" onClick={() => navigate('/')}>
+        <img src={logo} alt="Nutriject Logo" className="logo-img" />
+        <h1 className="logo-title">NUTRIJECT</h1>
       </div>
-      <button className="back-button" onClick={goBack}>
-        Beranda
-      </button>
+
+      <nav className="nav-links">
+        <NavLink exact="true" to="/" className="nav-link">
+          Beranda
+        </NavLink>
+        <NavLink to="/ocr" className="nav-link">
+          Deteksi
+        </NavLink>
+        <NavLink to="/personalize" className="nav-link">
+          Setting
+        </NavLink>
+        <NavLink to="/auth" className="nav-link">
+          Login
+        </NavLink>
+      </nav>
     </div>
   );
 };

@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import './Onboarding.css'; // Import CSS for Onboarding styles
 import logo from '../assets/Nutrijectlogo.png'; // Import logo
 import Box from '../components/Box'; // Import the Box component
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 import kemasan2 from '../assets/kemasan2.png';
 import kemasan3 from '../assets/kemasan3.png';
 import kemasan4 from '../assets/kemasan4.png';
@@ -20,14 +22,12 @@ const imageList2 = [kemasan2, kemasan3, kemasan4];
 const imageList3 = [kemasan7];
 
 const Onboarding = () => {
-  const navigate = useNavigate(); // Hook to navigate between pages
-
-  // Decrypt user data from cookies
+  const navigate = useNavigate();
   const user = Cookies.get('enc') ? decrypt(Cookies.get('enc')) : null;
   console.log(user);
 
   const handleGetStarted = () => {
-    navigate('/auth'); // Redirect to AuthPage
+    navigate('/auth');
   };
 
   const goToPersonalize = () => {
@@ -39,73 +39,54 @@ const Onboarding = () => {
   };
 
   const handleLogoClick = () => {
-    Cookies.remove('enc'); // Remove the cookie
-    navigate('/'); // Redirect to home or reload the page
+    Cookies.remove('enc');
+    navigate('/');
   };
 
+  // …same imports…
+
   return (
-    <div className="onboarding-container">
-      <div className="logo-container">
-        <img
-          src={logo}
-          alt="Nutriject Logo"
-          className="logo"
-          onClick={handleLogoClick} // Add click handler
-        />
-      </div>
-      <h1 className="onboarding-title">NUTRIJECT!</h1>
+    <div>
+      <Navbar />
+      
+      <div className="onboarding-container">
+        <div className="logo-container">
+          <img src={logo} alt="Nutriject Logo" className="logo" onClick={() => {Cookies.remove('enc'); navigate('/');}} />
+        </div>
 
-      {user ? (
-        <>
-          <p className="onboarding-description">
-            Selamat datang, <strong>{user.user.name || 'Pengguna'}</strong>! Gunakan aplikasi ini untuk mendeteksi nutrisi pada makanan olahan dan kemasan secara mudah dan akurat.
-          </p>
-          <div className="double-button">
-            <button className="get-started-button" onClick={goToPersonalize}>
-              Lihat Profil
-            </button>
-            <button className="get-started-button" onClick={goToData}>
-              Ubah Data
-            </button>
-          </div>
-        </>
-      ) : (
-        <>
-          <p className="onboarding-description">
-            Aplikasi AI Berbasis Web untuk Deteksi Nutrisi Pada Makanan Olahan dan Kemasan Sebagai Solusi Optimasi Gizi Masyarakat.
-          </p>
-          <button className="get-started-button" onClick={handleGetStarted}>
-            Mulai Sekarang
-          </button>
-        </>
-      )}
+        <h1 className="onboarding-title">NUTRIJECT!</h1>
 
-      {/* Scroll section for Box components */}
-      <div className="scroll-section">
-        <Box
-          images={imageList1}
-          title="Deteksi Nutrisi"
-          claimText="Mudah dan Akurat!"
-          registerText="Mulai Deteksi Sekarang!"
-          navto="/ocr"
-        />
-        <Box
-          images={imageList2}
-          title="Optimasi Gizi"
-          claimText="Dapatkan Saran Gizi!"
-          registerText="Lihat Rekomendasi!"
-          navto="/photo"
-        />
-        <Box
-          images={imageList3}
-          title="Input Gizi Manual"
-          claimText="Masukan Gizi secara Manual"
-          registerText="Input Gizi Manual"
-          navto="/manual"
-        />
+        {user ? (
+          <>
+            <p className="onboarding-description">
+              Welcome, <strong>{user.user.name || 'User'}</strong>! Use this app to effortlessly detect nutrition facts from packaged foods and optimize your diet.
+            </p>
+            <div className="double-button">
+              <button onClick={() => navigate('/personalize')}>View Profile</button>
+              <button onClick={() => navigate('/data')}>Edit Data</button>
+            </div>
+          </>
+        ) : (
+          <>
+            <p className="onboarding-description">
+              A web-based AI application that detects nutrition in processed and packaged food — empowering healthier choices for everyone.
+            </p>
+            <button className="get-started-button" onClick={() => navigate('/auth')}>
+              Get Started
+            </button>
+          </>
+        )}
+
+        <div className="flex justify-center scroll-section">
+          <Box images={imageList1} title="Nutrition Scan"      claimText="Fast & Accurate"      registerText="Start Scanning" navto="/ocr"   />
+          <Box images={imageList2} title="Diet Optimizer"      claimText="Smart Suggestions"    registerText="See Advice"  navto="/photo" />
+          <Box images={imageList3} title="Manual Input"        claimText="Enter Data Yourself"  registerText="Input Now"   navto="/manual"/>
+        </div>
       </div>
+      <Footer/>
     </div>
   );
 };
+
 
 export default Onboarding;

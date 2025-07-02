@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import './AuthPage.css';
+import './Onboarding.css'
 import Button from '../components/Button';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 import {db, doc, setDoc, getDoc, addDoc, collection} from "../firebase-config"
 import axios from 'axios';
 import Cookies from 'js-cookie';
@@ -52,71 +54,74 @@ const AuthPage = () => {
   
 
   return (
-    <div className="auth-container">
-      <Navbar /> {/* Menambahkan Navbar */}
-      <div className="auth-card">
-        <h2>{isLogin ? 'Login' : 'Signup'}</h2>
-        <form onSubmit={handleSubmit}>
-          {!isLogin && (
-            <div className="form-group">
-            <label htmlFor="email">Name</label>
-            <input
-              type="text"
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          </div>
-          )}
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          {!isLogin && (
-            
-            <div className="form-group">
-              <label htmlFor="confirm-password">Confirm Password</label>
+    <div>
+      <Navbar />
+      <div className="auth-container">
+        <div className="auth-card">
+          <h2>{isLogin ? 'Login' : 'Signup'}</h2>
+          <form onSubmit={handleSubmit}>
+            {!isLogin && (
+              <div className="form-group">
+              <label htmlFor="email">Name</label>
               <input
-                type="password"
-                id="confirm-password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                type="text"
+                id="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 required
               />
             </div>
-            
-          )}
-          {isSuccess & !isLogin && (<p style={{color:'green'}}>Sukses membuat akun</p>)}
-          <Button type="submit" bgCol={'blue'}>
-            {isLogin ? 'Login' : 'Signup'}
-          </Button>
-        </form>
-        <p className="toggle-text">
-          {isLogin
-            ? "Don't have an account? "
-            : 'Already have an account? '}
-          <span onClick={() => setIsLogin(!isLogin)}>
-            {isLogin ? 'Signup' : 'Login'}
-          </span>
-        </p>
+            )}
+            <div className="form-group">
+              <label htmlFor="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            {!isLogin && (
+              
+              <div className="form-group">
+                <label htmlFor="confirm-password">Confirm Password</label>
+                <input
+                  type="password"
+                  id="confirm-password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                />
+              </div>
+              
+            )}
+            {isSuccess & !isLogin && (<p style={{color:'green'}}>Sukses membuat akun</p>)}
+            <button type="submit" className="get-started-button">
+              {isLogin ? 'Login' : 'Signup'}
+            </button>
+          </form>
+          <p className="toggle-text">
+            {isLogin
+              ? "Don't have an account? "
+              : 'Already have an account? '}
+            <span onClick={() => setIsLogin(!isLogin)}>
+              {isLogin ? 'Signup' : 'Login'}
+            </span>
+          </p>
+        </div>
       </div>
+      <Footer />
     </div>
   );
 };

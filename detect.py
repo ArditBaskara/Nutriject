@@ -17,7 +17,7 @@ def process_image_and_extract_nutrients(model_path, image_path, xlsx_path, min_c
     imH, imW, _ = image_data.shape
 
     # Load the label map
-    label_file = "/content/drive/MyDrive/ML/server/labelmap.txt"
+    label_file = "labelmap.txt"
     with open(label_file, "r") as f:
         labels = [line.strip() for line in f.readlines()]
 

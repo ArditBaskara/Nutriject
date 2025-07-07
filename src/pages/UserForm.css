@@ -1,149 +1,87 @@
-.user-form-container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #f0f0f0;
-  margin-top: 80px;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease-in-out;
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
+@import "tailwindcss";
+
+:root {
+  --orange: #ff7f3f;
+  --orange-light: #ffe8d9;
+  --green: #45c18a;
+  --green-light: #dbf7eb;
+  --dark: #1c1c1c;
+  --white: #ffffff;
 }
 
-.user-form-container:hover {
-  transform: scale(1.02);
-}
-
-h2 {
-  text-align: center;
-  color: #333;
-  font-family: 'Arial', sans-serif;
-  margin-bottom: 20px;
-}
-
-.form-group {
-  margin-bottom: 20px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 8px;
-  color: #555;
-  font-weight: bold;
-}
-
-.form-group input,
-.form-group select {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 16px;
-  transition: border-color 0.3s ease-in-out;
-}
-
-.form-group input:focus,
-.form-group select:focus {
-  border-color: #4caf50;
-  outline: none;
-}
-
-.submit-button {
-  display: block;
-  width: 100%;
-  padding: 12px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 18px;
-  transition: background-color 0.3s ease-in-out;
-}
-
-.submit-button:hover {
-  background-color: #45a049;
-}
-
-.results-container {
-  margin-top: 30px;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.diagram-container {
-  margin-bottom: 25px;
-}
-
-.diagram {
-  position: relative;
+.userform-page {
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, var(--orange-light), var(--green-light));
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 15px;
-  width: 100%;
+  padding-top: 100px;
 }
 
-.diagram-bar {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  height: 25px;
-  position: relative;
-  margin-top: 15px;
-  border-radius: 12px;
-  overflow: hidden;
+.userform-card {
+  background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(6px);
+  border-radius: 20px;
+  padding: 40px 32px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.12);
+  width: 95%;
+  max-width: 700px;
 }
 
+.title { text-align:center; font-weight:700; color:var(--orange); }
+
+.userform { display:flex; flex-wrap:wrap; gap:20px; }
+
+.form-group {
+  flex:1 1 250px;
+  display:flex;
+  flex-direction:column;
+}
+
+.form-group label { margin-bottom:6px; font-weight:600; }
+.form-group input,
+.form-group select {
+  padding:10px 14px;
+  border-radius:10px;
+  border:1px solid #ddd;
+}
+
+.submit-btn {
+  margin-top:20px;
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  font-weight:600;
+  background:linear-gradient(135deg, var(--orange), var(--green));
+  color:var(--white);
+  cursor:pointer;
+  transition:transform .3s ease, box-shadow .3s ease;
+}
+.submit-btn:hover { transform:translateY(-3px); box-shadow:0 8px 20px rgba(0,0,0,.2); }
+
+/* RESULTS */
+.results { margin-top:32px; }
+.results h3 { text-align:center; margin-bottom:20px; }
+
+/* diagram bar simpel */
+.diagram-container { margin-bottom:14px; }
+.diagram { position:relative; height:14px; background:#eee; border-radius:8px; }
 .diagram-bar-filled {
-  height: 100%;
-  background-color: #4caf50;
-  transition: width 0.5s ease-in-out;
+  height:100%; background:var(--green); border-radius:8px 0 0 8px;
 }
-
-.diagram-bar-empty {
-  height: 100%;
-  background-color: #ddd;
-}
-
-.diagram-value-label {
-  position: absolute;
-  top: -30px;
-  font-size: 14px;
-  font-weight: bold;
-  color: #333;
-}
-
-.diagram-label-left,
-.diagram-label-right {
-  position: absolute;
-  bottom: -25px;
-  font-size: 14px;
-  color: #333;
-}
-
-.diagram-label-left {
-  left: 0;
-}
-
-.diagram-label-right {
-  right: 0;
-}
-
 .diagram-min-line {
-  position: absolute;
-  top: 10%;
-  width: 2px;
-  height: 100%;
-  background-color: red;
-  z-index: 1;
+  position:absolute; top:-4px; width:2px; height:22px; background:var(--orange);
 }
+.diagram-label-left, .diagram-label-right {
+  font-size:.8rem; position:absolute; top:20px; color:#666;
+}
+.diagram-label-left { left:0; }
+.diagram-label-right { right:0; }
 
-.diagram-min-label {
-  position: absolute;
-  top: -15px;
-  transform: translateX(-50%);
-  font-size: 14px;
-  color: #333;
+@media(max-width:768px){
+  .userform-card{ padding:28px 20px; }
+  .form-group{ flex:1 1 100%; }
 }

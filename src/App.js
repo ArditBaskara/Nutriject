@@ -6,6 +6,7 @@ import UserForm from './pages/UseForm';
 import ImageUpload from './pages/ImageUpload';
 import Optimize from './pages/Optimize';
 import Manual from './pages/Manual';
+import Settings from './pages/Settings';
 
 // Lazy load pages
 const Onboarding = React.lazy(() => import('./pages/onboarding'));
@@ -17,6 +18,7 @@ const AppRoutes = () => {
   const routes = [
     { path: '/', element: <Onboarding /> },
     { path: '/auth', element: <AuthPage/> },
+    { path: '/setting', element: <Settings/> },
     { path:'/ocr', element:<ProtectedRoute element={<PhotoInput/>} />},
     { path:'/personalize', element:<ProtectedRoute element={<Personalize/>}/>},
     { path:'/data', element:<ProtectedRoute element={<UserForm/>}/>},

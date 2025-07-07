@@ -1,75 +1,52 @@
-.container{
-    width: 90%;
-    height:100px;
-    display: flex;
-    flex-direction: column;
-    margin-top: 5px;
+.nutri-bar {
+  margin-bottom: 24px;
 }
 
-.main-bar{
-    width: 100%;
-    height: 30px;   
-    background-color: grey;
-    border-radius: 30px;    
-    position: relative;
-    display: flex;
+.nutri-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #333;
 }
 
-.min-progress{
-    width: 5px;
-    height: 100%;
-    position: absolute;
-
+.nutri-range {
+  position: relative;
+  height: 22px;
+  width: 100%;
+  background: #f1f1f1;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.08);
 }
 
-.tooltip {
-    visibility: hidden;
-    background-color: black;
-    color: white;
-    text-align: center;
-    padding: 5px;
-    border-radius: 5px;
-
-    position: absolute;
-    bottom: 120%; 
-    left: 50%;
-    transform: translateX(-50%);
-    white-space: nowrap;
-
-    z-index: 1;
+.nutri-fill {
+  height: 100%;
+  transition: width 0.5s ease;
+  border-radius: 12px;
 }
 
-.tooltip-max {
-    visibility: hidden; 
-    background-color: black;
-    color: white;
-    text-align: center;
-    padding: 5px;
-    border-radius: 5px;
-
-    position: absolute;
-    bottom: 120%;
-    left: 50%;
-    transform: translateX(-50%);
-    white-space: nowrap;
-
-    z-index: 1; 
+/* Penanda min dan max */
+.nutri-limit-line {
+  position: absolute;
+  top: -4px;
+  width: 2px;
+  height: 30px;
+  background: #999;
+  opacity: 0.6;
+  z-index: 2;
 }
 
-.content:hover .tooltip{
-    visibility: visible;
+.nutri-values {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #555;
+  margin-top: 6px;
 }
 
-.main-bar:hover .tooltip-max{
-    visibility: visible;
-}
-
-.content {
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: black;
-    border-radius: 30px;
-    position: relative; 
+.nutri-value-center {
+  font-weight: bold;
+  color: #333;
 }

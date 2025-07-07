@@ -1,218 +1,221 @@
-import React, { useState } from 'react';
-import Tesseract from 'tesseract.js';
+// PhotoInput.jsx
+import { useState } from "react";
+import Tesseract from "tesseract.js";
 import axios from "axios";
-import UserForm from './UseForm';
-import { doc, setDoc } from "firebase/firestore";
-import { db, getDoc  } from "../firebase-config";
-import { renderDiagram } from "./UseForm";
-import Button from "../components/Button"
-import { decrypt } from '../crypt';
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
+import { decrypt } from "../crypt";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import Button from "../components/Button";
 
+import {
+  db,
+  collection,
+  query,
+  where,
+  orderBy,
+  limit,
+  getDocs,
+  addDoc,
+  setDoc,
+} from "../firebase-config";
+
+import "./PhotoInput.css";
 
 const PhotoInput = () => {
-  const [image, setImage] = useState(null);
-  const [ocrText, setOcrText] = useState('');
-  const [currentData, setCurrentData] = useState('');
-  const [loading, setLoading] = useState(false);
+  /* ---------- STATE ---------- */
+  const [image, setImage]         = useState(null);
+  const [ocrText, setOcrText]     = useState(null);
+  const [loading, setLoading]     = useState(false);
 
-  const handleFileUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const imageData = reader.result;
-        setImage(imageData);
-        performOCR(imageData);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  /* ---------- USER EMAIL ---------- */
+  const enc   = Cookies.get("enc");
+  const user  = enc ? decrypt(enc) : null;
+  const email = user?.email;
 
-  const handleCapturePhoto = (stream) => {
-    const video = document.createElement('video');
-    video.srcObject = stream;
-    video.play();
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-
-    video.onloadedmetadata = () => {
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-      const imageData = canvas.toDataURL('image/png');
-      setImage(imageData);
-      performOCR(imageData);
-      stream.getTracks().forEach((track) => track.stop());
+  /* ---------- UPLOAD / CAMERA ---------- */
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const img64 = reader.result;
+      setImage(img64);
+      performOCR(img64);
     };
+    reader.readAsDataURL(file);
   };
 
   const startCamera = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      handleCapturePhoto(stream);
+      const video  = document.createElement("video");
+      video.srcObject = stream;
+      await video.play();
+
+      const canvas = document.createElement("canvas");
+      canvas.width  = video.videoWidth;
+      canvas.height = video.videoHeight;
+      canvas.getContext("2d").drawImage(video, 0, 0);
+      const img64 = canvas.toDataURL("image/png");
+
+      setImage(img64);
+      performOCR(img64);
+      stream.getTracks().forEach((t) => t.stop());
     } catch (err) {
-      console.error('Error accessing camera:', err);
+      console.error("Camera error:", err);
     }
   };
 
-  const performOCR = (imageData) => {
+  /* ---------- OCR + EXTRACT NUTRISI ---------- */
+  const performOCR = async (img64) => {
     setLoading(true);
-    Tesseract.recognize(imageData, 'eng', {
-      logger: (info) => console.log(info), // Opsional, untuk debugging
-    })
-      .then(async ({ data: { text } }) => {
-        try {
-          // link API Example : https://94db-34-86-3-28.ngrok-free.app/extract-nutrients
-          const response = await axios.post("((( API NGROK from google colab )))/extract-nutrients", {
-            ocr_text: text,
-            headers: {
-              "ngrok-skip-browser-warning": "any-value"
-            }
-          });
-          console.log("Nutrisi yang diekstraksi:", response.data);
-          setOcrText(response.data);
 
-          try {
-            const docRef = doc(db, "info", "wgI66JZDlk9dTOkdokIL"); // Ganti path koleksi & dokumen sesuai kebutuhan
-      
-            const docSnap = await getDoc(docRef);
-            const currentData = docSnap.exists() ? docSnap.data() : {};
-      
-            const initialData = {
-              kalori: currentData.kalori || 0,
-              lemak: currentData.lemak || 0,
-              karbohidrat: currentData.karbohidrat || 0,
-              protein: currentData.protein || 0,
-              gula: currentData.gula || 0,
-              garam: currentData.garam || 0,
-            };
-
-            setCurrentData(initialData);
-          } catch (error) {
-            console.error("Error memperbarui data di Firebase:", error);
-            alert("Terjadi kesalahan saat memproses makanan");
-          }
-        } catch (error) {
-          console.error("Error extracting nutrients:", error);
-        }
-      })
-      .catch((error) => {
-        console.error('OCR Error:', error);
-        setOcrText('Gagal membaca teks dari gambar.');
-      })
-      .finally(() => {
-        setLoading(false);
+    try {
+      /* 1️⃣  OCR dengan Tesseract */
+      const {
+        data: { text },
+      } = await Tesseract.recognize(img64, "eng", {
+        logger: (m) => console.log(m), // debug
       });
+
+      /* 2️⃣  Kirim ke API NGROK */
+      const { data } = await axios.post(
+        "https://9084-35-196-144-27.ngrok-free.app/extract-nutrients",
+        { ocr_text: text },
+        { headers: { "ngrok-skip-browser-warning": "true" } }
+      );
+
+      /* 3️⃣  Normalisasi respons ⇒ pastikan semua field ada */
+      const clean = {
+        kalori:            data.kalori            ?? 0,
+        lemak_total:       data.lemak_total       ?? 0,
+        karbohidrat_total: data.karbohidrat_total ?? 0,
+        protein:           data.protein           ?? 0,
+        gula:              data.gula              ?? 0,
+        garam:             data.garam             ?? 0,
+        air:               data.air               ?? 0,
+      };
+
+      setOcrText(clean); // simpan objek nutrisi
+
+    } catch (err) {
+      console.error("OCR / Extract error:", err);
+      setOcrText("Gagal membaca atau mengekstraksi nutrisi.");
+    } finally {
+      setLoading(false);
+    }
   };
+
 
   const handleSendToFirebase = async () => {
-    if (ocrText && typeof ocrText === "object") {
-      try {
-        const docRef = doc(db, "info", "wgI66JZDlk9dTOkdokIL"); // Ganti path koleksi & dokumen sesuai kebutuhan
-  
-        const docSnap = await getDoc(docRef);
-        const currentData = docSnap.exists() ? docSnap.data() : {};
-  
-        const initialData = {
-          kalori: currentData.kalori || 0,
-          lemak: currentData.lemak || 0,
-          karbohidrat: currentData.karbohidrat || 0,
-          protein: currentData.protein || 0,
-          gula: currentData.gula || 0,
-          garam: currentData.garam || 0,
-        };
-  
-        // Tambahkan nilai baru dari ocrText ke data awal
-        const updatedData = {
-          kalori: initialData.kalori + (ocrText.kalori || 0),
-          lemak: initialData.lemak + (ocrText.lemak || 0),
-          karbohidrat: initialData.karbohidrat + (ocrText.karbohidrat || 0),
-          protein: initialData.protein + (ocrText.protein || 0),
-          gula: initialData.gula + (ocrText.gula || 0),
-          garam: initialData.garam + (ocrText.garam || 0),
-        };
-
-        const account = decrypt(Cookies.get("enc"));
-        const data = {
-          BMR:ocrText.kalori,
-          carbs:ocrText.karbohidrat_total || 0,
-          protein:ocrText.protein || 0,
-          salt:ocrText.garam || 0,
-          sugar:ocrText.gula || 0,
-          fat:ocrText.lemak_total || 0,
-          userId:account.user._id
-        }
-        
-        const response = await axios.post("https://nutriject-server.vercel.app/user/makan", data);
-        console.log("Makanan Dimakan : " + response.data);
-        
-        // Perbarui data di Firestore
-        await setDoc(docRef, updatedData);
-  
-        alert("Siip, data Kamu berhasil diperbarui!");
-      } catch (error) {
-        console.error("Error memperbarui data di Firebase:", error);
-        alert("Terjadi kesalahan saat memproses makanan");
-      }
-    } else {
-      alert("Data pembacaan tidak valid.");
-    }
-  };
-
-  const cancelMakan = () => {
-    window.location.reload()
+  if (!email || typeof ocrText !== "object") {
+    return alert("Data tidak valid / user belum login");
   }
 
+  try {
+    const today = new Date().toISOString().split("T")[0]; // format "YYYY-MM-DD"
+
+    // ✅ Cek apakah laporan hari ini sudah ada
+    const rptQ = query(
+      collection(db, "reports"),
+      where("email", "==", email),
+      where("tanggal", "==", today),
+      limit(1)
+    );
+
+    const snap = await getDocs(rptQ);
+    let rptRef;
+
+    if (snap.empty) {
+      // 🆕 Buat baru kalau belum ada report untuk hari ini
+      rptRef = await addDoc(collection(db, "reports"), {
+        email,
+        tanggal: today,
+        carbs: 0, protein: 0, fat: 0, sugar: 0, salt: 0, kalori: 0,
+      });
+    } else {
+      // 📝 Ambil ref dari dokumen yg udah ada
+      rptRef = snap.docs[0].ref;
+    }
+
+    const cur = snap.empty ? {} : snap.docs[0].data();
+    const upd = {
+      kalori : (cur.kalori || 0) + (ocrText.kalori       || 0),
+      fat    : (cur.fat    || 0) + (ocrText.lemak_total  || 0),
+      carbs  : (cur.carbs  || 0) + (ocrText.karbohidrat_total || ocrText.karbohidrat || 0),
+      protein: (cur.protein|| 0) + (ocrText.protein      || 0),
+      sugar  : (cur.sugar  || 0) + (ocrText.gula         || 0),
+      salt   : (cur.salt   || 0) + (ocrText.garam        || 0),
+    };
+
+    await setDoc(rptRef, upd, { merge: true });
+
+    alert("Nutrisi berhasil ditambahkan ke laporan hari ini!");
+    setOcrText(null);
+    setImage(null);
+  } catch (err) {
+    console.error(err);
+    alert("Gagal menyimpan ke database.");
+  }
+};
+
+
+  /* ---------- UI ---------- */
   return (
-    <div>
-      <h2>Input Foto</h2>
-      <div style={{marginBottom : "60px"}}>
-        <button onClick={() => document.getElementById('fileInput').click()}>Unggah dari File</button>
+    <div className="photo-page">
+      <Navbar />
+
+      <div className="photo-card">
+        <h2 className="title">Deteksi Nutrisi</h2>
+
+        <div className="btn-row">
+          <Button onClick={() => document.getElementById("fileInput").click()}>
+            Unggah Foto
+          </Button>
+          {/* <Button onClick={startCamera}>Kamera</Button> */}
+        </div>
         <input
           id="fileInput"
           type="file"
           accept="image/*"
-          style={{ display: 'none' }}
+          hidden
           onChange={handleFileUpload}
         />
-        {/*<button onClick={startCamera}>Ambil dengan Kamera</button>*/}
-      </div>
-      {image && (
-        <div>
-          <h3>Preview Gambar</h3>
-          <img src={image} alt="Preview" style={{ maxWidth: '500px' }} />
-        </div>
-      )}
-      {loading && <p>Pembacaan nilai gizi, mohon tunggu...</p>}
-      {ocrText && (
-        <div>
-        {ocrText && typeof ocrText === "object" ? (
-          <div>
-          <ul style={{textAlign:'left', color:"black"}}>
-            <li><strong>Kalori:</strong> {ocrText.kalori || "Tidak terdeteksi"} kkal</li>
-            <li><strong>Lemak Total:</strong> {ocrText.lemak || "Tidak terdeteksi"} g</li>
-            <li><strong>Karbohidrat Total:</strong> {ocrText.karbohidrat || "Tidak terdeteksi"} g</li>
-            <li><strong>Protein:</strong> {ocrText.protein || "Tidak terdeteksi"} g</li>
-            <li><strong>Gula:</strong> {ocrText.gula || "Tidak terdeteksi"} g</li>
-            <li><strong>Garam:</strong> {ocrText.garam || "Tidak terdeteksi"} mg</li>
-            <li><strong>Air:</strong> {ocrText.air || "Tidak terdeteksi"} ml</li>
-          </ul>
 
-          <Button onClick={handleSendToFirebase} style={{ marginTop: "5px", marginBottom: "20px" }}>
-          Makan
-          </Button>
+        {loading && <p>Membaca nutrisi…</p>}
 
-          <Button onClick={cancelMakan} bgCol={'red'} style={{marginTop: "5px", marginBottom: "20px" }}>
-            Cancel
-          </Button>
-
-        </div>
-        ) : (
-          <p>{ocrText}</p>
+        {image && (
+          <div className="preview">
+            <img src={image} alt="preview" />
+          </div>
         )}
+
+        {ocrText && typeof ocrText === "object" && (
+          <div className="nutrisi-card">
+            <h3>Hasil Ekstraksi</h3>
+            <ul>
+              <li>Kalori : {ocrText.kalori || 0} kkal</li>
+              <li>Lemak  : {ocrText.lemak_total || 0} g</li>
+              <li>Karbo  : {ocrText.karbohidrat || 0} g</li>
+              <li>Protein: {ocrText.protein || 0} g</li>
+              <li>Gula   : {ocrText.gula || 0} g</li>
+              <li>Garam  : {ocrText.garam || 0} mg</li>
+            </ul>
+
+            <div className="btn-row">
+              <Button onClick={handleSendToFirebase}>Makan</Button>
+              <Button bgCol="red" onClick={() => window.location.reload()}>
+                Cancel
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {typeof ocrText === "string" && <p>{ocrText}</p>}
       </div>
-      )}
+
+      <Footer />
     </div>
   );
 };

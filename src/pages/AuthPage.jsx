@@ -4,7 +4,7 @@ import './Onboarding.css'
 import Button from '../components/Button';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import {db, doc, setDoc, getDoc, addDoc, collection} from "../firebase-config"
+import {db, addDoc, collection, query, where, getDocs} from "../firebase-config"
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import CryptoJS from 'crypto-js';
@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import {encrypt, decrypt} from "../crypt"
 
 const AuthPage = () => {
-  const [isLogin, setIsLogin] = useState(true); // Toggle between Login and Signup
+  const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -22,35 +22,60 @@ const AuthPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    // Validasi password
+
     if (!isLogin && password !== confirmPassword) {
       alert('Passwords do not match!');
       return;
     }
-  
-    if (isLogin) {
-      const data = {email, password};
-      const response = await axios.post("https://nutriject-server.vercel.app/user/login", data);
-      const res = response.data;
-      if(res.status !== 200){
-        console.log(res.message);
-        return;
-      }
-      Cookies.set("enc", encrypt(res), {expires:7})
-      navigate("/");
-      
-    } else {
-      try{
-        const data = {email, password, name};
-        const response = await axios.post("https://nutriject-server.vercel.app/user/signup", data);
+
+    try {
+      const usersRef = collection(db, "users");
+
+      if (isLogin) {
+        const q = query(usersRef, where("email", "==", email), where("password", "==", password));
+        const querySnapshot = await getDocs(q);
+
+        if (querySnapshot.empty) {
+          alert("Invalid email or password.");
+          return;
+        }
+
+        const userData = querySnapshot.docs[0].data();
+        Cookies.set("enc", encrypt(userData), { expires: 7 });
+        navigate("/");
+      } else {
+        const q = query(usersRef, where("email", "==", email));
+        const snapshot = await getDocs(q);
+
+        if (!snapshot.empty) {
+          alert("Email already registered.");
+          return;
+        }
+
+        await addDoc(usersRef, {
+          name,
+          email,
+          password
+        });
+
+        await addDoc(collection(db, "reports"), {
+          email,
+          tanggal: new Date().toISOString().split("T")[0],
+          carbs: 0,
+          protein: 0,
+          sugar: 0,
+          fat: 0,
+          salt: 0
+        });
+
         setIsSuccess(true);
-      }catch(err){
-        console.log(err)
       }
-      
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong!");
     }
   };
+
   
 
   return (
@@ -106,7 +131,7 @@ const AuthPage = () => {
               </div>
               
             )}
-            {isSuccess & !isLogin && (<p style={{color:'green'}}>Sukses membuat akun</p>)}
+            {!isLogin && (<p style={{color:'green'}}>Sukses membuat akun</p>)}
             <button type="submit" className="get-started-button">
               {isLogin ? 'Login' : 'Signup'}
             </button>

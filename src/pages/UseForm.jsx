@@ -1,339 +1,234 @@
-import React, { useEffect, useState } from "react";
-import { db, getDoc } from "../firebase-config";
-import { doc, onSnapshot, setDoc } from "firebase/firestore";
-import "./FormPhoto.css"; // Import CSS file for styling
-import axios from "axios";
+// UserForm.jsx
+import { useEffect, useState } from "react";
+import {
+  db,
+  collection,
+  query,
+  where,
+  limit,
+  getDocs,
+  addDoc,
+  setDoc,
+  doc,
+} from "../firebase-config";
+import "./UserForm.css";          // style baru
 import { decrypt } from "../crypt";
 import Cookies from "js-cookie";
 import Navbar from "../components/Navbar";
-import "./UserForm.css"
+import Footer from "../components/Footer";
 
-const UserForm = ({ ocrText }) => {
-  const user = decrypt(Cookies.get("enc"))
-  console.log("DECR")
-  const datUser = user.user;
-  console.log(user.user)
+const UserForm = () => {
+  /* ---------- USER & STATE ---------- */
+  const enc      = Cookies.get("enc");
+  const userObj  = enc ? decrypt(enc) : null;
+  const email    = userObj?.email;
   const [formData, setFormData] = useState({
-    age: datUser.age,
-    gender: datUser.gender,
-    height: datUser.height,
-    weight: datUser.weight,
-    activity: datUser.activity,
+    age: "",
+    gender: "",
+    height: "",
+    weight: "",
+    activity: "",
   });
 
-  const [kalori, setKalori] = useState(0);
-  const [karbohidrat, setKarbohidrat] = useState(0);
-  const [protein, setProtein] = useState(0);
-  const [lemak, setLemak] = useState(0);
-  const [gula, setGula] = useState(0);
-  const [garam, setGaram] = useState(0);
-  const [air, setAir] = useState(0);
+  const [results, setResults] = useState(null);  // hitung TDEE dll
+  const [diagrams, setDiagrams] = useState({
+    kalori: 0, karbohidrat: 0, protein: 0,
+    lemak: 0, gula: 0, garam: 0, air: 0,
+  });
+  const [loading, setLoading] = useState(true);
 
-  const [results, setResults] = useState(null);
-
+  /* ---------- PRE-FILL DATA DARI FIRESTORE ---------- */
   useEffect(() => {
-    const docRef = doc(db, "info", "wgI66JZDlk9dTOkdokIL");
+    if (!email) { setLoading(false); return; }
 
-    const unsubscribe = onSnapshot(
-      docRef,
-      (docSnap) => {
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          console.log("Real-time data from Firestore:", data);
+    const fetchUser = async () => {
+      try {
+        const userQ = query(
+          collection(db, "users"),
+          where("email", "==", email),
+          limit(1)
+        );
+        const snap = await getDocs(userQ);
+        if (snap.empty) { setLoading(false); return; }
 
-          setKarbohidrat(data.karbohidrat || 0);
-          setProtein(data.protein || 0);
-          setLemak(data.lemak || 0);
-          setGula(data.gula || 0);
-          setGaram(data.garam || 0);
-          setAir(data.air || 0);
-        } else {
-          console.log("No such document!");
-        }
-      },
-      (error) => {
-        console.error("Error fetching real-time updates:", error);
+        const data = snap.docs[0].data();
+        setFormData({
+          age:      data.age     || "",
+          gender:   data.gender  || "",
+          height:   data.height  || "",
+          weight:   data.weight  || "",
+          activity: data.activity|| "",
+        });
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
       }
-    );
-
-    return () => {
-      unsubscribe();
     };
-  }, []);
 
+    fetchUser();
+  }, [email]);
+
+  /* ---------- HANDLE CHANGE ---------- */
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const calculateResults = async () => {
-    const { age, gender, height, weight, activity } = formData;
-
-    if (!age || !gender || !height || !weight || !activity) {
-      alert("Harap isi semua data!");
-      return;
-    }
-
-    const ageNum = parseFloat(age);
-    const heightNum = parseFloat(height);
-    const weightNum = parseFloat(weight);
-
-
-
-    if (isNaN(ageNum) || isNaN(heightNum) || isNaN(weightNum)) {
-      alert("Input harus berupa angka!");
-      return;
-    }
-
-    let BMR = 0;
-    if (gender === "male") {
-      BMR = 88.362 + 13.397 * weightNum + 4.799 * heightNum - 5.677 * ageNum;
-    } else if (gender === "female") {
-      BMR = 447.593 + 9.247 * weightNum + 3.098 * heightNum - 4.33 * ageNum;
-    }
-
-    const activityFactors = {
-      very_light: 1.2,
-      light: 1.375,
-      moderate: 1.55,
-      heavy: 1.725,
-      very_heavy: 1.9,
-    };
-
-    const activityFactor = activityFactors[activity] || 1;
-    const TDEE = BMR * activityFactor;
-
-    const carbsMin = (0.45 * TDEE) / 4;
-    const carbsMax = (0.65 * TDEE) / 4;
-    const proteinMin = (0.1 * TDEE) / 4;
-    const proteinMax = (0.35 * TDEE) / 4;
-    const fatMin = (0.2 * TDEE) / 9;
-    const fatMax = (0.35 * TDEE) / 9;
-    const sugarMin = (0.05 * TDEE) / 4;
-    const sugarMax = (0.1 * TDEE) / 4;
-    const saltMin = 500;
-    const saltMax = 2000;
-    const waterRequirement = weightNum * 35;
-
-    const user = decrypt(Cookies.get("enc"));
-
-    const resu = {
-      BMR,
-      TDEE,
-      carbsMin,
-      carbsMax,
-      proteinMin,
-      proteinMax,
-      fatMin,
-      fatMax,
-      sugarMin,
-      sugarMax,
-      saltMin,
-      saltMax,
-      waterRequirement,
-      age:ageNum,
-      height:heightNum,
-      weight:weightNum,
-      gender,
-      activity,
-      userId:user.user._id
-    }
-
-    const response = await axios.post("https://nutriject-server.vercel.app/user/update", resu);
-    console.log(response);
-
-    setResults({
-      BMR,
-      TDEE,
-      carbsMin,
-      carbsMax,
-      proteinMin,
-      proteinMax,
-      fatMin,
-      fatMax,
-      sugarMin,
-      sugarMax,
-      saltMin,
-      saltMax,
-      waterRequirement,
-    });
-
-    try {
-      const docRef = doc(db, "info", "wgI66JZDlk9dTOkdokIL");
-
-      const docSnap = await getDoc(docRef);
-      const currentData = docSnap.exists() ? docSnap.data() : {};
-
-      const updatedData = {
-        kalori: 0,
-        lemak_total: 0,
-        karbohidrat_total: 0,
-        protein: 0,
-        gula: 0,
-        garam: 0,
-      };
-
-      await setDoc(docRef, updatedData);
-
-    } catch (error) {
-      console.error("Error memperbarui data di Firebase:", error);
-      alert("Ada kesalah dalam proses :(");
-    }
-  };
-
-  const handleSubmit = (e) => {
+  /* ---------- CALC & SAVE ---------- */
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    calculateResults();
+    const { age, gender, height, weight, activity } = formData;
+    if (!age || !gender || !height || !weight || !activity) {
+      return alert("Harap isi semua data!");
+    }
+
+    /* --- Hitung BMR & TDEE --- */
+    const ageN = +age, h = +height, w = +weight;
+    const BMR = gender === "male"
+      ? 88.362 + 13.397 * w + 4.799 * h - 5.677 * ageN
+      : 447.593 + 9.247 * w + 3.098 * h - 4.33  * ageN;
+
+    const factor = { very_light:1.2, light:1.375, moderate:1.55, heavy:1.725, very_heavy:1.9 }[activity] || 1;
+    const TDEE = BMR * factor;
+
+    const calc = {
+      BMR, TDEE,
+      carbsMin   : (0.45*TDEE)/4,  carbsMax   : (0.65*TDEE)/4,
+      proteinMin : (0.1*TDEE)/4,   proteinMax : (0.35*TDEE)/4,
+      fatMin     : (0.2*TDEE)/9,   fatMax     : (0.35*TDEE)/9,
+      sugarMin   : (0.05*TDEE)/4,  sugarMax   : (0.1*TDEE)/4,
+      saltMin    : 500,            saltMax    : 2000,
+      waterRequirement : w*35,
+    };
+    setResults(calc);
+
+    /* --- update diagram state jadi 0 semua --- */
+    setDiagrams({
+      kalori:0, karbohidrat:0, protein:0, lemak:0, gula:0, garam:0, air:0
+    });
+
+    /* --- Simpan ke Firestore --- */
+    try {
+      // 1. UPDATE / INSERT users
+      const usersQ = query(collection(db,"users"),where("email","==",email),limit(1));
+      const snap   = await getDocs(usersQ);
+      if (snap.empty) {
+        await addDoc(collection(db,"users"), { email, ...formData, ...calc });
+      } else {
+        await setDoc(snap.docs[0].ref, { email, ...formData, ...calc }, { merge:true });
+      }
+
+      // 2. Tambah report baru
+      await addDoc(collection(db,"reports"), {
+        email,
+        tanggal: new Date().toISOString().split("T")[0],
+        carbs   : 0, protein:0, fat:0, sugar:0, salt:0, kalori:0
+      });
+
+    } catch(err) {
+      console.error(err);
+      alert("Gagal menyimpan ke database!");
+    }
   };
 
-  const renderDiagram = (label, min, max, value, setValue) => {
-    const valueToDisplay =
-      typeof value === "number" && !isNaN(value) ? value : 0;
-    const maxToDisplay = max || 100;
+  /* ---------- RENDER DIAGRAM ---------- */
+  const renderBar = (label, min, max, valKey) => {
+    const value = diagrams[valKey] || 0;
+    const pct   = Math.min(value / max, 1) * 100;
 
     return (
-      <div className="diagram-container">
-        <label>
-          <strong>{label}:</strong>
-        </label>
+      <div className="diagram-container" key={label}>
+        <label><strong>{label}</strong></label>
         <div className="diagram">
-          {label !== "Air" && label !== "Kalori" && (
-            <>
-              <div
-                className="diagram-min-line"
-                style={{
-                  left: `${(min / maxToDisplay) * 100}%`,
-                }}
-              ></div>
-              <div
-                className="diagram-min-label"
-                style={{
-                  left: `${(min / maxToDisplay) * 100}%`,
-                }}
-              >
-                {min.toFixed(2)}
-              </div>
-            </>
-          )}
+          <div className="diagram-min-line" style={{ left:`${(min/max)*100}%` }}></div>
           <div className="diagram-bar">
-            <div
-              className="diagram-bar-filled"
-              style={{
-                width: `${(valueToDisplay / maxToDisplay) * 100}%`,
-              }}
-            ></div>
-            <div
-              className="diagram-bar-empty"
-              style={{
-                width: `${((maxToDisplay - valueToDisplay) / maxToDisplay) *
-                  100}%`,
-              }}
-            ></div>
+            <div className="diagram-bar-filled" style={{ width:`${pct}%` }} />
           </div>
-          {/*<div
-            className="diagram-value-label"
-            style={{
-              left: `${(valueToDisplay / maxToDisplay) * 100}%`,
-            }}
-          >
-            {valueToDisplay.toFixed(2)}
-          </div>*/}
           <div className="diagram-label-left">0</div>
-          <div className="diagram-label-right">
-            {maxToDisplay.toFixed(2)}
-          </div>
+          <div className="diagram-label-right">{max.toFixed(0)}</div>
         </div>
       </div>
     );
   };
 
+  /* ---------- UI ---------- */
+  if (loading) return <p>Loading...</p>;
+
   return (
-    <div>
-      <Navbar/>
-      <div className="user-form-container">
-        <h2>Form Data Pengguna</h2>
-        <form onSubmit={handleSubmit}>
+    <div className="userform-page">
+      <Navbar />
+
+      <div className="userform-card">
+        <h2 className="title">Personal Data</h2>
+
+        {/* === FORM === */}
+        <form onSubmit={handleSubmit} className="userform">
+          {/* umur */}
           <div className="form-group">
-            <label>Umur (tahun):</label>
-            <input
-              type="number"
-              name="age"
-              value={formData.age}
-              onChange={handleChange}
-              required
-              min="0"
-            />
+            <label>Umur (tahun)</label>
+            <input type="number" name="age" value={formData.age}
+                   onChange={handleChange} min="0" required/>
           </div>
+
+          {/* gender */}
           <div className="form-group">
-            <label>Gender:</label>
-            <select
-              name="gender"
-              value={formData.gender}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Pilih Gender</option>
+            <label>Gender</label>
+            <select name="gender" value={formData.gender}
+                    onChange={handleChange} required>
+              <option value="">Pilih</option>
               <option value="male">Laki-laki</option>
               <option value="female">Perempuan</option>
             </select>
           </div>
+
+          {/* tinggi */}
           <div className="form-group">
-            <label>Tinggi Badan (cm):</label>
-            <input
-              type="number"
-              name="height"
-              value={formData.height}
-              onChange={handleChange}
-              required
-              min="0"
-            />
+            <label>Tinggi (cm)</label>
+            <input type="number" name="height" value={formData.height}
+                   onChange={handleChange} min="0" required/>
           </div>
+
+          {/* berat */}
           <div className="form-group">
-            <label>Berat Badan (kg):</label>
-            <input
-              type="number"
-              name="weight"
-              value={formData.weight}
-              onChange={handleChange}
-              required
-              min="0"
-            />
+            <label>Berat (kg)</label>
+            <input type="number" name="weight" value={formData.weight}
+                   onChange={handleChange} min="0" required/>
           </div>
+
+          {/* aktivitas */}
           <div className="form-group">
-            <label>Aktivitas Harian:</label>
-            <select
-              name="activity"
-              value={formData.activity}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Pilih Aktivitas</option>
+            <label>Aktivitas</label>
+            <select name="activity" value={formData.activity}
+                    onChange={handleChange} required>
+              <option value="">Pilih</option>
               <option value="very_light">Sangat Ringan</option>
               <option value="light">Ringan</option>
               <option value="moderate">Sedang</option>
               <option value="heavy">Berat</option>
               <option value="very_heavy">Sangat Berat</option>
-              </select>
+            </select>
           </div>
-          <button type="submit" className="submit-button">Hitung</button>
+
+          <button className="submit-btn" type="submit">Hitung</button>
         </form>
 
+        {/* === HASIL === */}
         {results && (
-          <div className="results-container">
-            <h3>Hasil Perhitungan</h3>
-            {renderDiagram("Kalori", 0, results.TDEE, kalori, setKalori)}
-            {renderDiagram("Karbohidrat", results.carbsMin, results.carbsMax, karbohidrat, setKarbohidrat)}
-            {renderDiagram("Protein", results.proteinMin, results.proteinMax, protein, setProtein)}
-            {renderDiagram("Lemak", results.fatMin, results.fatMax, lemak, setLemak)}
-            {renderDiagram("Gula", results.sugarMin, results.sugarMax, gula, setGula)}
-            {renderDiagram("Garam", results.saltMin, results.saltMax, garam, setGaram)}
-            {renderDiagram("Air", 0, results.waterRequirement, air, setAir)}
+          <div className="results">
+            <h3>Rekomendasi Harian</h3>
+            {renderBar("Kalori", 0, results.TDEE, "kalori")}
+            {renderBar("Karbohidrat", results.carbsMin, results.carbsMax, "karbohidrat")}
+            {renderBar("Protein", results.proteinMin, results.proteinMax, "protein")}
+            {renderBar("Lemak", results.fatMin, results.fatMax, "lemak")}
+            {renderBar("Gula", results.sugarMin, results.sugarMax, "gula")}
+            {renderBar("Garam", results.saltMin, results.saltMax, "garam")}
+            {renderBar("Air (ml)", 0, results.waterRequirement, "air")}
           </div>
         )}
       </div>
+
+      <Footer/>
     </div>
   );
 };

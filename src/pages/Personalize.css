@@ -1,159 +1,92 @@
-body {
-    color: white;
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f0f0f0;
-  }
-  
-  p {
-    text-align: center;
-    color: #444; /* Warna heading lebih gelap untuk kontras */
-    margin-bottom: 20px;
-  }
-  
-  .pages {
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(135deg, #77CDFF, #FF6600, #B9E5E8, #F5F5F7);
-  }
-  
-  .contents {
-    padding: 40px;
-    margin-top: 100px;
-    position: relative;
-    background-image: url('../assets/bg.jpg'); /* Ganti path gambar sesuai lokasi Anda */
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    width: 80%;
-    max-width: 900px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-radius: 15px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-  }
-  
-  .contents:hover {
-    transform: scale(1.03);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
-  }
-  
-  .p-bar-container {
-    width: 100%;
-    max-width: 800px;
-    background: #222;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    margin-bottom: 20px;
-    transition: transform 0.3s ease;
-  }
-  
-  .p-bar-container:hover {
-    transform: scale(1.02);
-  }
-  
-  .p-bar {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    margin: 0 auto; /* Untuk memastikan elemen berada di tengah */
-  }
-  
-  .all-button {
-    width: 100%;
-    display: flex;
-    justify-content: space-evenly;
-    margin-top: 30px;
-  }
-  
-  .get-started-button {
-    padding: 12px 24px;
-    font-size: 1.2rem;
-    color: #fff;
-    background: linear-gradient(135deg, #FF6600, #FF4500);
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .get-started-button:hover {
-    transform: scale(1.1);
-    box-shadow: 0 8px 16px rgba(255, 102, 0, 0.4);
-  }
-  
-  .profile-section, .photo-section {
-    background: #222;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    margin-bottom: 20px;
-    width: 100%;
-    max-width: 500px;
-    transition: transform 0.3s ease;
-  }
-  
-  .profile-section:hover, .photo-section:hover {
-    transform: scale(1.02);
-  }
-  
-  .profile-section h2, .photo-section h2 {
-    color: #FF6600;
-    margin-bottom: 15px;
-  }
-  
-  .profile-section p, .photo-section p {
-    color: #ddd;
-    margin-bottom: 10px;
-  }
-  
-  .profile-section input, .photo-section input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #444;
-    border-radius: 5px;
-    background: #333;
-    color: #fff;
-  }
-  
-  .profile-section button, .photo-section button {
-    padding: 10px 20px;
-    background: linear-gradient(135deg, #FF6600, #FF4500);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-  }
-  
-  .profile-section button:hover, .photo-section button:hover {
-    background: linear-gradient(135deg, #0044cc, #002a80);
-    transform: scale(1.05);
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .contents {
-      width: 90%;
-      padding: 20px;
-    }
-  
-    .p-bar {
-      grid-template-columns: 1fr;
-    }
-  
-    .get-started-button {
-      font-size: 1rem;
-      padding: 10px 20px;
-    }
-  }
-  
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
+@import "tailwindcss";
+
+:root {
+  --orange: #ff7f3f;
+  --orange-light: #ffe8d9;
+  --green: #45c18a;
+  --green-light: #dbf7eb;
+  --dark: #1c1c1c;
+  --white: #ffffff;
+  --gray: #f0f0f0;
+}
+
+.personalize-container {
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, var(--orange-light), var(--green-light));
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 100px;
+  color: var(--dark);
+}
+
+.personalize-card {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(6px);
+  border-radius: 20px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+  padding: 40px 32px;
+  max-width: 700px;
+  width: 95%;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.personalize-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--orange);
+  margin-bottom: 8px;
+}
+.personalize-title span {
+  color: var(--dark);
+}
+
+.personalize-date,
+.personalize-bmr {
+  font-size: 1.1rem;
+  margin-bottom: 6px;
+}
+
+.progress-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 24px 0 32px;
+}
+
+.progress-wrapper .container {
+  width: 100%;
+}
+
+.double-button {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.double-button button {
+  background: linear-gradient(135deg, var(--orange), var(--green));
+  color: var(--white);
+  font-weight: 600;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+.double-button button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+@media (max-width: 768px) {
+  .personalize-title { font-size: 2rem; }
+  .personalize-card  { padding: 28px 20px; }
+  .double-button button { width: 100%; }
+}

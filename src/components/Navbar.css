@@ -122,6 +122,7 @@
   margin-top: auto;
   z-index: 500;
   position: relative;
+  width: -webkit-fill-available;
 }
 
 .footer p{

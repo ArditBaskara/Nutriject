@@ -24,7 +24,6 @@ const imageList3 = [kemasan7];
 const Onboarding = () => {
   const navigate = useNavigate();
   const user = Cookies.get('enc') ? decrypt(Cookies.get('enc')) : null;
-  console.log(user);
 
   const handleGetStarted = () => {
     navigate('/auth');
@@ -59,11 +58,11 @@ const Onboarding = () => {
         {user ? (
           <>
             <p className="onboarding-description">
-              Welcome, <strong>{user.user.name || 'User'}</strong>! Use this app to effortlessly detect nutrition facts from packaged foods and optimize your diet.
+              Welcome, <strong>{user.name || 'User'}</strong>! Use this app to effortlessly detect nutrition facts from packaged foods and optimize your diet.
             </p>
             <div className="double-button">
-              <button onClick={() => navigate('/personalize')}>View Profile</button>
-              <button onClick={() => navigate('/data')}>Edit Data</button>
+              <button onClick={() => navigate('/personalize')}>View Report</button>
+              <button onClick={() => navigate('/data')}>Generate Nutri Needs</button>
             </div>
           </>
         ) : (
@@ -77,10 +76,10 @@ const Onboarding = () => {
           </>
         )}
 
-        <div className="flex justify-center scroll-section">
-          <Box images={imageList1} title="Nutrition Scan"      claimText="Fast & Accurate"      registerText="Start Scanning" navto="/ocr"   />
-          <Box images={imageList2} title="Diet Optimizer"      claimText="Smart Suggestions"    registerText="See Advice"  navto="/photo" />
-          <Box images={imageList3} title="Manual Input"        claimText="Enter Data Yourself"  registerText="Input Now"   navto="/manual"/>
+        <div id='service' className="flex justify-center scroll-section">
+          <Box images={imageList1} title="NutriScan OCR"      claimText="Scan Nutri Facts Instantly"      registerText="Using advanced OCR technology, simply scan the label, and NutriScan will provide detailed facts like calories, carbs, proteins, and more." navto="/ocr"   />
+          <Box images={imageList2} title="FoodSnap Nutrition"      claimText="Snap and See Nutritional Insights"    registerText="This smart feature analyzes the food image and instantly gives you a breakdown of its nutritional content. It’s like having a nutritionist in your pocket."  navto="/photo" />
+          <Box images={imageList3} title="Manual NutriLog"        claimText="Track Nutrition the Classic Way"  registerText="Input your meals and ingredients manually to track calories, carbs, fats, and more. Perfect for anyone who prefers a hands-on approach."   navto="/manual"/>
         </div>
       </div>
       <Footer/>

@@ -2,10 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import './Navbar.css';
 import logo from '../assets/Nutrijectlogo.png';
+import Cookies from 'js-cookie';
+import { decrypt } from '../crypt';
 
 const Navbar = () => {
   const [isShrunk, setIsShrunk] = useState(false);
   const navigate = useNavigate();
+
+  const user = Cookies.get('enc') ? decrypt(Cookies.get('enc')) : null;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,17 +28,23 @@ const Navbar = () => {
 
       <nav className="nav-links">
         <NavLink exact="true" to="/" className="nav-link">
-          Beranda
+          Home
         </NavLink>
-        <NavLink to="/ocr" className="nav-link">
-          Deteksi
+        <NavLink to="/#service" className="nav-link">
+          Detection
         </NavLink>
-        <NavLink to="/personalize" className="nav-link">
+        <NavLink to="/setting" className="nav-link">
           Setting
         </NavLink>
+        {user ? (
+        <NavLink to="/personalize" className="nav-link">
+          Profile
+        </NavLink>
+        ) : (
         <NavLink to="/auth" className="nav-link">
           Login
         </NavLink>
+        )}
       </nav>
     </div>
   );

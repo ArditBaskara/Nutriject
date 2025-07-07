@@ -1,146 +1,170 @@
 import React, { useEffect, useState } from "react";
-import { db, getDoc } from "../firebase-config";
-import { doc, onSnapshot, setDoc } from "firebase/firestore";
-import "./FormPhoto.css"; // Import CSS file for styling
-import axios from "axios";
+import {
+  db,
+  collection,
+  query,
+  where,
+  limit,
+  getDocs,
+  addDoc,
+  setDoc,
+} from "../firebase-config";
 import { decrypt } from "../crypt";
 import Cookies from "js-cookie";
 import Navbar from "../components/Navbar";
-import "./Manual.css"
+import Footer from "../components/Footer";
+import Button from "../components/Button"; 
+import "./PhotoInput.css";
+import "./Manual.css";
+import {
+  FaBreadSlice,
+  FaDrumstickBite,
+  FaAppleAlt,
+  FaTint,
+  FaCheese,
+  FaUtensilSpoon,
+} from "react-icons/fa";
 
-const Manual = ({ ocrText }) => {
+const icons = {
+  Carbs: <FaBreadSlice />,
+  Protein: <FaDrumstickBite />,
+  Sugar: <FaAppleAlt />,
+  Salt: <FaUtensilSpoon />,
+  Fat: <FaCheese />,
+};
+
+const Manual = () => {
+  /* ---------- STATE ---------- */
   const [formData, setFormData] = useState({
-    BMR: "",
-    carbs: "",
-    protein: "",
-    fat: "",
-    sugar: "",
-    salt:""
+    kalori: 0,
+    carbs: 0,
+    protein: 0,
+    fat: 0,
+    sugar: 0,
+    salt: 0,
   });
-  const [isResponding, setIsResponding] = useState(false);
+  const [info, setInfo] = useState("");
+  const [user, setUser] = useState(null);
 
+  /* ---------- GET USER ---------- */
+  useEffect(() => {
+    const decrypted = decrypt(Cookies.get("enc"));
+    setUser(decrypted); // cookies cuma nyimpen nama‑email‑password ➜ cukup
+  }, []);
 
+  /* ---------- HANDLE CHANGE ---------- */
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: Number(value),
-    });
+    setFormData((prev) => ({ ...prev, [name]: Number(value) }));
   };
 
-  
-  const handleSubmit = async(e) => {
+  /* ---------- SUBMIT ---------- */
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const user = decrypt(Cookies.get("enc"));
-    const userDat = user.user;
-    const combined = {...formData, userId:userDat._id}
+    if (!user?.email) return alert("Lo belum login, bro!");
+
+    const email = user.email;
+    const today = new Date().toISOString().split("T")[0]; // YYYY‑MM‑DD
+
     try {
-        // Kirim data ke server menggunakan axios
-        const res = await axios.post(
-          "https://nutriject-server.vercel.app/user/makan",
-          combined
-        );
-    
-        // Jika berhasil, set `isResponding` ke true
-        setIsResponding(true);
-    
-        // Kosongkan formData
-        setFormData({
-          BMR: "",
-          carbs: "",
-          protein: "",
-          fat: "",
-          sugar: "",
-          salt: ""
-        }); // Reset ke nilai awal
-      } catch (err) {
-        console.error("Axios Failed: ", err);
-      } 
-    
+      // 🔍 cek report hari ini via query email+tanggal
+      const rptQ = query(
+        collection(db, "reports"),
+        where("email", "==", email),
+        where("tanggal", "==", today),
+        limit(1)
+      );
+      const snap = await getDocs(rptQ);
+
+      let rptRef, cur;
+      if (snap.empty) {
+        // belum ada ⇒ bikin dokumen kosong
+        rptRef = await addDoc(collection(db, "reports"), {
+          email,
+          tanggal: today,
+          kalori: 0,
+          carbs: 0,
+          protein: 0,
+          fat: 0,
+          sugar: 0,
+          salt: 0,
+        });
+        cur = {};
+      } else {
+        rptRef = snap.docs[0].ref;
+        cur = snap.docs[0].data();
+      }
+
+      // 🧮 tambahkan data lama + baru
+      const upd = {
+        kalori: (cur.kalori || 0) + formData.kalori,
+        carbs: (cur.carbs || 0) + formData.carbs,
+        protein: (cur.protein || 0) + formData.protein,
+        fat: (cur.fat || 0) + formData.fat,
+        sugar: (cur.sugar || 0) + formData.sugar,
+        salt: (cur.salt || 0) + formData.salt,
+      };
+
+      // 🔄 merge ke Firebase
+      await setDoc(rptRef, upd, { merge: true });
+      setFormData({ kalori: 0, carbs: 0, protein: 0, fat: 0, sugar: 0, salt: 0 });
+      setInfo("Data berhasil ditambahkan 👍");
+    } catch (err) {
+      console.error(err);
+      setInfo("Gagal menyimpan data 😭");
+    }
   };
 
-
+  /* ---------- UI ---------- */
   return (
-    <div>
-      <Navbar/>
-      <div className="user-form-container">
-        <h2>Masukan nilai gizi</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Kalori :</label>
-            <input
-              type="number"
-              name="BMR"
-              value={formData.BMR}
-              onChange={handleChange}
-              required
-              min="0"
-            />
-          </div>
+    <div className="photo-page">
+      <Navbar />
+      <div className="photo-card">
+        <h2 className="title">Input Nutrisi Manual</h2>
 
-          <div className="form-group">
-            <label>Karbohidrat :</label>
-            <input
-              type="number"
-              name="carbs"
-              value={formData.carbs}
-              onChange={handleChange}
-              required
-              min="0"
-            />
-          </div>
+        <form onSubmit={handleSubmit} className="manual-form">
+          {Object.entries(formData).map(([key, val]) => (
+            <div className="form-group" key={key}>
+              <label htmlFor={key}>
+                {icons[key.charAt(0).toUpperCase() + key.slice(1)] || <FaAppleAlt />}<span>{key.charAt(0).toUpperCase() + key.slice(1)}</span>
+              </label>
+              <input
+                id={key}
+                type="number"
+                name={key}
+                min="0"
+                value={val}
+                onChange={handleChange}
+                placeholder="0"
+              />
+            </div>
+          ))}
 
-          <div className="form-group">
-            <label>Garam /Natrium:</label>
-            <input
-              type="number"
-              name="salt"
-              value={formData.salt}
-              onChange={handleChange}
-              required
-              min="0"
-            />
-          </div>
+          {info && <p style={{ marginBottom: "12px" }}>{info}</p>}
 
-          <div className="form-group">
-            <label>Lemak :</label>
-            <input
-              type="number"
-              name="fat"
-              value={formData.fat}
-              onChange={handleChange}
-              required
-              min="0"
-            />
+          <div className="btn-row">
+            <Button 
+              bgCol="green" type="submit">Simpan</Button>
+            <Button
+              bgCol="red"
+              type="button"
+              onClick={() =>
+                setFormData({
+                  kalori: 0,
+                  carbs: 0,
+                  protein: 0,
+                  fat: 0,
+                  sugar: 0,
+                  salt: 0,
+                })
+              }
+            >
+              Reset
+            </Button>
           </div>
-
-          <div className="form-group">
-            <label>Gula :</label>
-            <input
-              type="number"
-              name="sugar"
-              value={formData.sugar}
-              onChange={handleChange}
-              required
-              min="0"
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Protein :</label>
-            <input
-              type="number"
-              name="protein"
-              value={formData.protein}
-              onChange={handleChange}
-              required
-              min="0"
-            />
-          </div>
-          {isResponding ? <p style={{color:'green'}}>Data berhasil diperbarui</p> : ""}
-          <button type="submit" className="submit-button">Masukan Data</button>
         </form>
       </div>
+      <Footer />
     </div>
   );
 };

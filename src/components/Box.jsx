@@ -33,7 +33,7 @@ function Box({ images, title, coinAmount, claimText, registerText, navto}) {
       <div className="footer">
         <p className="claim-text">{claimText}</p>
         <p className="register-text">{registerText}</p>
-        <button className="register-button" onClick={onCobaClicked}>Coba</button>
+        <button className="register-button" onClick={onCobaClicked}>Start</button>
       </div>
     </div>
   );

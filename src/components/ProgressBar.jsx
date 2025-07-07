@@ -1,31 +1,54 @@
-import './ProgressBar.css'
+// components/ProgressBar.jsx
+import "./ProgressBar.css";
+import {
+  FaBreadSlice,
+  FaDrumstickBite,
+  FaAppleAlt,
+  FaTint,
+  FaCheese,
+  FaUtensilSpoon,
+} from "react-icons/fa";
 
-export default function ProgressBar({min, max, val, label, color='blue'}){
-    const maxVal = max;
-    const minVal = min;
+const icons = {
+  Karbohidrat: <FaBreadSlice />,
+  Protein: <FaDrumstickBite />,
+  Gula: <FaAppleAlt />,
+  Garam: <FaUtensilSpoon />,
+  Lemak: <FaCheese />,
+};
 
-    console.log(min)
+export default function ProgressBar({ label, min, max, val }) {
+  const percentage = Math.min(100, Math.max(0, (val / max) * 100));
 
-    const percentMin = (minVal/maxVal) * 100;
-    const percentCal = (val/maxVal) * 100;
-    const percentFix =(percentCal.toFixed(1))
+  // ✅ Cek apakah nilai sehat
+  const inRange = val >= min && val <= max;
+  const barColor = inRange ? "#2ecc71" : "#e74c3c"; // Hijau atau merah
 
-    return (
-        <div className='container' >
-            <h1>{label}</h1>
-            <div className="main-bar">
-            <span className='tooltip-max'>
-                Current {label} : {val}<br/>
-                Min {label} : {minVal.toFixed(2)}<br/>
-                Max {label} : {maxVal.toFixed(2)}
-            </span>
-                <div className='content' style={{width:percentFix+'%', backgroundColor: percentFix >= 100 ? 'red' : '#FF6600'}}>
-    
-                </div>
-                <div className='min-progress' style={{left:percentMin+'%', backgroundColor:color}}>
-                    
-                </div>
-            </div>
-        </div>
-    )
+  return (
+    <div className="nutri-bar">
+      <div className="nutri-label">
+        {icons[label] || <FaAppleAlt />} <span>{label}</span>
+      </div>
+
+      <div className="nutri-range">
+        {/* Penanda batas min & max */}
+        <div className="nutri-limit-line" style={{ left: `${(min / max) * 100}%` }}></div>
+        <div className="nutri-limit-line" style={{ left: `${(max / max) * 100}%` }}></div>
+
+        <div
+          className="nutri-fill"
+          style={{
+            width: `${percentage}%`,
+            backgroundColor: barColor,
+          }}
+        ></div>
+      </div>
+
+      <div className="nutri-values">
+        <span className="nutri-value-left">Min: {min.toFixed(2)}g</span>
+        <span className="nutri-value-center">{val.toFixed(2)}g</span>
+        <span className="nutri-value-right">Max: {max.toFixed(2)}g</span>
+      </div>
+    </div>
+  );
 }

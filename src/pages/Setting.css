@@ -1,0 +1,165 @@
+/* === General Layout === */
+.onboarding-container {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #ffe8d9, #dbf7eb);
+  color: #1c1c1c;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  position: relative;
+  padding-top: 80px;
+}
+
+/* === How to Settings Section === */
+.how-to-section {
+  margin-top: 40px;
+  padding: 30px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 16px;
+  max-width: 1000px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.how-to-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #45c18a;
+  text-align: center;
+  margin-bottom: 20px;
+  text-shadow: 0 2px 5px rgba(255, 255, 255, 0.4);
+}
+
+.how-to-list {
+  font-size: 1rem;
+  color: #333;
+  margin-left: 20px;
+  line-height: 1.8;
+  list-style-type: decimal;
+}
+
+.how-to-step {
+  margin-bottom: 20px;
+}
+
+.how-to-step p {
+  margin-bottom: 10px;
+}
+
+.how-to-step code {
+  background-color: #f0f0f0;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 1.1rem;
+}
+
+.image-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+.tutorial-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.tutorial-image:hover {
+  transform: scale(1.05);
+}
+
+.external-link {
+  color: #45c18a;
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.external-link:hover {
+  color: #ff7f3f;
+  text-decoration: none;
+}
+
+
+/* === API Settings Section === */
+.settings-card {
+  background: rgba(255, 255, 255, 0.7);
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  margin: 40px;
+  max-width: 1000px;
+}
+
+.card-title {
+  font-size: 24px;
+  color: #ff7f3f;
+  margin-bottom: 20px;
+}
+
+.api-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.input-prefix {
+  background-color: #f0f0f0;
+  padding: 10px;
+  border-radius: 8px 0 0 8px;
+}
+
+.api-input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 0 8px 8px 0;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.save-button {
+  background: linear-gradient(135deg, #ff7f3f, #45c18a);
+  color: #fff;
+  font-weight: 600;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: all 0.3s ease;
+}
+
+.save-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* === Saved API Link Section === */
+.saved-api-link {
+  margin-top: 20px;
+  padding: 10px;
+  border: 2px solid #45c18a;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 8px;
+}
+
+.saved-api-text {
+  font-size: 14px;
+  color: #8dc63f;
+}

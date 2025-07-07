@@ -8,7 +8,7 @@ export default function ProtectedRoute({element}){
         auth = {};
         auth.status = 400;
     }
-    if(auth.status !== 200){
+    if(auth.email === 200){
         return <Navigate to="/auth"/>
     }
     return element;

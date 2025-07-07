@@ -1,145 +1,182 @@
-import React, { useState } from "react";
-import { uploadImage } from "../services/api";
+import { useState } from "react";
+import { uploadImage } from "../services/api";          // <— tetap pakai API ML lo
 import Button from "../components/Button";
-import "./FormPhoto.css";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import Cookies from "js-cookie";
 import { decrypt } from "../crypt";
-import Cookies from "js-cookie"
-import axios from "axios";
+
+import {
+  db,
+  collection,
+  query,
+  where,
+  orderBy,
+  limit,
+  getDocs,
+  addDoc,
+  setDoc,
+} from "../firebase-config";
+
+import {
+  FaCamera,
+  FaImage,
+  FaCheckCircle,
+  FaTimesCircle,
+} from "react-icons/fa";
+
+import "./PhotoInput.css";   // re-use style yang sudah ada (gradien, card, btn)
 
 const ImageUpload = () => {
+  /* ---------- STATE ---------- */
   const [selectedImage, setSelectedImage] = useState(null);
-  const [nutrientData, setNutrientData] = useState([]);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false); // Tambahkan state loading
-  const [isValid, setIsValid] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [showButton, setShowButton] = useState(false);
+  const [preview, setPreview]             = useState(null);
+  const [nutri, setNutri]                 = useState(null);
+  const [loading, setLoading]             = useState(false);
+  const [msg, setMsg]                     = useState({ ok: null, text: "" });
 
-  const handleFileChange = (event) => {
-    setSelectedImage(event.target.files[0]);
-    setError("");
+  /* ---------- USER ---------- */
+  const enc   = Cookies.get("enc");
+  const user  = enc ? decrypt(enc) : null;
+  const email = user?.email;
+
+  /* ---------- HANDLERS ---------- */
+  const handleFile = (e) => {
+    const f = e.target.files[0];
+    if (!f) return;
+    setSelectedImage(f);
+    setPreview(URL.createObjectURL(f));
+    setNutri(null);
+    setMsg({ ok: null, text: "" });
   };
 
-  const handleCapture = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setSelectedImage(file);
-      setError("");
-    }
-  };
-
-  const handleUpload = async () => {
-    if (!selectedImage) {
-      setError("Please select or capture an image.");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("image", selectedImage);
-
-    // Set loading state to true when the upload starts
+  const doUpload = async () => {
+    if (!selectedImage) return setMsg({ ok: false, text: "Pilih foto dulu!" });
     setLoading(true);
-    setError(""); // Clear any previous errors
+    setMsg({ ok: null, text: "" });
 
     try {
-      const result = await uploadImage(formData);
-      console.log(result.nutrients[0]);
-      setNutrientData(result.nutrients);
-      setError("");
-      setShowButton(true)
+      const fd = new FormData();
+      fd.append("image", selectedImage);
+
+      const res = await uploadImage(fd);           // → { nutrients: [...] }
+      setNutri(res.nutrients[0]);                  // ambil elemen pertama
     } catch (err) {
-      setError(err.message);
+      console.error(err);
+      setMsg({ ok: false, text: "Gagal ekstraksi nutrisi." });
     } finally {
-      // Set loading state to false when the upload is finished
       setLoading(false);
     }
   };
 
-  const handleMakan = async (e) =>{
-    e.preventDefault()
-    const account = decrypt(Cookies.get("enc"))
-    const data = {
-      BMR:nutrientData[0].kalori || 0,
-      carbs:nutrientData[0].karbohidrat || 0,
-      protein:nutrientData[0].protein || 0,
-      salt:nutrientData[0].garam || 0,
-      sugar:nutrientData[0].gula || 0,
-      fat:nutrientData[0].lemak || 0,
-      userId:account.user._id
+  /* ---------- SIMPAN KE FIRESTORE ---------- */
+  const handleMakan = async () => {
+    if (!email || !nutri) return;
+    try {
+      const today = new Date().toISOString().split("T")[0];
+
+      // cari report hari ini
+      const q = query(
+        collection(db, "reports"),
+        where("email", "==", email),
+        where("tanggal", "==", today),
+        limit(1)
+      );
+      const snap = await getDocs(q);
+      let ref;
+      if (snap.empty) {
+        ref = await addDoc(collection(db, "reports"), {
+          email,
+          tanggal: today,
+          carbs: 0,
+          protein: 0,
+          fat: 0,
+          sugar: 0,
+          salt: 0,
+          kalori: 0,
+        });
+      } else {
+        ref = snap.docs[0].ref;
+      }
+
+      const cur = snap.empty ? {} : snap.docs[0].data();
+      const upd = {
+        kalori : (cur.kalori || 0) + (nutri.kalori            || 0),
+        fat    : (cur.fat    || 0) + (nutri.lemak             || 0),
+        carbs  : (cur.carbs  || 0) + (nutri.karbohidrat       || 0),
+        protein: (cur.protein|| 0) + (nutri.protein           || 0),
+        sugar  : (cur.sugar  || 0) + (nutri.gula              || 0),
+        salt   : (cur.salt   || 0) + (nutri.garam             || 0),
+      };
+      await setDoc(ref, upd, { merge: true });
+
+      setMsg({ ok: true, text: "Data nutrisi tersimpan!" });
+      setSelectedImage(null);
+      setPreview(null);
+      setNutri(null);
+    } catch (err) {
+      console.error(err);
+      setMsg({ ok: false, text: "Gagal menyimpan ke database." });
     }
-
-    console.log(data)
-
-    try{
-      const response = await axios.post("https://nutriject-server.vercel.app/user/makan", data);
-      console.log(response.data);
-      setIsValid(true);
-      setIsError(false);
-      setShowButton(false)
-    }catch(err){
-      console.log(err);
-      setIsValid(false);
-      setIsError(true);
-    }
-  }
-
-  const handleCancle = () => {
-    window.location.reload()
-  }
-  
+  };
 
   return (
-    <div>
-      <h1>Extract Nutrients</h1>
-      <input type="file" accept="image/*" onChange={handleFileChange} />
-      <button onClick={handleUpload}>Upload Image</button>
-      <br />
-      {/*<input
-        type="file"
-        accept="image/*"
-        capture="camera"
-        onChange={handleCapture}
-      />
-      <button onClick={handleUpload}>Capture Image</button>*/}
+    <div className="photo-page">
+      <Navbar />
 
-      {loading && <p>Loading...</p>} {/* Tampilkan loading saat state loading true */}
+      <div className="photo-card">
+        <h2 className="title">Deteksi Nutrisi via Foto</h2>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+        {/* PILIH / UPLOAD */}
+        <div className="btn-row">
+          <Button onClick={() => document.getElementById("fileInp").click()}>
+            Pilih Foto
+          </Button>
+          {/* <Button onClick={/* future camera */ /*}><FaCamera /> Kamera</Button> */}
+        </div>
+        <input id="fileInp" type="file" accept="image/*" hidden onChange={handleFile} />
 
-      <div>
-        <h3>Extracted Nutrient Data:</h3>
-        {nutrientData.length > 0 ? (
-          <ul>
-            {nutrientData.map((item, index) => (
-              <li key={index} style={{color:"black"}}>
-                <strong>{item.nama.toUpperCase()}</strong>: <br/>
-                Karbohidrat: {item.karbohidrat}g<br/>
-                Protein:{" "}{item.protein}g<br/>
-                Lemak: {item.lemak}g<br/>
-                Kalori: {item.kalori}kcal<br/>
-                Gula:{" "}{item.gula}g<br/>
-                Garam: {item.garam}mg<br/>
-                Air: {item.air}%<br/>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p style={{color:"black"}}>No data extracted yet.</p>
+        {preview && (
+          <>
+            <img className="preview" src={preview} alt="preview" />
+            <Button onClick={doUpload} disabled={loading}>
+              {loading ? "Menganalisis..." : "Ekstrak Nutrisi"}
+            </Button>
+          </>
+        )}
+
+        {/* HASIL NUTRISI */}
+        {nutri && (
+          <div className="nutrisi-card">
+            <h3>Hasil Ekstraksi</h3>
+            <ul>
+              <li>Kalori : {nutri.kalori || 0} kkal</li>
+              <li>Lemak  : {nutri.lemak || 0} g</li>
+              <li>Karbo  : {nutri.karbohidrat || 0} g</li>
+              <li>Protein: {nutri.protein || 0} g</li>
+              <li>Gula   : {nutri.gula || 0} g</li>
+              <li>Garam  : {nutri.garam || 0} mg</li>
+              <li>Air    : {nutri.air || 0}%</li>
+            </ul>
+
+            <div className="btn-row">
+              <Button onClick={handleMakan}>Makan</Button>
+              <Button bgCol="red" onClick={() => window.location.reload()}>
+                Cancel
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* ALERT */}
+        {msg.text && (
+          <p style={{ color: msg.ok ? "#2ecc71" : "#e74c3c", marginTop: 12 }}>
+            {msg.text}
+          </p>
         )}
       </div>
-      {isValid  ? <p style={{color:"green"}}>Data berhasil ditambahkan</p> : isError ? <p style={{color:"red"}}>Coba beberapa saat lagi</p> : ""}
-      {showButton ?
-      <>
-      
-       <Button onClick={handleMakan}  style={{ marginTop: "5px", marginBottom: "20px" }}>
-          Makan
-          </Button>
 
-          <Button onClick={handleCancle}  bgCol={'red'} style={{marginTop: "5px", marginBottom: "20px" }}>
-            Cancel
-          </Button> 
-      </>
-          : ""}
+      <Footer />
     </div>
   );
 };

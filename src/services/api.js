@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // link API Example : https://94db-34-86-3-28.ngrok-free.app/detect-nutrients
-const API_URL = "((( API NGROK from google colab )))/detect-nutrients";
+const API_URL = "https://a870-35-196-148-24.ngrok-free.app/detect-nutrients";
 
 export const uploadImage = async (formData) => {
   try {

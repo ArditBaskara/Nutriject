@@ -8,13 +8,11 @@ import Optimize from './pages/Optimize';
 import Manual from './pages/Manual';
 import Settings from './pages/Settings';
 
-// Lazy load pages
 const Onboarding = React.lazy(() => import('./pages/onboarding'));
 const AuthPage = React.lazy(() => import('./pages/AuthPage'));
 const PhotoInput = React.lazy(() => import('./pages/FormPhoto'))
 
 const AppRoutes = () => {
-  // Define routes for the app
   const routes = [
     { path: '/', element: <Onboarding /> },
     { path: '/auth', element: <AuthPage/> },
@@ -26,14 +24,12 @@ const AppRoutes = () => {
     { path:'/manual', element:<ProtectedRoute element={<Manual/>}/>}
   ];
 
-  // useRoutes to handle routing
   return useRoutes(routes);
 };
 
 const App = () => {
   return (
     <Router>
-      {/* Suspense for lazy loading with fallback UI */}
       <Suspense fallback={<div>Loading...</div>}>
         <AppRoutes />
       </Suspense>

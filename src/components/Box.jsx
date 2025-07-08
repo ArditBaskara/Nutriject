@@ -6,7 +6,8 @@ import './Box.css';
 function Box({ images, title, coinAmount, claimText, registerText, navto}) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const navigate = useNavigate();
-  // Ganti gambar secara otomatis setiap 3 detik
+
+  
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);

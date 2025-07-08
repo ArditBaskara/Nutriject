@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { uploadImage } from "../services/api";          // <— tetap pakai API ML lo
+import { uploadImage } from "../services/api";
 import Button from "../components/Button";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -25,22 +25,19 @@ import {
   FaTimesCircle,
 } from "react-icons/fa";
 
-import "./PhotoInput.css";   // re-use style yang sudah ada (gradien, card, btn)
+import "./PhotoInput.css"; 
 
 const ImageUpload = () => {
-  /* ---------- STATE ---------- */
   const [selectedImage, setSelectedImage] = useState(null);
   const [preview, setPreview]             = useState(null);
   const [nutri, setNutri]                 = useState(null);
   const [loading, setLoading]             = useState(false);
   const [msg, setMsg]                     = useState({ ok: null, text: "" });
 
-  /* ---------- USER ---------- */
   const enc   = Cookies.get("enc");
   const user  = enc ? decrypt(enc) : null;
   const email = user?.email;
 
-  /* ---------- HANDLERS ---------- */
   const handleFile = (e) => {
     const f = e.target.files[0];
     if (!f) return;
@@ -59,8 +56,8 @@ const ImageUpload = () => {
       const fd = new FormData();
       fd.append("image", selectedImage);
 
-      const res = await uploadImage(fd);           // → { nutrients: [...] }
-      setNutri(res.nutrients[0]);                  // ambil elemen pertama
+      const res = await uploadImage(fd); 
+      setNutri(res.nutrients[0]);
     } catch (err) {
       console.error(err);
       setMsg({ ok: false, text: "Gagal ekstraksi nutrisi." });
@@ -69,13 +66,11 @@ const ImageUpload = () => {
     }
   };
 
-  /* ---------- SIMPAN KE FIRESTORE ---------- */
   const handleMakan = async () => {
     if (!email || !nutri) return;
     try {
       const today = new Date().toISOString().split("T")[0];
 
-      // cari report hari ini
       const q = query(
         collection(db, "reports"),
         where("email", "==", email),
@@ -127,12 +122,10 @@ const ImageUpload = () => {
       <div className="photo-card">
         <h2 className="title">Deteksi Nutrisi via Foto</h2>
 
-        {/* PILIH / UPLOAD */}
         <div className="btn-row">
           <Button onClick={() => document.getElementById("fileInp").click()}>
             Pilih Foto
           </Button>
-          {/* <Button onClick={/* future camera */ /*}><FaCamera /> Kamera</Button> */}
         </div>
         <input id="fileInp" type="file" accept="image/*" hidden onChange={handleFile} />
 

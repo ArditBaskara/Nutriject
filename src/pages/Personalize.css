@@ -68,8 +68,8 @@
   justify-content: center;
 }
 
-.double-button button {
-  background: linear-gradient(135deg, var(--orange), var(--green));
+.double-button .get-started-button {
+  background: linear-gradient(135deg, rgb(98, 255, 0), var(--green));
   color: var(--white);
   font-weight: 600;
   padding: 14px 28px;
@@ -80,9 +80,80 @@
   box-shadow: 0 6px 12px rgba(0,0,0,0.1);
   transition: all 0.3s ease;
 }
-.double-button button:hover {
+
+.double-button .get-started-button:hover {
   transform: translateY(-3px);
   box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.double-button .dangger-button{
+  background: linear-gradient(135deg, var(--orange), rgb(231, 76, 60));
+  color: var(--white);
+  font-weight: 600;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.double-button .dangger-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: fit-content;
+  text-align: center;
+}
+
+.modal-content .Box .header .title{
+  font-size: 1.5rem;
+  margin-bottom: 0;
+}
+
+.modal-content .scroll-section{
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+.modal-content .register-button{
+  background: var(--green);
+}
+.warning-button {
+  background: var(--orange);
+  color: #fff;
+  font-weight: 600;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.warning-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 @media (max-width: 768px) {

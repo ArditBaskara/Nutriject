@@ -7,6 +7,7 @@ import { decrypt } from "../crypt";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Button from "../components/Button";
+import { useNavigate } from 'react-router-dom';
 
 import {
   db,
@@ -23,17 +24,16 @@ import {
 import "./PhotoInput.css";
 
 const PhotoInput = () => {
-  /* ---------- STATE ---------- */
   const [image, setImage]         = useState(null);
   const [ocrText, setOcrText]     = useState(null);
   const [loading, setLoading]     = useState(false);
 
-  /* ---------- USER EMAIL ---------- */
+  const navigate = useNavigate();
+
   const enc   = Cookies.get("enc");
   const user  = enc ? decrypt(enc) : null;
   const email = user?.email;
 
-  /* ---------- UPLOAD / CAMERA ---------- */
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -67,26 +67,31 @@ const PhotoInput = () => {
     }
   };
 
-  /* ---------- OCR + EXTRACT NUTRISI ---------- */
   const performOCR = async (img64) => {
     setLoading(true);
 
     try {
-      /* 1️⃣  OCR dengan Tesseract */
       const {
         data: { text },
       } = await Tesseract.recognize(img64, "eng", {
         logger: (m) => console.log(m), // debug
       });
+      
+      const storedApi = sessionStorage.getItem('apiLink');
 
-      /* 2️⃣  Kirim ke API NGROK */
+      if (!storedApi) {
+        alert("API link belum disetting. Silakan pergi ke halaman setting untuk menyetting.");
+
+        window.location.href = "/setting";
+        return;
+      }
+
       const { data } = await axios.post(
-        "https://9084-35-196-144-27.ngrok-free.app/extract-nutrients",
+        `${storedApi}/extract-nutrients`,
         { ocr_text: text },
         { headers: { "ngrok-skip-browser-warning": "true" } }
       );
 
-      /* 3️⃣  Normalisasi respons ⇒ pastikan semua field ada */
       const clean = {
         kalori:            data.kalori            ?? 0,
         lemak_total:       data.lemak_total       ?? 0,
@@ -97,7 +102,7 @@ const PhotoInput = () => {
         air:               data.air               ?? 0,
       };
 
-      setOcrText(clean); // simpan objek nutrisi
+      setOcrText(clean);
 
     } catch (err) {
       console.error("OCR / Extract error:", err);
@@ -109,56 +114,54 @@ const PhotoInput = () => {
 
 
   const handleSendToFirebase = async () => {
-  if (!email || typeof ocrText !== "object") {
-    return alert("Data tidak valid / user belum login");
-  }
-
-  try {
-    const today = new Date().toISOString().split("T")[0]; // format "YYYY-MM-DD"
-
-    // ✅ Cek apakah laporan hari ini sudah ada
-    const rptQ = query(
-      collection(db, "reports"),
-      where("email", "==", email),
-      where("tanggal", "==", today),
-      limit(1)
-    );
-
-    const snap = await getDocs(rptQ);
-    let rptRef;
-
-    if (snap.empty) {
-      // 🆕 Buat baru kalau belum ada report untuk hari ini
-      rptRef = await addDoc(collection(db, "reports"), {
-        email,
-        tanggal: today,
-        carbs: 0, protein: 0, fat: 0, sugar: 0, salt: 0, kalori: 0,
-      });
-    } else {
-      // 📝 Ambil ref dari dokumen yg udah ada
-      rptRef = snap.docs[0].ref;
+    if (!email || typeof ocrText !== "object") {
+      return alert("Data tidak valid / user belum login");
     }
 
-    const cur = snap.empty ? {} : snap.docs[0].data();
-    const upd = {
-      kalori : (cur.kalori || 0) + (ocrText.kalori       || 0),
-      fat    : (cur.fat    || 0) + (ocrText.lemak_total  || 0),
-      carbs  : (cur.carbs  || 0) + (ocrText.karbohidrat_total || ocrText.karbohidrat || 0),
-      protein: (cur.protein|| 0) + (ocrText.protein      || 0),
-      sugar  : (cur.sugar  || 0) + (ocrText.gula         || 0),
-      salt   : (cur.salt   || 0) + (ocrText.garam        || 0),
-    };
+    try {
+      const today = new Date().toISOString().split("T")[0]; // format "YYYY-MM-DD"
 
-    await setDoc(rptRef, upd, { merge: true });
+      const rptQ = query(
+        collection(db, "reports"),
+        where("email", "==", email),
+        where("tanggal", "==", today),
+        limit(1)
+      );
 
-    alert("Nutrisi berhasil ditambahkan ke laporan hari ini!");
-    setOcrText(null);
-    setImage(null);
-  } catch (err) {
-    console.error(err);
-    alert("Gagal menyimpan ke database.");
-  }
-};
+      const snap = await getDocs(rptQ);
+      let rptRef;
+
+      if (snap.empty) {
+        rptRef = await addDoc(collection(db, "reports"), {
+          email,
+          tanggal: today,
+          carbs: 0, protein: 0, fat: 0, sugar: 0, salt: 0, kalori: 0,
+        });
+      } else {
+        rptRef = snap.docs[0].ref;
+      }
+
+      const cur = snap.empty ? {} : snap.docs[0].data();
+      const upd = {
+        kalori : (cur.kalori || 0) + (ocrText.kalori       || 0),
+        fat    : (cur.fat    || 0) + (ocrText.lemak_total  || 0),
+        carbs  : (cur.carbs  || 0) + (ocrText.karbohidrat_total || ocrText.karbohidrat || 0),
+        protein: (cur.protein|| 0) + (ocrText.protein      || 0),
+        sugar  : (cur.sugar  || 0) + (ocrText.gula         || 0),
+        salt   : (cur.salt   || 0) + (ocrText.garam        || 0),
+      };
+
+      await setDoc(rptRef, upd, { merge: true });
+
+      alert("Nutrisi berhasil ditambahkan ke laporan hari ini!");
+      setOcrText(null);
+      setImage(null);
+      navigate("/personalize");
+    } catch (err) {
+      console.error(err);
+      alert("Gagal menyimpan ke database.");
+    }
+  };
 
 
   /* ---------- UI ---------- */

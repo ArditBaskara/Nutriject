@@ -1,4 +1,3 @@
-// UserForm.jsx
 import { useEffect, useState } from "react";
 import {
   db,
@@ -11,14 +10,13 @@ import {
   setDoc,
   doc,
 } from "../firebase-config";
-import "./UserForm.css";          // style baru
+import "./UserForm.css"; 
 import { decrypt } from "../crypt";
 import Cookies from "js-cookie";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 const UserForm = () => {
-  /* ---------- USER & STATE ---------- */
   const enc      = Cookies.get("enc");
   const userObj  = enc ? decrypt(enc) : null;
   const email    = userObj?.email;
@@ -37,7 +35,6 @@ const UserForm = () => {
   });
   const [loading, setLoading] = useState(true);
 
-  /* ---------- PRE-FILL DATA DARI FIRESTORE ---------- */
   useEffect(() => {
     if (!email) { setLoading(false); return; }
 
@@ -69,13 +66,11 @@ const UserForm = () => {
     fetchUser();
   }, [email]);
 
-  /* ---------- HANDLE CHANGE ---------- */
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  /* ---------- CALC & SAVE ---------- */
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { age, gender, height, weight, activity } = formData;
@@ -83,7 +78,6 @@ const UserForm = () => {
       return alert("Harap isi semua data!");
     }
 
-    /* --- Hitung BMR & TDEE --- */
     const ageN = +age, h = +height, w = +weight;
     const BMR = gender === "male"
       ? 88.362 + 13.397 * w + 4.799 * h - 5.677 * ageN
@@ -103,14 +97,11 @@ const UserForm = () => {
     };
     setResults(calc);
 
-    /* --- update diagram state jadi 0 semua --- */
     setDiagrams({
       kalori:0, karbohidrat:0, protein:0, lemak:0, gula:0, garam:0, air:0
     });
 
-    /* --- Simpan ke Firestore --- */
     try {
-      // 1. UPDATE / INSERT users
       const usersQ = query(collection(db,"users"),where("email","==",email),limit(1));
       const snap   = await getDocs(usersQ);
       if (snap.empty) {
@@ -119,7 +110,6 @@ const UserForm = () => {
         await setDoc(snap.docs[0].ref, { email, ...formData, ...calc }, { merge:true });
       }
 
-      // 2. Tambah report baru
       await addDoc(collection(db,"reports"), {
         email,
         tanggal: new Date().toISOString().split("T")[0],
@@ -132,7 +122,6 @@ const UserForm = () => {
     }
   };
 
-  /* ---------- RENDER DIAGRAM ---------- */
   const renderBar = (label, min, max, valKey) => {
     const value = diagrams[valKey] || 0;
     const pct   = Math.min(value / max, 1) * 100;
@@ -152,7 +141,6 @@ const UserForm = () => {
     );
   };
 
-  /* ---------- UI ---------- */
   if (loading) return <p>Loading...</p>;
 
   return (
@@ -162,16 +150,13 @@ const UserForm = () => {
       <div className="userform-card">
         <h2 className="title">Personal Data</h2>
 
-        {/* === FORM === */}
         <form onSubmit={handleSubmit} className="userform">
-          {/* umur */}
           <div className="form-group">
             <label>Umur (tahun)</label>
             <input type="number" name="age" value={formData.age}
                    onChange={handleChange} min="0" required/>
           </div>
 
-          {/* gender */}
           <div className="form-group">
             <label>Gender</label>
             <select name="gender" value={formData.gender}
@@ -182,21 +167,18 @@ const UserForm = () => {
             </select>
           </div>
 
-          {/* tinggi */}
           <div className="form-group">
             <label>Tinggi (cm)</label>
             <input type="number" name="height" value={formData.height}
                    onChange={handleChange} min="0" required/>
           </div>
 
-          {/* berat */}
           <div className="form-group">
             <label>Berat (kg)</label>
             <input type="number" name="weight" value={formData.weight}
                    onChange={handleChange} min="0" required/>
           </div>
 
-          {/* aktivitas */}
           <div className="form-group">
             <label>Aktivitas</label>
             <select name="activity" value={formData.activity}
@@ -213,7 +195,6 @@ const UserForm = () => {
           <button className="submit-btn" type="submit">Hitung</button>
         </form>
 
-        {/* === HASIL === */}
         {results && (
           <div className="results">
             <h3>Rekomendasi Harian</h3>

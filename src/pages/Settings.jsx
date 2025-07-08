@@ -54,7 +54,7 @@ const Settings = () => {
               </div>
             </li>
             <li className="how-to-step">
-              <p>Open the AI server on Colab using this link: <a href="https://colab.research.google.com/drive/1rKuB3zvjuqfuZ3PgZDAEyMLi7XRvK4tk?usp=sharing#scrollTo=RddER8iVL4jn" target="_blank" rel="noopener noreferrer" className="external-link">Colab Server Link</a></p>
+              <p>Open the AI server on Colab using this link: <a href="https://colab.research.google.com/drive/1n9nqZc5Gwr38vofAJ8vRHBGC11_VBtbT?usp=sharing" target="_blank" rel="noopener noreferrer" className="external-link">Colab Server Link</a></p>
             </li>
             <li className="how-to-step">
               <p>Paste your NGROK token into the input field provided in the Colab notebook.</p>
@@ -78,7 +78,7 @@ const Settings = () => {
               <p>Paste the copied API link into the settings input field below on this page and click save API.</p>
             </li>
             <li className="how-to-step">
-              <p>Once saved, you’re ready to start generating leads.</p>
+              <p>Once saved, you’re ready to start eating.</p>
             </li>
           </ol>
         </div>

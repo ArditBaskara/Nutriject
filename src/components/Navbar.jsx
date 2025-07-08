@@ -30,9 +30,6 @@ const Navbar = () => {
         <NavLink exact="true" to="/" className="nav-link">
           Home
         </NavLink>
-        <NavLink to="/#service" className="nav-link">
-          Detection
-        </NavLink>
         <NavLink to="/setting" className="nav-link">
           Setting
         </NavLink>

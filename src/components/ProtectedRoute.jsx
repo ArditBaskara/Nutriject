@@ -5,8 +5,7 @@ import Cookies from "js-cookie";
 export default function ProtectedRoute({element}){
     let auth = decrypt(Cookies.get("enc"));
     if(auth === null){
-        auth = {};
-        auth.status = 400;
+        return <Navigate to="/auth"/>
     }
     if(auth.email === 200){
         return <Navigate to="/auth"/>

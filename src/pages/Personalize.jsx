@@ -1,4 +1,3 @@
-// Personalize.jsx
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ProgressBar from "../components/ProgressBar";
@@ -7,7 +6,10 @@ import { decrypt } from "../crypt";
 import Cookies from "js-cookie";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-
+import Box from "../components/Box";
+import kemasan2 from '../assets/kemasan2.png';
+import kemasan1 from '../assets/kemasan1.jpg';
+import kemasan7 from '../assets/kemasan7.png';
 import {
   db,
   collection,
@@ -18,25 +20,39 @@ import {
   getDocs
 } from "../firebase-config";
 
+const imageList1 = [kemasan1];
+const imageList2 = [kemasan2];
+const imageList3 = [kemasan7];
+
 export default function Personalize() {
   const navigate = useNavigate();
 
   const [userData, setUserData] = useState(null);
-  const [carbs, setCarbs]   = useState(0);
+  const [carbs, setCarbs] = useState(0);
   const [protein, setProtein] = useState(0);
-  const [salts, setSalts]   = useState(0);
-  const [sugar, setSugar]   = useState(0);
-  const [fat, setFat]       = useState(0);
+  const [salts, setSalts] = useState(0);
+  const [sugar, setSugar] = useState(0);
+  const [fat, setFat] = useState(0);
   const [tanggal, setTanggal] = useState("");
   const [loading, setLoading] = useState(true);
-  const [error, setError]     = useState(null);
+  const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);  // State for modal visibility
 
   const onDetect = () => navigate("/ocr");
-  const onBack   = () => navigate("/");
+  const onBack = () => navigate("/");
 
-  const enc   = Cookies.get("enc");
-  const user  = enc ? decrypt(enc) : null;
+  const enc = Cookies.get("enc");
+  const user = enc ? decrypt(enc) : null;
   const email = user?.email;
+
+  const onLogout = () => {
+    Cookies.remove("enc");  // Clear the cookie
+    navigate("/");  // Redirect to homepage
+  };
+
+  const onStartEating = () => {
+    setShowModal(true);  // Show the modal when clicked
+  };
 
   useEffect(() => {
     if (!email) {
@@ -87,14 +103,14 @@ export default function Personalize() {
   }, [email]);
 
   if (loading) return <p>Loading...</p>;
-  if (error)   return <p>{error}</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <div className="personalize-container">
       <Navbar />
       <div className="personalize-card">
         <h1 className="personalize-title">
-            Hello <span>{userData?.name || "Guest"}</span>!
+          Hello <span>{userData?.name || "Guest"}</span>!
         </h1>
 
         <p className="personalize-date">Tanggal: {tanggal}</p>
@@ -144,15 +160,30 @@ export default function Personalize() {
         </div>
 
         <div className="double-button">
-          <button className="get-started-button" onClick={onBack}>
-            Back
+          <button className="dangger-button" onClick={onLogout}>
+            Logout
           </button>
-          <button className="get-started-button" onClick={onDetect}>
-            Deteksi Makanan
+          <button className="get-started-button" onClick={onStartEating}>
+            Start Eating
           </button>
         </div>
       </div>
-      <Footer/>
+
+      {/* Modal for Start Eating */}
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <div id="service" className="d-flex justify-center scroll-section">
+              <Box images={imageList1} title="NutriScan OCR" claimText="Scan Nutri Facts Instantly" registerText="" navto="/ocr" />
+              <Box images={imageList2} title="FoodSnap Nutrition" claimText="Snap and See Nutritional Insights" registerText="" navto="/photo" />
+              <Box images={imageList3} title="Manual NutriLog" claimText="Track Nutrition the Classic Way" registerText="" navto="/manual" />
+            </div>
+            <button className="warning-button" onClick={() => setShowModal(false)}>Close</button>
+          </div>
+        </div>
+      )}
+
+      <Footer />
     </div>
   );
 }

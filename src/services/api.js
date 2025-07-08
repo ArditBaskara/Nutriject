@@ -1,10 +1,17 @@
 import axios from "axios";
 
-// link API Example : https://94db-34-86-3-28.ngrok-free.app/detect-nutrients
-const API_URL = "https://a870-35-196-148-24.ngrok-free.app/detect-nutrients";
-
 export const uploadImage = async (formData) => {
   try {
+    const storedApi = sessionStorage.getItem('apiLink');
+    const API_URL = `${storedApi}/detect-nutrients`;
+
+    if (!storedApi) {
+      alert("API link belum disetting. Silakan pergi ke halaman setting untuk menyetting.");
+
+      window.location.href = "/setting";
+      return;
+    }
+
     const response = await axios.post(API_URL, formData, {
       headers: { "Content-Type": "multipart/form-data",
                 "ngrok-skip-browser-warning": "any-value" },

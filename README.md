@@ -63,7 +63,7 @@ Welcome to Nutriject! Follow the steps below to get started and set up your API 
 - Once logged in, copy your **NGROK Auth Token**.  
   **(See example image below)**
 
-![Step 1](Tutor1.png)
+<img src="public/Tutor1.png" alt="Nutriject Output Example" width="100%"/>
 
 ### 4. **Open the AI Server on Colab**
 
@@ -84,14 +84,14 @@ Welcome to Nutriject! Follow the steps below to get started and set up your API 
 - Press `Ctrl + F9` or go to **Runtime > Run all** to execute all cells in the Colab notebook.  
   **(See example image below)**
 
-![Step 2](Tutor2.png)
+<img src="public/Tutor2.png" alt="Nutriject Output Example" width="100%"/>
 
 ### 8. **Copy the Generated API Link**
 
 - Wait for the API link to appear. Once it does, copy the generated link.  
   **(See example image below)**
 
-![Step 3](Tutor3.png)
+<img src="public/Tutor3.png" alt="Nutriject Output Example" width="100%"/>
 
 ### 9. **Paste the API Link in Settings**
 

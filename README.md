@@ -45,7 +45,72 @@ To run the model server:
 
 ---
 
-## 🚀 Getting Started (Frontend)
+## 🔧 Nutriject Web App - Getting Started (User-Friendly)
+
+Welcome to Nutriject! Follow the steps below to get started and set up your API connection.
+
+### 1. **Visit the Website**
+
+- Go to the Nutriject Web App at [https://nutriject.vercel.app/](https://nutriject.vercel.app/).
+
+### 2. **Go to the Settings Page**
+
+- Once you're on the homepage, click on the **Settings** link in the navigation bar or directly navigate to the settings page.
+
+### 3. **Create an Account on Ngrok**
+
+- Go to [Ngrok's website](https://ngrok.com/) and create an account.
+- Once logged in, copy your **NGROK Auth Token**.  
+  **(See example image below)**
+
+![Step 1](Tutor1.png)
+
+### 4. **Open the AI Server on Colab**
+
+- Open the AI server on Google Colab by clicking the link below:  
+  [Colab Server Link](https://colab.research.google.com/drive/1n9nqZc5Gwr38vofAJ8vRHBGC11_VBtbT?usp=sharing)
+
+### 5. **Paste Your Ngrok Token**
+
+- In the Colab notebook, find the input field for Ngrok Token.
+- Paste your **Ngrok Auth Token** into this input field.
+
+### 6. **Connect to Colab Runtime**
+
+- You don't need a GPU, just connect to the Colab runtime by clicking the **Connect** button in the top-right corner.
+
+### 7. **Run All Cells**
+
+- Press `Ctrl + F9` or go to **Runtime > Run all** to execute all cells in the Colab notebook.  
+  **(See example image below)**
+
+![Step 2](Tutor2.png)
+
+### 8. **Copy the Generated API Link**
+
+- Wait for the API link to appear. Once it does, copy the generated link.  
+  **(See example image below)**
+
+![Step 3](Tutor3.png)
+
+### 9. **Paste the API Link in Settings**
+
+- Return to the Nutriject settings page.
+- Paste the copied **API link** into the settings input field and click **Save API**.
+
+### 10. **You're Ready to Start!**
+
+- After saving the API link, you’re ready to start using Nutriject and enjoy the features! 🎉
+
+---
+
+### Need Help?
+
+If you encounter any issues, feel free to reach out to our support team at hauzantsaaqif28@gmail.com.
+
+---
+
+## 🚀 Getting Started for Web Dev
 
 To use the Nutriject Web App:
 

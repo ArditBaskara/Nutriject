@@ -132,14 +132,25 @@
 /* === RESPONSIVE === */
 @media (max-width: 768px) {
   .navbar {
-    flex-direction: column;
+    flex-direction: row;
     height: auto;
-    padding: 12px 16px;
+    padding: 12px 8px;
   }
+}
 
-  .nav-links {
-    flex-direction: column;
-    gap: 14px;
-    margin-top: 8px;
+@media (max-width: 480px) {
+  .navbar {
+    flex-direction: row;
+    height: auto;
+    padding: 8px 6px;
+  }
+  .logo-img{
+    height: 42px;
+  }
+  .logo-title{
+    font-size: 1.2rem;
+  }
+  .nav-link{
+    font-size: 0.9rem;
   }
 }

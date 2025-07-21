@@ -164,4 +164,9 @@
   .personalize-title { font-size: 2rem; }
   .personalize-card  { padding: 28px 20px; }
   .double-button button { width: 100%; }
+  #service{
+    flex-direction: column;
+    overflow-y: scroll;
+    height: 70vh;
+  }
 }

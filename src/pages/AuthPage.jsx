@@ -76,6 +76,10 @@ const AuthPage = () => {
     }
   };
 
+  const toggleLogin = () =>{
+    setIsLogin(!isLogin);
+    setIsSuccess(false);
+  }
   
 
   return (
@@ -131,7 +135,7 @@ const AuthPage = () => {
               </div>
               
             )}
-            {!isLogin && (<p style={{color:'green'}}>Sukses membuat akun</p>)}
+            {isSuccess && (<p style={{color:'green'}}>Sukses membuat akun</p>)}
             <button type="submit" className="get-started-button">
               {isLogin ? 'Login' : 'Signup'}
             </button>
@@ -140,7 +144,7 @@ const AuthPage = () => {
             {isLogin
               ? "Don't have an account? "
               : 'Already have an account? '}
-            <span onClick={() => setIsLogin(!isLogin)}>
+            <span onClick={toggleLogin}>
               {isLogin ? 'Signup' : 'Login'}
             </span>
           </p>

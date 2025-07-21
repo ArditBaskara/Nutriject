@@ -63,6 +63,8 @@ export default function Personalize() {
 
     const fetchData = async () => {
       try {
+        const today = new Date().toISOString().split("T")[0];
+
         const usersQ = query(
           collection(db, "users"),
           where("email", "==", email),
@@ -75,7 +77,7 @@ export default function Personalize() {
         const reportsQ = query(
           collection(db, "reports"),
           where("email", "==", email),
-          orderBy("tanggal", "desc"),
+          where("tanggal", "==", today),
           limit(1)
         );
         const reportsSnap = await getDocs(reportsQ);
@@ -113,62 +115,72 @@ export default function Personalize() {
           Hello <span>{userData?.name || "Guest"}</span>!
         </h1>
 
-        <p className="personalize-date">Tanggal: {tanggal}</p>
+        {userData.BMR ? (
+        <>
+          <p className="personalize-date">Tanggal: {tanggal}</p>
 
-        {userData && <p className="personalize-bmr">BMR: {userData.BMR.toFixed(2) || 0}</p>}
+          {!userData && <p className="personalize-bmr">BMR: {userData.BMR.toFixed(2) || 0}</p>}
+          
+          <div className="progress-wrapper">
+            {userData && (
+              <>
+                <ProgressBar
+                  label="Karbohidrat"
+                  min={userData.carbsMin || 0}
+                  max={userData.carbsMax || 0}
+                  val={carbs}
+                  color="#FF6600"
+                />
+                <ProgressBar
+                  label="Garam"
+                  min={userData.saltMin || 0}
+                  max={userData.saltMax || 0}
+                  val={salts}
+                  color="#FF6600"
+                />
+                <ProgressBar
+                  label="Protein"
+                  min={userData.proteinMin || 0}
+                  max={userData.proteinMax || 0}
+                  val={protein}
+                  color="#FF6600"
+                />
+                <ProgressBar
+                  label="Gula"
+                  min={userData.sugarMin || 0}
+                  max={userData.sugarMax || 0}
+                  val={sugar}
+                  color="#FF6600"
+                />
+                <ProgressBar
+                  label="Lemak"
+                  min={userData.fatMin || 0}
+                  max={userData.fatMax || 0}
+                  val={fat}
+                  color="#FF6600"
+                />
+              </>
+            )}
+          </div>
+        </>) : 
+        <p className="alert-needs">There is no nutritional needs data yet, please generate it first.</p>
+      }
 
-        <div className="progress-wrapper">
-          {userData && (
-            <>
-              <ProgressBar
-                label="Karbohidrat"
-                min={userData.carbsMin || 0}
-                max={userData.carbsMax || 0}
-                val={carbs}
-                color="#FF6600"
-              />
-              <ProgressBar
-                label="Garam"
-                min={userData.saltMin || 0}
-                max={userData.saltMax || 0}
-                val={salts}
-                color="#FF6600"
-              />
-              <ProgressBar
-                label="Protein"
-                min={userData.proteinMin || 0}
-                max={userData.proteinMax || 0}
-                val={protein}
-                color="#FF6600"
-              />
-              <ProgressBar
-                label="Gula"
-                min={userData.sugarMin || 0}
-                max={userData.sugarMax || 0}
-                val={sugar}
-                color="#FF6600"
-              />
-              <ProgressBar
-                label="Lemak"
-                min={userData.fatMin || 0}
-                max={userData.fatMax || 0}
-                val={fat}
-                color="#FF6600"
-              />
-            </>
-          )}
+          <div className="double-button">
+            <button className="dangger-button" onClick={onLogout}>
+              Logout
+            </button>
+            <button className="get-started-button back" onClick={()=>navigate("/")}>
+              Kembali
+            </button>
+            {userData.BMR ?
+            <button className="get-started-button" onClick={onStartEating}>
+              Start Eating
+            </button>:
+            ""
+            }
+          </div>
         </div>
-
-        <div className="double-button">
-          <button className="dangger-button" onClick={onLogout}>
-            Logout
-          </button>
-          <button className="get-started-button" onClick={onStartEating}>
-            Start Eating
-          </button>
-        </div>
-      </div>
-
       {/* Modal for Start Eating */}
       {showModal && (
         <div className="modal-overlay">

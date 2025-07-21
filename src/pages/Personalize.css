@@ -81,6 +81,10 @@
   transition: all 0.3s ease;
 }
 
+.back{
+  background: linear-gradient(135deg, #b4e600, rgb(18, 192, 32)) !important;
+}
+
 .double-button .get-started-button:hover {
   transform: translateY(-3px);
   box-shadow: 0 8px 20px rgba(0,0,0,0.2);

@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { uploadImage } from "../services/api";
-import Button from "../components/Button";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import { uploadImage } from "../../services/api";
+import Button from "../../components/Button";
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 import Cookies from "js-cookie";
-import { decrypt } from "../crypt";
+import { decrypt } from "../../crypt";
 
 import {
   db,
@@ -16,7 +16,7 @@ import {
   getDocs,
   addDoc,
   setDoc,
-} from "../firebase-config";
+} from "../../firebase-config";
 
 import {
   FaCamera,
@@ -25,7 +25,7 @@ import {
   FaTimesCircle,
 } from "react-icons/fa";
 
-import "./PhotoInput.css"; 
+import "../PhotoInput/PhotoInput.css"; 
 
 const ImageUpload = () => {
   const [selectedImage, setSelectedImage] = useState(null);

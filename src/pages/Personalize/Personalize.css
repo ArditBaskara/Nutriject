@@ -1,0 +1,5 @@
+/* Personalize styles (moved into folder) */
+.personalize-container { padding: 24px; }
+.personalize-card { max-width: 900px; margin: 0 auto; background: #fff; padding: 18px; border-radius: 8px; }
+.personalize-title { font-size: 1.6rem; }
+.double-button { display:flex; gap:10px; margin-top:12px; }

@@ -1,15 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import ProgressBar from "../components/ProgressBar";
+import ProgressBar from "../../components/ProgressBar";
 import "./Personalize.css";
-import { decrypt } from "../crypt";
+import { decrypt } from "../../crypt";
 import Cookies from "js-cookie";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import Box from "../components/Box";
-import kemasan2 from '../assets/kemasan2.png';
-import kemasan1 from '../assets/kemasan1.jpg';
-import kemasan7 from '../assets/kemasan7.png';
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
+import Box from "../../components/Box";
+import kemasan2 from '../../assets/kemasan2.png';
+import kemasan1 from '../../assets/kemasan1.jpg';
+import kemasan7 from '../../assets/kemasan7.png';
 import {
   db,
   collection,
@@ -18,7 +18,7 @@ import {
   orderBy,
   limit,
   getDocs
-} from "../firebase-config";
+} from "../../firebase-config";
 
 const imageList1 = [kemasan1];
 const imageList2 = [kemasan2];

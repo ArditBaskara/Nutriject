@@ -1,9 +1,8 @@
 import React from "react";
-import PhotoInput from "./PhotoInput";
-import UserForm from "./UseForm";
-import ObjectDetect from "./ImageUpload";
-import Navbar from "../components/Navbar"; // Pastikan path ini sesuai
-import "./FormPhoto.css";
+import PhotoInput from "../PhotoInput";
+import UserForm from "../UseForm/UseForm";
+import ObjectDetect from "../ImageUpload/ImageUpload";
+import Navbar from "../../components/Navbar";
 
 export default function FormPhoto() {
   return (
@@ -12,7 +11,6 @@ export default function FormPhoto() {
       <div className="form-photo-page">
         <div className="form-container">
           <PhotoInput />
-          
         </div>
       </div>
     </>

@@ -1,0 +1,7 @@
+/* PhotoInput styles (moved into folder) */
+.photo-page { padding: 24px; }
+.photo-card { max-width: 900px; margin: 0 auto; background: #fff; padding: 18px; border-radius: 8px; }
+.title { font-size: 1.4rem; margin-bottom: 12px; }
+.btn-row { display:flex; gap:12px; margin-bottom:12px; }
+.preview img { max-width:100%; height:auto; border-radius:8px; }
+.nutrisi-card { margin-top:12px; }

@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import './Setting.css'; // Reuse the same CSS for consistency
-import logo from '../assets/Nutrijectlogo.png'; // Reuse the same logo
+import logo from '../../assets/Nutrijectlogo.png'; // Reuse the same logo
 import Cookies from 'js-cookie';
-import { decrypt } from '../crypt';
-import Tutor1 from '../assets/Tutor1.png';
-import Tutor2 from '../assets/Tutor2.png';
-import Tutor3 from '../assets/Tutor3.png';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+import { decrypt } from '../../crypt';
+import Tutor1 from '../../assets/Tutor1.png';
+import Tutor2 from '../../assets/Tutor2.png';
+import Tutor3 from '../../assets/Tutor3.png';
+import Navbar from '../../components/Navbar';
+import Footer from '../../components/Footer';
 
 const Settings = () => {
   const navigate = useNavigate();

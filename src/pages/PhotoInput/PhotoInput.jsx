@@ -235,7 +235,7 @@ const PhotoInput = () => {
                 <button
                   type="button"
                   onClick={startCamera}
-                  className="flex-1 px-4 py-3 bg-white border border-orange-500 text-orange-600 rounded-md hover:shadow-sm flex items-center justify-center gap-2"
+                  className="flex-1 px-4 py-3 bg-white border border-orange-500 text-orange-600 rounded-md hover:shadow-sm flex items-center justify-center gap-2 "
                 >
                   <FaCamera />
                   <span>Ambil Kamera</span>

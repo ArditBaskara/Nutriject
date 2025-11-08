@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 import { decrypt } from "../../crypt";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
-import Button from "../../components/Button";
+import { FaImage, FaCamera } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -36,6 +36,26 @@ const PhotoInput = () => {
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const img64 = reader.result;
+      setImage(img64);
+      performOCR(img64);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // Drag & drop handlers (clickable drop area)
+  const onDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const onDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const file = e.dataTransfer.files && e.dataTransfer.files[0];
     if (!file) return;
     const reader = new FileReader();
     reader.onloadend = () => {
@@ -166,56 +186,114 @@ const PhotoInput = () => {
 
   /* ---------- UI ---------- */
   return (
-    <div className="photo-page">
+    <div className="min-h-screen bg-gray-50 pt-20 mt-2">
       <Navbar />
 
-      <div className="photo-card">
-        <h2 className="title">Deteksi Nutrisi</h2>
+      <main className="max-w-4xl mx-auto px-4 py-8">
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <header className="flex items-start justify-between">
+            <div>
+              <h2 className="text-2xl font-bold">Deteksi Nutrisi</h2>
+              <p className="text-sm text-gray-500 mt-1">Unggah foto label kemasan atau ambil foto untuk ekstraksi nutrisi otomatis.</p>
+            </div>
+          </header>
 
-        <div className="btn-row">
-          <Button onClick={() => document.getElementById("fileInput").click()}>
-            Unggah Foto
-          </Button>
-        </div>
-        <input
-          id="fileInput"
-          type="file"
-          accept="image/*"
-          hidden
-          onChange={handleFileUpload}
-        />
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <input
+                id="fileInput"
+                type="file"
+                accept="image/*"
+                hidden
+                onChange={handleFileUpload}
+              />
 
-        {loading && <p>Membaca nutrisi…</p>}
+              {/* Drag & drop area (also clickable) */}
+              <div
+                onDragOver={onDragOver}
+                onDrop={onDrop}
+                onClick={() => document.getElementById('fileInput').click()}
+                className="mt-2 cursor-pointer rounded-md border-2 border-dashed border-gray-200 p-6 text-center hover:border-orange-300 transition-colors"
+                aria-label="Area unggah gambar (klik atau tarik dan lepas file)"
+              >
+                <div className="flex flex-col items-center justify-center gap-2">
+                  <FaImage className="w-8 h-8 text-gray-400" />
+                  <div className="text-sm font-medium">Seret & lepaskan gambar di sini atau klik untuk memilih</div>
+                  <div className="text-xs text-gray-400">(JPG, PNG) — maksimal 10MB</div>
+                </div>
+              </div>
 
-        {image && (
-          <div className="preview">
-            <img src={image} alt="preview" />
-          </div>
-        )}
+              <div className="mt-3 flex flex-col sm:flex-row gap-3">
+                <button
+                  onClick={() => document.getElementById("fileInput").click()}
+                  className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 bg-green-500 text-white rounded-md hover:shadow-md focus:outline-none focus:ring-2 focus:ring-green-300"
+                >
+                  <FaImage />
+                  <span>Unggah Foto</span>
+                </button>
 
-        {ocrText && typeof ocrText === "object" && (
-          <div className="nutrisi-card">
-            <h3>Hasil Ekstraksi</h3>
-            <ul>
-              <li>Kalori : {ocrText.kalori || 0} kkal</li>
-              <li>Lemak  : {ocrText.lemak_total || 0} g</li>
-              <li>Karbo  : {ocrText.karbohidrat || 0} g</li>
-              <li>Protein: {ocrText.protein || 0} g</li>
-              <li>Gula   : {ocrText.gula || 0} g</li>
-              <li>Garam  : {ocrText.garam || 0} mg</li>
-            </ul>
+                <button
+                  type="button"
+                  onClick={startCamera}
+                  className="flex-1 px-4 py-3 bg-white border border-orange-500 text-orange-600 rounded-md hover:shadow-sm flex items-center justify-center gap-2"
+                >
+                  <FaCamera />
+                  <span>Ambil Kamera</span>
+                </button>
 
-            <div className="btn-row">
-              <Button onClick={handleSendToFirebase}>Makan</Button>
-              <Button bgCol="red" onClick={() => window.location.reload()}>
-                Cancel
-              </Button>
+                <button
+                  onClick={() => navigate('/personalize')}
+                  className="flex-1 px-4 py-3 bg-white border rounded-md text-center"
+                >
+                  Kembali
+                </button>
+              </div>
+
+              {loading && (
+                <div className="mt-4 flex items-center gap-2 text-sm text-gray-600">
+                  <svg className="w-5 h-5 animate-spin text-gray-600" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>
+                  <span>Membaca/mengekstraksi nutrisi…</span>
+                </div>
+              )}
+
+              {image && (
+                <div className="mt-4 w-full rounded-md overflow-hidden border border-gray-100 shadow-sm">
+                  <img src={image} alt="preview" className="w-full h-56 object-cover" />
+                </div>
+              )}
+            </div>
+
+            <div>
+              {ocrText && typeof ocrText === "object" ? (
+                <div className="p-4 bg-gray-50 rounded-md">
+                  <h3 className="text-lg font-semibold">Hasil Ekstraksi</h3>
+                  <ul className="mt-3 space-y-1 text-sm text-gray-700">
+                    <li><strong>Kalori:</strong> {ocrText.kalori || 0} kkal</li>
+                    <li><strong>Lemak:</strong> {ocrText.lemak_total || 0} g</li>
+                    <li><strong>Karbo:</strong> {ocrText.karbohidrat || 0} g</li>
+                    <li><strong>Protein:</strong> {ocrText.protein || 0} g</li>
+                    <li><strong>Gula:</strong> {ocrText.gula || 0} g</li>
+                    <li><strong>Garam:</strong> {ocrText.garam || 0} mg</li>
+                  </ul>
+
+                  <div className="mt-4 flex gap-3">
+                    <button onClick={handleSendToFirebase} className="flex-1 px-4 py-2 bg-green-500 text-white rounded-md">Simpan</button>
+                    <button onClick={() => { setOcrText(null); setImage(null); }} className="px-4 py-2 bg-orange-500 text-white rounded-md">Batal</button>
+                  </div>
+                </div>
+              ) : (
+                <div className="p-4 rounded-md border border-dashed border-gray-200 text-sm text-gray-600">
+                  Hasil ekstraksi akan muncul di sini setelah proses berhasil.
+                </div>
+              )}
+
+              {typeof ocrText === "string" && (
+                <div className="mt-3 text-sm text-red-600">{ocrText}</div>
+              )}
             </div>
           </div>
-        )}
-
-        {typeof ocrText === "string" && <p>{ocrText}</p>}
-      </div>
+        </div>
+      </main>
 
       <Footer />
     </div>

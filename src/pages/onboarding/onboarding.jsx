@@ -81,20 +81,20 @@ const Onboarding = () => {
         <div className="absolute bottom-20 right-10 w-40 h-40 bg-nutriGreen/10 rounded-full blur-3xl animate-pulse delay-1000" />
 
         <div className="max-w-6xl mx-auto text-center relative z-10">
-          <div className="mb-8 inline-block animate-bounce">
+          <div className="mb-8 inline-block hero-logo">
             <img
               src={"./icon-1.png"}
               alt="Nutriject Logo"
-              className="w-32 h-32 mx-auto drop-shadow-2xl hover:scale-110 transition-transform duration-300 cursor-pointer"
+              className="w-32 h-32 mx-auto drop-shadow-2xl hover:scale-110 transition-transform duration-1000 cursor-pointer"
               onClick={() => navigate('/')}
             />
           </div>
 
-          <h1 className="text-6xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-nutriOrange via-nutriGreen to-nutriOrange bg-clip-text text-transparent animate-gradient">
+          <h1 className="text-6xl md:text-7xl font-bold mb-6 bg-nutriOrange bg-clip-text text-transparent animate-gradient hero-title">
             NUTRIJECT
           </h1>
 
-          <p className="text-2xl md:text-3xl font-semibold text-gray-700 mb-4">Your Smart Nutrition Companion</p>
+          <p className="text-2xl md:text-3xl font-semibold text-gray-700 mb-4 hero-subtitle">Your Smart Nutrition Companion</p>
 
           {user ? (
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-xl max-w-2xl mx-auto mb-8">
@@ -338,6 +338,26 @@ const Onboarding = () => {
           30% { opacity: 1; }
           36.66% { opacity: 0; }
           100% { opacity: 0; }
+        }
+
+        /* Gentler bounce for logo (will run after entrance) */
+        @keyframes gentle-bounce {
+          0%, 100% { transform: translateY(2); }
+          50% { transform: translateY(-8px); }
+        }
+
+        /* Hero entrance animations (staggered, smooth). For the logo we run entrance first, then start the looping gentle-bounce */
+        .hero-logo, .hero-title, .hero-subtitle { opacity: 0; transform: translateY(10px); }
+        .hero-logo { animation: hero-entrance 0.9s cubic-bezier(.22,.9,.32,1) forwards 0.2s, gentle-bounce 2.8s ease-in-out infinite 1.4s; }
+        .hero-title { animation: hero-entrance 0.9s cubic-bezier(.22,.9,.32,1) forwards; animation-delay: 0.6s; }
+        .hero-subtitle { animation: hero-entrance 0.9s cubic-bezier(.22,.9,.32,1) forwards; animation-delay: 0.95s; }
+        @keyframes hero-entrance {
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Respect reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+          .hero-slide, .gentle-bounce, .hero-logo, .hero-title, .hero-subtitle { animation: none !important; }
         }
       `}</style>
     </div>

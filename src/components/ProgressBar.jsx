@@ -1,5 +1,7 @@
+/* eslint-disable */
+
 // components/ProgressBar.jsx
-import "./ProgressBar.css";
+import './ProgressBar.css';
 import {
   FaBreadSlice,
   FaDrumstickBite,
@@ -7,7 +9,7 @@ import {
   FaTint,
   FaCheese,
   FaUtensilSpoon,
-} from "react-icons/fa";
+} from 'react-icons/fa';
 
 const icons = {
   Karbohidrat: <FaBreadSlice />,
@@ -22,7 +24,7 @@ export default function ProgressBar({ label, min, max, val }) {
 
   // ✅ Cek apakah nilai sehat
   const inRange = val >= min && val <= max;
-  const barColor = inRange ? "#2ecc71" : "#e74c3c"; // Hijau atau merah
+  const barColor = inRange ? '#2ecc71' : '#e74c3c'; // Hijau atau merah
 
   return (
     <div className="nutri-bar">
@@ -32,8 +34,14 @@ export default function ProgressBar({ label, min, max, val }) {
 
       <div className="nutri-range">
         {/* Penanda batas min & max */}
-        <div className="nutri-limit-line" style={{ left: `${(min / max) * 100}%` }}></div>
-        <div className="nutri-limit-line" style={{ left: `${(max / max) * 100}%` }}></div>
+        <div
+          className="nutri-limit-line"
+          style={{ left: `${(min / max) * 100}%` }}
+        ></div>
+        <div
+          className="nutri-limit-line"
+          style={{ left: `${(max / max) * 100}%` }}
+        ></div>
 
         <div
           className="nutri-fill"

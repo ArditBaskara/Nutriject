@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import './Setting.css'; // Reuse the same CSS for consistency
@@ -42,40 +44,74 @@ const Settings = () => {
 
       {/* Settings Section */}
       <div className="onboarding-container">
-
         {/* How to Settings Section */}
         <div className="how-to-section">
-        <h1 className="onboarding-title">Settings</h1>
+          <h1 className="onboarding-title">Settings</h1>
           <ol className="how-to-list">
             <li className="how-to-step">
-              <p>Create an account at <a href="https://ngrok.com/" target="_blank" rel="noopener noreferrer" className="external-link">https://ngrok.com/</a> and copy your NGROK Auth Token. <strong>(See example image)</strong></p>
+              <p>
+                Create an account at{' '}
+                <a
+                  href="https://ngrok.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="external-link"
+                >
+                  https://ngrok.com/
+                </a>{' '}
+                and copy your NGROK Auth Token.{' '}
+                <strong>(See example image)</strong>
+              </p>
               <div className="image-container">
                 <img src={Tutor1} alt="Step 1" className="tutorial-image" />
               </div>
             </li>
             <li className="how-to-step">
-              <p>Open the AI server on Colab using this link: <a href="https://colab.research.google.com/drive/1n9nqZc5Gwr38vofAJ8vRHBGC11_VBtbT?usp=sharing" target="_blank" rel="noopener noreferrer" className="external-link">Colab Server Link</a></p>
+              <p>
+                Open the AI server on Colab using this link:{' '}
+                <a
+                  href="https://colab.research.google.com/drive/1n9nqZc5Gwr38vofAJ8vRHBGC11_VBtbT?usp=sharing"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="external-link"
+                >
+                  Colab Server Link
+                </a>
+              </p>
             </li>
             <li className="how-to-step">
-              <p>Paste your NGROK token into the input field provided in the Colab notebook.</p>
+              <p>
+                Paste your NGROK token into the input field provided in the
+                Colab notebook.
+              </p>
             </li>
             <li className="how-to-step">
               <p>Connect to the Colab runtime (GPU is not required).</p>
             </li>
             <li className="how-to-step">
-              <p>Press <code>Ctrl + F9</code> or go to <strong>Runtime &gt; Run all</strong> to execute all cells. <strong>(See example image)</strong></p>
+              <p>
+                Press <code>Ctrl + F9</code> or go to{' '}
+                <strong>Runtime &gt; Run all</strong> to execute all cells.{' '}
+                <strong>(See example image)</strong>
+              </p>
               <div className="image-container">
                 <img src={Tutor2} alt="Step 2" className="tutorial-image" />
               </div>
             </li>
             <li className="how-to-step">
-              <p>Wait until an API link appears. Copy the generated API link. <strong>(See example image)</strong></p>
+              <p>
+                Wait until an API link appears. Copy the generated API link.{' '}
+                <strong>(See example image)</strong>
+              </p>
               <div className="image-container">
                 <img src={Tutor3} alt="Step 3" className="tutorial-image" />
               </div>
             </li>
             <li className="how-to-step">
-              <p>Paste the copied API link into the settings input field below on this page and click save API.</p>
+              <p>
+                Paste the copied API link into the settings input field below on
+                this page and click save API.
+              </p>
             </li>
             <li className="how-to-step">
               <p>Once saved, you’re ready to start eating.</p>
@@ -89,9 +125,24 @@ const Settings = () => {
           <div className="api-input-container">
             <div className="input-container">
               <span className="input-prefix">
-                <a href={apiLink || '#'} target="_blank" rel="noopener noreferrer">
-                  <svg className="link-icon" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 010 5.656l-1.414 1.414a4 4 0 01-5.656-5.656l1.414-1.414M10.172 13.828a4 4 0 010-5.656l1.414-1.414a4 4 0 015.656 5.656l-1.414 1.414"></path>
+                <a
+                  href={apiLink || '#'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <svg
+                    className="link-icon"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M13.828 10.172a4 4 0 010 5.656l-1.414 1.414a4 4 0 01-5.656-5.656l1.414-1.414M10.172 13.828a4 4 0 010-5.656l1.414-1.414a4 4 0 015.656 5.656l-1.414 1.414"
+                    ></path>
                   </svg>
                 </a>
               </span>
@@ -104,10 +155,7 @@ const Settings = () => {
                 className="api-input"
               />
             </div>
-            <button
-              className="save-button"
-              onClick={handleSaveApi}
-            >
+            <button className="save-button" onClick={handleSaveApi}>
               Save API
             </button>
           </div>
@@ -116,10 +164,17 @@ const Settings = () => {
           {savedApi && (
             <div className="saved-api-link">
               <span>Saved API Link: </span>
-              <a href={savedApi} className="external-link" target="_blank" rel="noopener noreferrer">
+              <a
+                href={savedApi}
+                className="external-link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 {savedApi}
               </a>
-              <p className="saved-api-text">Links are active and saved in the current session.</p>
+              <p className="saved-api-text">
+                Links are active and saved in the current session.
+              </p>
             </div>
           )}
         </div>

@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Tesseract from "tesseract.js";
 import axios from "axios";
+import { getApiBase } from "../../services/api";
 import Cookies from "js-cookie";
 import { decrypt } from "../../crypt";
 import Navbar from "../../components/Navbar";
@@ -97,7 +98,7 @@ const PhotoInput = () => {
         logger: (m) => console.log(m), // debug
       });
       
-      const storedApi = sessionStorage.getItem('apiLink');
+      const storedApi = await getApiBase();
 
       if (!storedApi) {
         alert("API link belum disetting. Silakan pergi ke halaman setting untuk menyetting.");

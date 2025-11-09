@@ -98,8 +98,8 @@ const PhotoInput = () => {
       } = await Tesseract.recognize(img64, 'eng', {
         logger: (m) => console.log(m), // debug
       });
-
-      const storedApi = sessionStorage.getItem('apiLink');
+      
+      const storedApi = await getApiBase();
 
       if (!storedApi) {
         alert(

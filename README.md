@@ -1,40 +1,40 @@
-# 🍽️ Nutriject — AI-Powered Nutrition Tracker
+# Nutriject — AI-Powered Nutrition Tracker
 
 **Nutriject** is an AI-based web platform designed to help users automatically monitor their nutritional intake using cutting-edge **Computer Vision**. With a simple food image, Nutriject detects the type of food and instantly calculates its nutritional value — no manual input needed.
 
-> ⚡ Just take a photo. Let Nutriject do the rest.
+> Just take a photo. Let Nutriject do the rest.
 
 <img src="public/img_1.png" alt="Nutriject Homepage" width="100%"/>
 
 ---
 
-## 🔍 Key Features
+## Key Features
 
-- 🧠 **AI-Powered Detection**: Automatically recognizes food items from images using a custom-trained object detection model.
-- 📊 **Nutritional Analysis**: Calculates macro and micronutrients using a trusted nutrition database.
-- 💻 **No Manual Input**: Fully automated, ideal for busy individuals, athletes, and health-conscious users.
-- 📱 **Modern UI/UX**: Built with React.js for a fast and responsive web experience.
+- **AI-Powered Detection**: Automatically recognizes food items from images using a custom-trained object detection model.
+- **Nutritional Analysis**: Calculates macro and micronutrients using a trusted nutrition database.
+- **No Manual Input**: Fully automated, ideal for busy individuals, athletes, and health-conscious users.
+- **Modern UI/UX**: Built with React.js for a fast and responsive web experience.
 
 ---
 
-## 🧠 The AI Model
+## The AI Model
 
 The object detection model behind Nutriject was trained using a combination of **open food datasets** and **custom image data** for improved accuracy on local cuisines and real-life portions.
 
 - Trained with **YOLOv8** via **Ultralytics** on [Google Colab]
 - Fine-tuned on personal and real-world food data for better generalization
 - For details and model file, visit this drive:  
-  👉 [Model File Drive](https://drive.google.com/drive/folders/1dsuDrnyWxShcplSJkroYt3cYS70xTABS?usp=sharing)
+  [Model File Drive](https://drive.google.com/drive/folders/1dsuDrnyWxShcplSJkroYt3cYS70xTABS?usp=sharing)
 
 ---
 
-## 🛰️ Model Deployment
+## Model Deployment
 
 The model is served using:
 
-- 🧠 **Google Colab** as the compute environment
-- 🌐 **Ngrok** to expose the local server to a public URL
-- 🚀 **FastAPI** as the lightweight backend API
+- **Google Colab** as the compute environment
+- **Ngrok** to expose the local server to a public URL
+- **FastAPI** as the lightweight backend API
 
 To run the model server:
 
@@ -45,7 +45,7 @@ To run the model server:
 
 ---
 
-## 🔧 Nutriject Web App - Getting Started (User-Friendly)
+## Nutriject Web App - Getting Started (User-Friendly)
 
 Welcome to Nutriject! Follow the steps below to get started and set up your API connection.
 
@@ -110,7 +110,7 @@ If you encounter any issues, feel free to reach out to our support team at hauza
 
 ---
 
-## 🚀 Getting Started for Web Dev
+## Getting Started for Web Dev
 
 To use the Nutriject Web App:
 
@@ -142,13 +142,13 @@ To use the Nutriject Web App:
    npm start
    ```
 
-Now, you're ready to test the app. Upload a food image and watch Nutriject break down the nutrition info automatically! 🍱
+Now, you're ready to test the app. Upload a food image and watch Nutriject break down the nutrition info automatically!
 
 ## Example Output
 
 <img src="public/img_2.png" alt="Nutriject Output Example" width="100%"/>
 
-## 🧰 Tech Stack
+## Tech Stack
 
 - **Frontend**: React.js
 - **Backend**: FastAPI (served via Colab + Ngrok)
@@ -158,22 +158,17 @@ Now, you're ready to test the app. Upload a food image and watch Nutriject break
 
 ---
 
-## 🖼️ Sample Use Case
+## Sample Use Case
 
 Check out before-after visual examples (coming soon) where Nutriject identifies meals and outputs their nutritional content — perfect for creators, nutritionists, and dieticians.
 
 ---
 
-## 🤝 Contributions
+## Contributions
 
 Contributions, feature suggestions, or feedback are welcome!  
 Feel free to open issues or submit pull requests.
 
----
-
-## 📄 License
-
-This project is licensed under the **MIT License** — use freely with attribution.
 
 ---
 
